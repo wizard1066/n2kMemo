@@ -31,7 +31,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func fetch(_ sender: Any) {
         //        cloudDB.share.fetchPublicInZone(zone2Search: linesRead[0])
-        cloudDB.share.saveImage2Share()
+//        cloudDB.share.saveImage2Share()
     }
     
     @IBOutlet weak var getText: UITextField!
@@ -257,13 +257,16 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
             self.imageFetched.image = image2D
         }
-//        NotificationCenter.default.addObserver( self, selector: #selector(ConfigViewController.keyboardWillShow(_:)),
-//                                                name: Notification.Name.UIResponder.keyboardWillShowNotification,
-//                                                object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(ConfigViewController.keyboardWillHide(_:)),
-//                                               name: Notification.Name.UIResponder.keyboardWillHideNotification,
-//                                               object: nil)
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ConfigViewController.keyboardWillShow(_:)),
+            name: UIResponder.keyboardDidShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ConfigViewController.keyboardWillHide(_:)),
+            name: UIResponder.keyboardDidHideNotification, object: nil)
         
         let press = UILongPressGestureRecognizer(target: self, action: #selector(copyURL))
         view.addGestureRecognizer(press)

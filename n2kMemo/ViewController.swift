@@ -98,7 +98,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         //        stationsRegistered = (defaults.array(forKey: remoteRecords.stationNames) as? [String])!
         
         cloudDB.share.returnAllLines()
-        postingButton.isEnabled = false
+        postingButton.isEnabled = true
         linesPicker.delegate = self
         linesPicker.dataSource = self
         stationsPicker.delegate = self
@@ -209,7 +209,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         let alert2Monitor4 = "disablePost"
         pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
             // fix bug later
-            self.postingButton.isEnabled = false
+            self.postingButton.isEnabled = true
         }
         let alert2Monitor5 = "refresh"
         pinObserver5 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in

@@ -26,6 +26,8 @@
 		7BBD63E5215D20C4000924F0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BBD63E4215D20C4000924F0 /* CloudKit.framework */; };
 		7BBD63E7215D21F3000924F0 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD63E6215D21F3000924F0 /* PostingViewController.swift */; };
 		7BBD63E9215D2209000924F0 /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD63E8215D2209000924F0 /* ConfigViewController.swift */; };
+		7BBD63ED215D27D6000924F0 /* Certificates.pem in Resources */ = {isa = PBXBuildFile; fileRef = 7BBD63EC215D27D6000924F0 /* Certificates.pem */; };
+		7BBD63EF215D4530000924F0 /* Certificates.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 7BBD63EE215D4530000924F0 /* Certificates.p12 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +106,8 @@
 		7BBD63E4215D20C4000924F0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7BBD63E6215D21F3000924F0 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
 		7BBD63E8215D2209000924F0 /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
+		7BBD63EC215D27D6000924F0 /* Certificates.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Certificates.pem; sourceTree = "<group>"; };
+		7BBD63EE215D4530000924F0 /* Certificates.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Certificates.p12; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +181,8 @@
 			isa = PBXGroup;
 			children = (
 				7BBD63B6215CFEE9000924F0 /* n2kMemo.entitlements */,
+				7BBD63EC215D27D6000924F0 /* Certificates.pem */,
+				7BBD63EE215D4530000924F0 /* Certificates.p12 */,
 				7BBD6386215CC043000924F0 /* AppDelegate.swift */,
 				7BBD6388215CC043000924F0 /* ViewController.swift */,
 				7BBD63DF215D205F000924F0 /* CloudKitMethods.swift */,
@@ -408,7 +414,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7BBD6391215CC046000924F0 /* LaunchScreen.storyboard in Resources */,
+				7BBD63EF215D4530000924F0 /* Certificates.p12 in Resources */,
 				7BBD638E215CC046000924F0 /* Assets.xcassets in Resources */,
+				7BBD63ED215D27D6000924F0 /* Certificates.pem in Resources */,
 				7BBD638C215CC043000924F0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

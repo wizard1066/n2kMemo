@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 import UIKit
+import Foundation
 
 class cloudDB: NSObject {
     
@@ -118,12 +119,19 @@ class cloudDB: NSObject {
         //        CKContainer.default().add(person2ShareWith)
     }
     
+    public func saveImage2File(file2Save: UIImage)-> URL {
+        let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("image2Post")
+        let data2Save = file2Save.pngData()
+        try? data2Save?.write(to: filename)
+        return filename
+    }
     
     
-    public func saveImage2Share() {
+    public func saveImage2Share(image2Save: UIImage) {
         let zone2D = CKRecordZone(zoneName: linesRead[0])
         let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
-        let fileURL = Bundle.main.bundleURL.appendingPathComponent("Marley.png")
+//        let fileURL = Bundle.main.bundleURL.appendingPathComponent("Marley.png")
+        let fileURL = saveImage2File(file2Save: image2Save)
         let ckAsset = CKAsset(fileURL: fileURL)
         
         customRecord[remoteAttributes.mediaFile] = ckAsset

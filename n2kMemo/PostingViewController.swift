@@ -109,16 +109,18 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         })
     }
     
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        if let image = (info[UIImagePickerControllerEditedImage] as? UIImage ?? info[UIImagePickerControllerOriginalImage] as? UIImage) {
-//            DispatchQueue.main.async {
-//
-//            }
-//        }
-//        picker.presentingViewController?.dismiss(animated: true, completion: {
-//      
-//        })
-//    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let imageEditedInfo = UIImagePickerController.InfoKey.editedImage
+        let imageOriginalInfo = UIImagePickerController.InfoKey.originalImage
+        if let image = (info[imageEditedInfo] as? UIImage ?? info[imageOriginalInfo] as? UIImage) {
+            DispatchQueue.main.async {
+                cloudDB.share.saveImage2Share(image2Save: image)
+            }
+        }
+        picker.presentingViewController?.dismiss(animated: true, completion: {
+      
+        })
+    }
     
     @IBAction func libraryButton(_ sender: Any) {
         let picker = UIImagePickerController()
@@ -142,8 +144,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             guard let data = data, error == nil else { return }
             
             DispatchQueue.main.async() {
-                //
-                //                self.setWayPoint.didSetImage(name: self.nameTextField.text!, image: UIImage(data: data))
+                if let file2Save = UIImage(data: data) {
+                    cloudDB.share.saveImage2Share(image2Save: file2Save)
+                }
             }
         }
     }
@@ -185,7 +188,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         var items: CFArray?
         
-        let urlPath = Bundle.main.bundleURL.appendingPathComponent("Cert.p12")
+        let urlPath = Bundle.main.bundleURL.appendingPathComponent("Certificates.p12")
         let contentOf = try? Data(contentsOf:urlPath)
         
         let certOptions:NSDictionary = [kSecImportExportPassphrase as NSString:"0244941651" as NSString]
@@ -193,9 +196,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         let certItems:Array = (items! as Array)
         let dict:Dictionary<String, AnyObject> = certItems.first! as! Dictionary<String, AnyObject>
         
-        let label = dict[kSecImportItemLabel as String] as? String
-        let keyID = dict[kSecImportItemKeyID as String] as? Data
-        let trust = dict[kSecImportItemTrust as String] as! SecTrust?
+//        let label = dict[kSecImportItemLabel as String] as? String
+//        let keyID = dict[kSecImportItemKeyID as String] as? Data
+//        let trust = dict[kSecImportItemTrust as String] as! SecTrust?
         let certChain = dict[kSecImportItemCertChain as String] as? Array<SecTrust>
         let identity = dict[kSecImportItemIdentity as String] as! SecIdentity?
         
@@ -224,7 +227,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     @objc func updateCounting(){
         let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
         let apnsSub = ["alert":apnsSubSub,"category":"pizza.category","mutable-content":1] as [String : Any]
-        let apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString,"image-url":testURL] as [String : Any]
+        let apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString,"image-url":url2Share] as [String : Any]
+//        let apnsPayload = ["aps":apnsSub]
         if devices2Post2.count > 0 {
             buildPost(token2U: devices2Post2.removeLast(), apns2S: apnsPayload)
             clientLabel.text = "\(postsMade)"
@@ -239,7 +243,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue.main)
         
         var loginRequest = URLRequest(url: URL(string: "https://api.sandbox.push.apple.com/3/device/" + token2U)!)
-        loginRequest.allHTTPHeaderFields = ["apns-topic": "ch.cqd.PushHuliPizza",
+        loginRequest.allHTTPHeaderFields = ["apns-topic": "ch.cqd.n2kMemo",
                                             "content-type": "application/x-www-form-urlencoded"
         ]
         loginRequest.httpMethod = "POST"
