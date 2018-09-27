@@ -45,7 +45,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CKSharing Supported</key>
+	<key>CKSharingSupported</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera option needed to optionally send in notifications</string>
