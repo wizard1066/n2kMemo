@@ -114,6 +114,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         let imageOriginalInfo = UIImagePickerController.InfoKey.originalImage
         if let image = (info[imageEditedInfo] as? UIImage ?? info[imageOriginalInfo] as? UIImage) {
             DispatchQueue.main.async {
+                self.postButton.isEnabled = false
                 cloudDB.share.saveImage2Share(image2Save: image)
             }
         }
@@ -145,6 +146,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             
             DispatchQueue.main.async() {
                 if let file2Save = UIImage(data: data) {
+                    self.postButton.isEnabled = false
                     cloudDB.share.saveImage2Share(image2Save: file2Save)
                 }
             }
@@ -158,6 +160,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     var tokenCheque: Int?
+    private var pinObserver: NSObjectProtocol!
+    private var pinObserver2: NSObjectProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -174,12 +178,33 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         }
         clientLabel.text = "\(tokensRead.count)"
         // Do any additional setup after loading the view.
+        
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         lineLabel.text = bahninfo
         self.hideKeyboardWhenTappedAround()
+        let center = NotificationCenter.default
+        let queue = OperationQueue.main
+        let alert2Monitor = "disablePost"
+        pinObserver = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor), object: nil, queue: queue) { (notification) in
+            self.postButton.isEnabled = false
+        }
+        let alert2Monitor2 = "enablePost"
+        pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor2), object: nil, queue: queue) { (notification) in
+            self.postButton.isEnabled = true
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        let center = NotificationCenter.default
+        if pinObserver != nil {
+            center.removeObserver(pinObserver)
+        }
+        if pinObserver2 != nil {
+            center.removeObserver(pinObserver2)
+        }
     }
     
     @IBOutlet weak var dropNdragButton: UIButton!
@@ -253,7 +278,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             print(content)
         }
         loginRequest.httpBody = data
-        print("apnsPayLoad \(data)")
+        print("apnsPayLoad URL \(url2Share)")
         let loginTask = session.dataTask(with: loginRequest) { data, response, error in
             print("error \(error) \(response)")
         }

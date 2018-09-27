@@ -149,6 +149,9 @@ class cloudDB: NSObject {
                 print("modifyOperation error \(error!.localizedDescription)")
             }
             print("Marley banked \(share.url?.absoluteURL)")
+            url2Share = share.url?.absoluteString
+            let peru = Notification.Name("enablePost")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             
         }
         cloudDB.share.privateDB.add(modifyOperation)

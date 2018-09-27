@@ -34,5 +34,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.usernotifications.content-extension</string>
 	</dict>
+	<key>CKSharingSupported</key>
+	<string>YES</string>
 </dict>
 </plist>

@@ -241,7 +241,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let center = NotificationCenter.default
         let queue = OperationQueue.main
         let alert2Monitor = "confirmPin"
-        let pinObserver = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor), object: nil, queue: queue) { (notification) in
+        pinObserver = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor), object: nil, queue: queue) { (notification) in
             self.confirmRegistration()
         }
         let alert2Monitor2 = "stationPin"
