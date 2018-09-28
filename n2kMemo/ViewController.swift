@@ -170,10 +170,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             if linesRead.count > 0 && row < linesRead.count {
                     postingOK(lineName: linesRead[row])
                     cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
+                    selectedLine = linesRead[row]
             }
         } else {
             if stationsRead.count > 0 && row < stationsRead.count {
                 stationSelected = row
+                selectedStation = stationsRead[row]
             }
         }
     }
@@ -234,7 +236,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //        swipeRight.direction = .right
 //        self.view.addGestureRecognizer(swipeLeft)
 //        self.view.addGestureRecognizer(swipeRight)
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+            self.linesPicker.selectRow(0, inComponent: 0, animated: true)
+            self.pickerView(self.linesPicker, didSelectRow:0, inComponent: 0)
+            self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
+            if linesRead.count > 0 {
+                selectedLine = linesRead[0]
+                selectedStation = stationsRead[0]
+            }
+        }
     }
     
     @objc func showPosting() {

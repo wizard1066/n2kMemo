@@ -170,13 +170,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo as! [String:Any]
-        completionHandler([.alert,.sound,.badge])
+//        completionHandler([.alert,.sound,.badge])
         
-        if let _ = userInfo["station"] as? String {
-            if let _ = userInfo["line"] as? String {
-                completionHandler([.alert,.sound,.badge])
-            } else {
-                completionHandler([])
+        if let stationFired = userInfo["station"] as? String {
+            print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
+            if stationFired == selectedStation {
+                
+                if let lineFired = userInfo["line"] as? String {
+                    print("lineFired == selectedline <\(lineFired)> == <\(selectedLine)>")
+                    if lineFired == selectedLine {
+                        completionHandler([.alert,.sound,.badge])
+                    } else {
+                        completionHandler([])
+                    }
+                } 
             }
         } else {
             completionHandler([])

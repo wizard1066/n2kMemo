@@ -30,6 +30,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ikB-Rd-TKf">
+                                <rect key="frame" x="150" y="150" width="20" height="20"/>
+                            </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="apD-bO-HU4">
                                 <rect key="frame" x="40" y="100" width="240" height="200"/>
                                 <constraints>
@@ -41,6 +44,8 @@
                         <constraints>
                             <constraint firstItem="myo-Rh-5JI" firstAttribute="top" secondItem="2BE-c3-nQJ" secondAttribute="top" constant="20" id="3h0-kK-8yq"/>
                             <constraint firstItem="apD-bO-HU4" firstAttribute="top" secondItem="1bn-u1-mF3" secondAttribute="bottom" constant="22" id="EZo-cs-Cod"/>
+                            <constraint firstItem="ikB-Rd-TKf" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="GQj-to-duU"/>
+                            <constraint firstItem="ikB-Rd-TKf" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="QJ5-Vd-TG4"/>
                             <constraint firstItem="1bn-u1-mF3" firstAttribute="leading" secondItem="2BE-c3-nQJ" secondAttribute="leading" constant="40" id="Yaf-Ba-Etc"/>
                             <constraint firstItem="2BE-c3-nQJ" firstAttribute="trailing" secondItem="1bn-u1-mF3" secondAttribute="trailing" constant="40" id="c0t-LO-QLa"/>
                             <constraint firstItem="apD-bO-HU4" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="dwz-Eg-8Z2"/>
@@ -56,6 +61,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="320"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="ikB-Rd-TKf" id="v7s-jH-x9M"/>
                         <outlet property="imageView" destination="apD-bO-HU4" id="c2A-xM-Xbn"/>
                         <outlet property="subtitleLabel" destination="1bn-u1-mF3" id="8dg-Jl-ltz"/>
                         <outlet property="titleLabel" destination="myo-Rh-5JI" id="g5S-Y6-YaE"/>

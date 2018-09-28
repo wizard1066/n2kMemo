@@ -20,6 +20,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
     @IBOutlet weak var bodyLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any required interface initialization here.
@@ -29,6 +30,8 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         let content = notification.request.content
         titleLabel.text = content.title
         subtitleLabel.text = content.subtitle
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
 //        bodyLabel.text = content.body
         let userInfo = content.userInfo as! [String:Any]
         print("access \(userInfo)")
@@ -95,6 +98,8 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
                 let data = NSData(contentsOf: asset.fileURL)
 //                let data = try? Data(contentsOf: url!)
                 DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
                     self.imageView.image = UIImage(data: data! as Data)
                 }
 //                image2D = UIImage(data: data! as Data)

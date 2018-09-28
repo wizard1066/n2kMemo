@@ -11,9 +11,6 @@ import CloudKit
 import UIKit
 
 var permission2SendNotifications: Bool = false
-import Foundation
-import CloudKit
-import UIKit
 
 enum segueNames {
     static let posting = "posting"
@@ -58,3 +55,6 @@ var lineZoneID: String!
 var stationDictionary:[String:[String]?] = [:]
 var lineOwner:[String: String] = [:]
 var tokenOwner:[String: String?] = [:]
+
+var selectedLine: String!
+var selectedStation: String!

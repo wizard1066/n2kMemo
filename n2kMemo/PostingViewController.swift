@@ -75,6 +75,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         rowSelected = row
+        selectedStation = stationsRead[row]
         pickerView.reloadAllComponents()
     }
     
@@ -190,7 +191,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     override func viewDidAppear(_ animated: Bool) {
         
         workingIndicator.isHidden = true
-        lineLabel.text = bahninfo
+//        lineLabel.text = bahninfo
+        lineLabel.text = selectedLine
         self.hideKeyboardWhenTappedAround()
         let center = NotificationCenter.default
         let queue = OperationQueue.main
@@ -214,7 +216,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             if hofinfo != nil {
                 self.pickerStations.selectRow(hofinfo, inComponent: 0, animated: true)
                 rowSelected = hofinfo
-                hofString = stationsRead[hofinfo]
+                selectedStation = stationsRead[hofinfo]
             }
         }
     }
@@ -281,11 +283,11 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         if photoAttached {
             let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
             let apnsSub = ["alert":apnsSubSub,"category":"photo.category","mutable-content":1] as [String : Any]
-            apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString,"image-url":url2Share] as [String : Any]
+            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"image-url":url2Share!] as [String : Any]
         } else {
             let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
             let apnsSub = ["alert":apnsSubSub] as [String : Any]
-            apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString] as [String : Any]
+            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation] as [String : Any]
         }
 //        let apnsPayload = ["aps":apnsSub]
         if devices2Post2.count > 0 {
