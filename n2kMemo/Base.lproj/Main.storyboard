@@ -307,7 +307,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLI-f7-QE2">
-                                <rect key="frame" x="159" y="72" width="57" height="62"/>
+                                <rect key="frame" x="159" y="64" width="57" height="62"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Post"/>
                                 <connections>
@@ -341,24 +341,29 @@
                                     <constraint firstAttribute="width" constant="240" id="xfT-fM-Vh9"/>
                                 </constraints>
                             </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="I6m-pu-kP5">
+                                <rect key="frame" x="177.5" y="115" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="hFD-ja-oCC" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="5fs-bp-TcY"/>
                             <constraint firstItem="6h6-0z-ByE" firstAttribute="top" secondItem="ReY-xk-YZo" secondAttribute="bottom" constant="8" id="8uU-Xu-SyY"/>
                             <constraint firstItem="LNp-1J-HSh" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Fu6-CL-dC7"/>
-                            <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="kLI-f7-QE2" secondAttribute="bottom" constant="9" id="GWE-H7-Hdu"/>
+                            <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="kLI-f7-QE2" secondAttribute="bottom" constant="17" id="GWE-H7-Hdu"/>
                             <constraint firstItem="caW-mZ-IRW" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Q0h-jg-cle"/>
                             <constraint firstItem="LNp-1J-HSh" firstAttribute="centerY" secondItem="ppB-nX-ojS" secondAttribute="centerY" id="RzP-an-VJE"/>
                             <constraint firstItem="kLI-f7-QE2" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="SLf-2C-mZd"/>
                             <constraint firstItem="NAP-d2-xm1" firstAttribute="top" secondItem="She-hv-ZWZ" secondAttribute="bottom" constant="8" id="XGI-fv-yKK"/>
                             <constraint firstItem="hFD-ja-oCC" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="8" id="bza-KQ-96e"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="hFD-ja-oCC" secondAttribute="bottom" constant="8" id="c6T-YW-b3z"/>
+                            <constraint firstItem="I6m-pu-kP5" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="d7s-CP-n4x"/>
                             <constraint firstItem="6h6-0z-ByE" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="ecB-iE-QFN"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="g4r-RL-5by"/>
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="izl-Yi-mOS"/>
-                            <constraint firstItem="kLI-f7-QE2" firstAttribute="top" secondItem="LpY-av-2AR" secondAttribute="bottom" constant="8" id="mPg-xj-sxh"/>
+                            <constraint firstItem="kLI-f7-QE2" firstAttribute="top" secondItem="LpY-av-2AR" secondAttribute="bottom" id="mPg-xj-sxh"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="p26-lT-nZk"/>
+                            <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="I6m-pu-kP5" secondAttribute="bottom" constant="8" id="vo6-4s-sfO"/>
                             <constraint firstItem="caW-mZ-IRW" firstAttribute="top" secondItem="6h6-0z-ByE" secondAttribute="bottom" constant="8" id="wEQ-e2-ni6"/>
                             <constraint firstItem="ReY-xk-YZo" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="x74-Lj-pkd"/>
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="top" secondItem="3KJ-qa-u42" secondAttribute="bottom" constant="8" id="xco-AI-G5f"/>
@@ -378,6 +383,7 @@
                         <outlet property="postImage" destination="LNp-1J-HSh" id="658-P9-Ctm"/>
                         <outlet property="returnLabel" destination="She-hv-ZWZ" id="lbc-q4-7Zx"/>
                         <outlet property="titleTextField" destination="3KJ-qa-u42" id="Wq4-K8-blc"/>
+                        <outlet property="workingIndicator" destination="I6m-pu-kP5" id="JLD-Ab-qtI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bfY-AS-hF6" userLabel="First Responder" sceneMemberID="firstResponder"/>

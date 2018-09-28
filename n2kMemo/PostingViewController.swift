@@ -84,11 +84,13 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     @IBOutlet weak var liveButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var lineLabel: UILabel!
-    @IBOutlet weak var creditsLabel: UILabel!
     @IBOutlet weak var returnLabel: UIButton!
     @IBOutlet weak var pickerStations: UIPickerView!
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var postImage: UIImageView!
+    
+    @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
+    
     @IBAction func returnAction(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -185,6 +187,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     
     
     override func viewDidAppear(_ animated: Bool) {
+        workingIndicator.isHidden = true
         lineLabel.text = bahninfo
         self.hideKeyboardWhenTappedAround()
         let center = NotificationCenter.default
@@ -237,6 +240,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     var devices2Post2:[String] = []
     
     @IBAction func postAction(_ sender: UIButton) {
+        workingIndicator.isHidden = false
+        workingIndicator.startAnimating()
         if !timer.isValid {
             devices2Post2 = tokensRead
             scheduledTimerWithTimeInterval()
@@ -262,6 +267,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             postsMade += 1
         } else {
             timer.invalidate()
+            workingIndicator.stopAnimating()
+            workingIndicator.isHidden = true
         }
     }
     

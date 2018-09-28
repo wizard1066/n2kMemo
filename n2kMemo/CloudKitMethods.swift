@@ -400,7 +400,7 @@ class cloudDB: NSObject {
                     let peru = Notification.Name("disablePost")
                     NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                 }
-                self.tokenReference = CKRecord.Reference(record: record!, action: CKRecord_Reference_Action.none)
+//                self.tokenReference = CKRecord.Reference(record: record!, action: CKRecord_Reference_Action.none)
             }
         }
     }

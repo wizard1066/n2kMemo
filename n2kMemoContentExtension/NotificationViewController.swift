@@ -62,6 +62,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
                 print("error in accept share completion \(error)")
                 /// Send your user to wear that need to go in your app
                 
+                
             }
             let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
             container.add(acceptShareOperation)
