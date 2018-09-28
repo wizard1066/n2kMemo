@@ -54,3 +54,7 @@ var controller:UICloudSharingController!
 var url2Share: String?
 var image2D: UIImage!
 var lineZoneID: String!
+
+var stationDictionary:[String:[String]?] = [:]
+var lineOwner:[String: String] = [:]
+var tokenOwner:[String: String?] = [:]

@@ -43,6 +43,10 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func registerButton(_ sender: UIButton) {
         cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, linePassword: newPass)
+        let peru = Notification.Name("showPin")
+        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+//        let peru2 = Notification.Name("stationPin")
+//        NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
     }
     
     func confirmRegistration() {

@@ -103,6 +103,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         linesPicker.dataSource = self
         stationsPicker.delegate = self
         stationsPicker.dataSource = self
+        cloudDB.share.returnAllTokensWithOwners()
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -167,13 +168,23 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         pickerView.reloadAllComponents()
         if pickerView.tag == 0 {
             if linesRead.count > 0 && row < linesRead.count {
-                cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
-                lineSelected = linesRead[row]
+                    postingOK(lineName: linesRead[row])
+                    cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
             }
         } else {
             if stationsRead.count > 0 && row < stationsRead.count {
                 stationSelected = row
             }
+        }
+    }
+    
+    func postingOK(lineName:String) {
+        if ownerToken == tokenOwner[lineName] {
+            let peru = Notification.Name("enablePost")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+            } else {
+            let peru = Notification.Name("disablePost")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
         }
     }
     
@@ -217,12 +228,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             self.view.setNeedsDisplay()
         }
         
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showPosting))
-        swipeLeft.direction = .left
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showConfig))
-        swipeRight.direction = .right
-        self.view.addGestureRecognizer(swipeLeft)
-        self.view.addGestureRecognizer(swipeRight)
+//        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showPosting))
+//        swipeLeft.direction = .left
+//        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showConfig))
+//        swipeRight.direction = .right
+//        self.view.addGestureRecognizer(swipeLeft)
+//        self.view.addGestureRecognizer(swipeRight)
         
     }
     
@@ -258,12 +269,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if pinObserver2 != nil {
             center.removeObserver(pinObserver2)
         }
-        //        if pinObserver3 != nil {
-        //            center.removeObserver(pinObserver2)
-        //        }
-        //        if pinObserver4 != nil {
-        //            center.removeObserver(pinObserver2)
-        //        }
+        if pinObserver3 != nil {
+            center.removeObserver(pinObserver3)
+        }
+        if pinObserver4 != nil {
+            center.removeObserver(pinObserver4)
+        }
+        if pinObserver5 != nil {
+            center.removeObserver(pinObserver5)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -282,10 +296,9 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if segue.identifier == segueNames.configuration {
             let pVC = destination as? ConfigViewController
             print("config")
+            stationDictionary = [:]
         }
     }
-    
-    
 }
 
 
