@@ -88,7 +88,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     @IBOutlet weak var returnLabel: UIButton!
     @IBOutlet weak var pickerStations: UIPickerView!
     @IBOutlet weak var clientLabel: UILabel!
-    
+    @IBOutlet weak var postImage: UIImageView!
     @IBAction func returnAction(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
@@ -116,6 +116,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             DispatchQueue.main.async {
                 self.postButton.isEnabled = false
                 cloudDB.share.saveImage2Share(image2Save: image)
+                self.postImage.image = image
             }
         }
         picker.presentingViewController?.dismiss(animated: true, completion: {
@@ -148,6 +149,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
                 if let file2Save = UIImage(data: data) {
                     self.postButton.isEnabled = false
                     cloudDB.share.saveImage2Share(image2Save: file2Save)
+                    self.postImage.image = UIImage(data: data)
                 }
             }
         }

@@ -29,7 +29,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         let content = notification.request.content
         titleLabel.text = content.title
         subtitleLabel.text = content.subtitle
-        bodyLabel.text = content.body
+//        bodyLabel.text = content.body
         let userInfo = content.userInfo as! [String:Any]
         print("access \(userInfo)")
         if let urlString = userInfo["image-url"]{

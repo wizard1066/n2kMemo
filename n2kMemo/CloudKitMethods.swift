@@ -84,39 +84,13 @@ class cloudDB: NSObject {
             url2Share = share.url?.absoluteString
             let peru = Notification.Name("sharePin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            //                self.saveImage2Share(zone2U: zoneID)
-            
-            
-            
-            
-            //                let metadataOperation = CKFetchShareMetadataOperation.init(share: [share.url!])
-            //                metadataOperation.perShareMetadataBlock = {url, metadata, error in
-            //                    print("record completion \(url) \(metadata) \(error)")
-            //                    let acceptShareOperation = CKAcceptSharesOperation(shareMetadatas: [metadata!])
-            //                    acceptShareOperation.qualityOfService = .background
-            //                    acceptShareOperation.perShareCompletionBlock = {meta, share, error in
-            //                        print("meta \(meta) share \(share) error \(error)")
-            //                    }
-            //                    acceptShareOperation.acceptSharesCompletionBlock = {error in
-            //                        print("error in accept share completion \(error)")
-            //                        /// Send your user to wear that need to go in your app
-            //
-            //                    }
-            //                    CKContainer.default().add(acceptShareOperation)
-            //                    self.saveImage2Share(zone2U: zoneID)
-            //                }
-            //                metadataOperation.fetchShareMetadataCompletionBlock = { error in
-            //                    if error != nil {
-            //                        print("metadata error \(error!.localizedDescription)")
-            //                    }
-            //                }
-            //                CKContainer.default().add(metadataOperation)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+                self.updateLineURL(line2U: lineName, url2U: url2Share!)
+            }
             
             
         }
         cloudDB.share.privateDB.add(modifyOperation)
-        //        }
-        //        CKContainer.default().add(person2ShareWith)
     }
     
     public func saveImage2File(file2Save: UIImage)-> URL {
@@ -265,22 +239,50 @@ class cloudDB: NSObject {
     
     var tokenReference: CKRecord.Reference!
     
-    public func saveToken(token2Save: String, line2Save: CKRecord.Reference) {
+    public func saveToken(token2Save: String, line2Save: CKRecord.Reference?) {
         
         let customRecord = CKRecord(recordType: remoteRecords.devicesLogged)
         customRecord[remoteAttributes.deviceRegistered] = token2Save
         //        let rex2D = CKRecordID(recordName: line2Save)
         //        let token2D = CKReference(recordID: rex2D, action: .none)
-        customRecord[remoteAttributes.lineReference] = line2Save
+        if line2Save != nil {
+            customRecord[remoteAttributes.lineReference] = line2Save
+        }
         cloudDB.share.publicDB.save(customRecord, completionHandler: ({returnRecord, error in
             if error != nil {
-                
                 print("saveLine error \(error)")
             } else {
                 self.tokenReference = CKRecord.Reference(record: customRecord, action: CKRecord_Reference_Action.none)
             }
         }))
     }
+    
+    private func updateLineURL(line2U: String, url2U: String) {
+        let predicate = NSPredicate(format: remoteAttributes.lineName + " = %@", line2U)
+        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                let customRecord = records!.first
+                // Cannot change the name of a line once created
+                //                  customRecord![remoteAttributes.lineName] = lineName
+                customRecord![remoteAttributes.lineURL] = url2U
+                let operation = CKModifyRecordsOperation(recordsToSave: [customRecord!], recordIDsToDelete: nil)
+                operation.savePolicy = .changedKeys
+                operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                    if error != nil {
+                        print("modify error\(error!.localizedDescription)")
+                    } else {
+                        print("record Updated \(savedRecords)")
+                    }
+                }
+                CKContainer.default().publicCloudDatabase.add(operation)
+            }
+        }
+                
+    }
+    
     
     public func updateLine(lineName: String, stationNames:[String], linePassword:String) {
         //        let predicate = NSPredicate(value: true)
@@ -299,6 +301,9 @@ class cloudDB: NSObject {
                     //                  customRecord![remoteAttributes.lineName] = lineName
                     customRecord![remoteAttributes.linePassword] = linePassword
                     customRecord![remoteAttributes.stationNames] = stationNames
+                    if url2Share != nil {
+                        customRecord![remoteAttributes.lineURL] = url2Share
+                    }
                     let operation = CKModifyRecordsOperation(recordsToSave: [customRecord!], recordIDsToDelete: nil)
                     operation.savePolicy = .changedKeys
                     operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
@@ -400,23 +405,23 @@ class cloudDB: NSObject {
         }
     }
     
-    public func setToken(token2Set: String) {
-        let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Set)
-        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
-        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                if records?.count == 0 {
-                    // do nothing
-                } else {
-                    self.tokenReference = CKRecord.Reference(record: (records?.first!)!, action: CKRecord_Reference_Action.none)
-                }
-            }
-        }
-    }
+//    public func setToken(token2Set: String) {
+//        let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Set)
+//        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
+//        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+//            if error != nil {
+//                print(error!.localizedDescription)
+//            } else {
+//                if records?.count == 0 {
+////                    self.saveToken(token2Save: token2Save, line2Save: lineLink)
+//                } else {
+//                    self.tokenReference = CKRecord.Reference(record: (records?.first!)!, action: CKRecord_Reference_Action.none)
+//                }
+//            }
+//        }
+//    }
     
-    public func logToken(token2Save: String, lineLink: CKRecord.Reference) {
+    public func logToken(token2Save: String, lineLink: CKRecord.Reference?) {
         let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Save)
         let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in

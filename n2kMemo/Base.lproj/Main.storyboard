@@ -13,7 +13,7 @@
         <!--Config View Controller-->
         <scene sceneID="d3q-pp-xBn">
             <objects>
-                <viewController storyboardIdentifier="configuration" id="0Vh-s0-xvt" customClass="ConfigViewController" customModule="PushHuliPizza" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="configuration" id="0Vh-s0-xvt" customClass="ConfigViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5IL-V9-A5g"/>
                         <viewControllerLayoutGuide type="bottom" id="27p-4G-VBp"/>
@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="042-Py-Bao">
-                                <rect key="frame" x="67.5" y="158" width="240" height="30"/>
+                                <rect key="frame" x="67.5" y="180" width="240" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="gTO-gh-B28"/>
                                 </constraints>
@@ -62,7 +62,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vdI-VJ-p3q">
-                                <rect key="frame" x="67.5" y="120" width="240" height="30"/>
+                                <rect key="frame" x="67.5" y="142" width="240" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="SGU-3T-VCS"/>
                                     <constraint firstAttribute="height" constant="30" id="cJ6-QA-OuZ"/>
@@ -76,8 +76,8 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KI-La-fkq">
-                                <rect key="frame" x="157.5" y="72" width="60" height="40"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="20"/>
+                                <rect key="frame" x="133.5" y="72" width="108" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Register"/>
                                 <connections>
                                     <action selector="registerButton:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="b3R-lk-10r"/>
@@ -95,38 +95,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zwV-o3-9GQ">
-                                <rect key="frame" x="172.5" y="413.5" width="30" height="34"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Bold" family="Avenir Next Condensed" pointSize="16"/>
-                                <state key="normal" title="Put"/>
-                                <connections>
-                                    <action selector="fetch:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="h5p-zr-wYr"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bcO-af-ic1">
-                                <rect key="frame" x="67.5" y="455.5" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="AB8-2j-mUb"/>
-                                    <constraint firstAttribute="width" constant="240" id="NE6-Zk-KuB"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LoW-en-mjZ">
-                                <rect key="frame" x="172.5" y="645.5" width="30" height="34"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Bold" family="Avenir Next Condensed" pointSize="16"/>
-                                <state key="normal" title="Get"/>
-                                <connections>
-                                    <action selector="get:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="d17-jc-jvf"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mif-II-dLp">
-                                <rect key="frame" x="-38.5" y="170.5" width="480" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="480" id="RtS-U4-Ixj"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -137,28 +105,18 @@
                             <constraint firstItem="042-Py-Bao" firstAttribute="top" secondItem="vdI-VJ-p3q" secondAttribute="bottom" constant="8" id="I20-Vt-Cgg"/>
                             <constraint firstItem="QzM-i2-2jM" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="KNU-Ib-P72"/>
                             <constraint firstItem="avr-6n-BZ5" firstAttribute="top" secondItem="8oG-nk-uvb" secondAttribute="bottom" constant="8" id="L3a-gd-GbI"/>
-                            <constraint firstItem="Mif-II-dLp" firstAttribute="top" secondItem="bcO-af-ic1" secondAttribute="bottom" constant="-413" id="LdN-uw-SBo"/>
-                            <constraint firstItem="bcO-af-ic1" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="Lg5-pr-BrO"/>
                             <constraint firstItem="042-Py-Bao" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="Nal-0u-ZIG"/>
                             <constraint firstItem="27p-4G-VBp" firstAttribute="top" secondItem="avr-6n-BZ5" secondAttribute="bottom" constant="8" id="Pbb-bW-Qlo"/>
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="TOc-Zc-TXB"/>
-                            <constraint firstItem="zwV-o3-9GQ" firstAttribute="top" secondItem="uFR-IM-pb6" secondAttribute="bottom" constant="16" id="ZT0-KT-lGP"/>
-                            <constraint firstItem="Mif-II-dLp" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" constant="14" id="Zo3-su-sfO"/>
                             <constraint firstItem="uFR-IM-pb6" firstAttribute="centerY" secondItem="aol-Xf-HN3" secondAttribute="centerY" id="aMV-f2-IEq"/>
                             <constraint firstItem="3KI-La-fkq" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="cUN-O9-eaf"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="nJu-no-QQj"/>
-                            <constraint firstItem="LoW-en-mjZ" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="oY0-Kh-yTd"/>
-                            <constraint firstItem="bcO-af-ic1" firstAttribute="top" secondItem="zwV-o3-9GQ" secondAttribute="bottom" constant="8" id="qTw-9L-mlU"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="top" secondItem="3KI-La-fkq" secondAttribute="bottom" constant="8" id="tR9-xQ-MOJ"/>
-                            <constraint firstItem="zwV-o3-9GQ" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="xtQ-AQ-gmz"/>
-                            <constraint firstItem="LoW-en-mjZ" firstAttribute="top" secondItem="Mif-II-dLp" secondAttribute="bottom" constant="445" id="yzx-Xe-ZFv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7kq-dm-znA"/>
                     </view>
                     <navigationItem key="navigationItem" id="Zr4-RB-ecY"/>
                     <connections>
-                        <outlet property="getText" destination="Mif-II-dLp" id="uEZ-Ra-44I"/>
-                        <outlet property="imageFetched" destination="bcO-af-ic1" id="DCI-yN-tty"/>
                         <outlet property="lineText" destination="vdI-VJ-p3q" id="hBV-fC-1WI"/>
                         <outlet property="passText" destination="042-Py-Bao" id="OYe-Wu-3U6"/>
                         <outlet property="registerButton" destination="3KI-La-fkq" id="7zp-t7-nFc"/>
@@ -174,7 +132,7 @@
         <!--View Controller-->
         <scene sceneID="7sA-iJ-WVx">
             <objects>
-                <viewController storyboardIdentifier="principle" id="CdQ-GP-5qa" customClass="ViewController" customModule="PushHuliPizza" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="principle" id="CdQ-GP-5qa" customClass="ViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HfF-Ax-XaG"/>
                         <viewControllerLayoutGuide type="bottom" id="mrt-pl-6VE"/>
@@ -278,7 +236,7 @@
         <!--Posting View Controller-->
         <scene sceneID="gBK-Hl-IXT">
             <objects>
-                <viewController storyboardIdentifier="posting" id="sTY-l2-MkH" customClass="PostingViewController" customModule="PushHuliPizza" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="posting" id="sTY-l2-MkH" customClass="PostingViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LpY-av-2AR"/>
                         <viewControllerLayoutGuide type="bottom" id="NAP-d2-xm1"/>
@@ -287,11 +245,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ReY-xk-YZo">
-                                <rect key="frame" x="154.5" y="431" width="66" height="110"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="ReY-xk-YZo">
+                                <rect key="frame" x="111" y="413.5" width="153" height="34"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ayb-E1-pJI">
-                                        <rect key="frame" x="18" y="0.0" width="30" height="34"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="34"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                         <state key="normal" title="Live"/>
                                         <connections>
@@ -299,7 +257,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1P-ha-e5c">
-                                        <rect key="frame" x="13" y="38" width="40" height="34"/>
+                                        <rect key="frame" x="54" y="0.0" width="40" height="34"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                         <state key="normal" title="Library"/>
                                         <connections>
@@ -307,19 +265,20 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2D2-Tg-Lnc">
-                                        <rect key="frame" x="0.0" y="76" width="66" height="34"/>
+                                        <rect key="frame" x="118" y="0.0" width="35" height="34"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
-                                        <state key="normal" title="DropNDrag"/>
+                                        <state key="normal" title="Cloud"/>
                                         <connections>
                                             <action selector="dropNdragButton:" destination="sTY-l2-MkH" eventType="touchUpInside" id="ohD-mc-ftg"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="InfoBahn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caW-mZ-IRW">
-                                <rect key="frame" x="162" y="565" width="51.5" height="22"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="16"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="InfoBahn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caW-mZ-IRW">
+                                <rect key="frame" x="153" y="559.5" width="69.5" height="27.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="20"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clients" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFD-ja-oCC">
@@ -328,9 +287,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="3Z2-iA-dFQ">
-                                <rect key="frame" x="168.5" y="595" width="38.5" height="22"/>
-                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="She-hv-ZWZ">
                                 <rect key="frame" x="168.5" y="625" width="38" height="34"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="16"/>
@@ -340,7 +296,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="flN-Bg-NMU">
-                                <rect key="frame" x="67.5" y="155" width="240" height="96"/>
+                                <rect key="frame" x="67.5" y="181" width="240" height="96"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="DZQ-PN-hcZ"/>
@@ -351,15 +307,15 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLI-f7-QE2">
-                                <rect key="frame" x="172.5" y="72" width="30" height="37"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="18"/>
+                                <rect key="frame" x="159" y="72" width="57" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Post"/>
                                 <connections>
                                     <action selector="postAction:" destination="sTY-l2-MkH" eventType="touchUpInside" id="tQq-SH-3ow"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3KJ-qa-u42">
-                                <rect key="frame" x="67.5" y="117" width="240" height="30"/>
+                                <rect key="frame" x="67.5" y="143" width="240" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="fBZ-jp-5uh"/>
                                 </constraints>
@@ -368,37 +324,43 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6h6-0z-ByE">
-                                <rect key="frame" x="67.5" y="253.5" width="240" height="160"/>
+                                <rect key="frame" x="67.5" y="455.5" width="240" height="96"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="160" id="QcZ-vz-QkU"/>
-                                    <constraint firstAttribute="width" constant="240" id="WPU-FN-fpA"/>
+                                    <constraint firstAttribute="height" constant="96" id="5sg-Z9-bh6"/>
+                                    <constraint firstAttribute="width" constant="240" id="Uyb-tN-tK4"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="sTY-l2-MkH" id="8EP-eB-Dt0"/>
                                     <outlet property="delegate" destination="sTY-l2-MkH" id="JGu-pi-AI4"/>
                                 </connections>
                             </pickerView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LNp-1J-HSh">
+                                <rect key="frame" x="67.5" y="285.5" width="240" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="96" id="vDX-e6-k25"/>
+                                    <constraint firstAttribute="width" constant="240" id="xfT-fM-Vh9"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="hFD-ja-oCC" secondAttribute="bottom" constant="8" id="2xx-ar-Dy9"/>
-                            <constraint firstItem="hFD-ja-oCC" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="8" id="56P-KZ-dCK"/>
                             <constraint firstItem="hFD-ja-oCC" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="5fs-bp-TcY"/>
-                            <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="3Z2-iA-dFQ" secondAttribute="bottom" constant="8" id="9oL-2q-9e7"/>
-                            <constraint firstItem="6h6-0z-ByE" firstAttribute="centerY" secondItem="ppB-nX-ojS" secondAttribute="centerY" id="C26-Le-zjc"/>
-                            <constraint firstItem="3Z2-iA-dFQ" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="8" id="DJ7-gV-fAR"/>
-                            <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="kLI-f7-QE2" secondAttribute="bottom" constant="8" id="GWE-H7-Hdu"/>
-                            <constraint firstItem="6h6-0z-ByE" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="ID1-og-GPS"/>
-                            <constraint firstItem="NAP-d2-xm1" firstAttribute="top" secondItem="She-hv-ZWZ" secondAttribute="bottom" constant="8" id="OhD-ly-V7R"/>
-                            <constraint firstItem="3Z2-iA-dFQ" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Qba-ZL-gv8"/>
+                            <constraint firstItem="6h6-0z-ByE" firstAttribute="top" secondItem="ReY-xk-YZo" secondAttribute="bottom" constant="8" id="8uU-Xu-SyY"/>
+                            <constraint firstItem="LNp-1J-HSh" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Fu6-CL-dC7"/>
+                            <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="kLI-f7-QE2" secondAttribute="bottom" constant="9" id="GWE-H7-Hdu"/>
+                            <constraint firstItem="caW-mZ-IRW" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Q0h-jg-cle"/>
+                            <constraint firstItem="LNp-1J-HSh" firstAttribute="centerY" secondItem="ppB-nX-ojS" secondAttribute="centerY" id="RzP-an-VJE"/>
                             <constraint firstItem="kLI-f7-QE2" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="SLf-2C-mZd"/>
-                            <constraint firstItem="ReY-xk-YZo" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="VFf-DI-NEf"/>
+                            <constraint firstItem="NAP-d2-xm1" firstAttribute="top" secondItem="She-hv-ZWZ" secondAttribute="bottom" constant="8" id="XGI-fv-yKK"/>
+                            <constraint firstItem="hFD-ja-oCC" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="8" id="bza-KQ-96e"/>
+                            <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="hFD-ja-oCC" secondAttribute="bottom" constant="8" id="c6T-YW-b3z"/>
+                            <constraint firstItem="6h6-0z-ByE" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="ecB-iE-QFN"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="g4r-RL-5by"/>
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="izl-Yi-mOS"/>
                             <constraint firstItem="kLI-f7-QE2" firstAttribute="top" secondItem="LpY-av-2AR" secondAttribute="bottom" constant="8" id="mPg-xj-sxh"/>
-                            <constraint firstItem="caW-mZ-IRW" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="nJU-fT-SSI"/>
-                            <constraint firstItem="caW-mZ-IRW" firstAttribute="top" secondItem="ReY-xk-YZo" secondAttribute="bottom" constant="24" id="ofr-EW-dHs"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="p26-lT-nZk"/>
+                            <constraint firstItem="caW-mZ-IRW" firstAttribute="top" secondItem="6h6-0z-ByE" secondAttribute="bottom" constant="8" id="wEQ-e2-ni6"/>
+                            <constraint firstItem="ReY-xk-YZo" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="x74-Lj-pkd"/>
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="top" secondItem="3KJ-qa-u42" secondAttribute="bottom" constant="8" id="xco-AI-G5f"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="aFf-C0-Ouu"/>
@@ -413,6 +375,7 @@
                         <outlet property="liveButton" destination="Ayb-E1-pJI" id="JD0-1Q-eRp"/>
                         <outlet property="pickerStations" destination="6h6-0z-ByE" id="isp-tD-emV"/>
                         <outlet property="postButton" destination="kLI-f7-QE2" id="uh4-8z-clb"/>
+                        <outlet property="postImage" destination="LNp-1J-HSh" id="658-P9-Ctm"/>
                         <outlet property="returnLabel" destination="She-hv-ZWZ" id="lbc-q4-7Zx"/>
                         <outlet property="titleTextField" destination="3KJ-qa-u42" id="Wq4-K8-blc"/>
                     </connections>

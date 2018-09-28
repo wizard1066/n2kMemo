@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Successful registration. Token is:")
         print(tokenString(deviceToken))
         ownerToken = tokenString(deviceToken)
-        cloudDB.share.setToken(token2Set: ownerToken)
+        cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil)
         //        let peru = Notification.Name("refresh")
         //        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
     }
