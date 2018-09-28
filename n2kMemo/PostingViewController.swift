@@ -10,6 +10,7 @@ import UIKit
 import MobileCoreServices
 
 var testURL = "https://www.dropbox.com/s/ztnaguussrcraxf/Marley.PNG?dl=1"
+var photoAttached: Bool = false
 
 class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UITextViewDelegate {
     
@@ -89,6 +90,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var postImage: UIImageView!
     
+    @IBOutlet weak var clientsRegistered: UILabel!
     @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
     
     @IBAction func returnAction(_ sender: UIButton) {
@@ -116,6 +118,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         let imageOriginalInfo = UIImagePickerController.InfoKey.originalImage
         if let image = (info[imageEditedInfo] as? UIImage ?? info[imageOriginalInfo] as? UIImage) {
             DispatchQueue.main.async {
+                photoAttached = true
                 self.postButton.isEnabled = false
                 cloudDB.share.saveImage2Share(image2Save: image)
                 self.postImage.image = image
@@ -149,6 +152,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             
             DispatchQueue.main.async() {
                 if let file2Save = UIImage(data: data) {
+                    photoAttached = true
                     self.postButton.isEnabled = false
                     cloudDB.share.saveImage2Share(image2Save: file2Save)
                     self.postImage.image = UIImage(data: data)
@@ -166,27 +170,25 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     var tokenCheque: Int?
     private var pinObserver: NSObjectProtocol!
     private var pinObserver2: NSObjectProtocol!
+    private var pinObserver3: NSObjectProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        postsMade = 0
+        
+        
+        photoAttached = false
         titleTextField.delegate = self
         bodyText.delegate = self
-        if tokenCheque == nil {
-            cloudDB.share.returnAllTokens()
-            tokenCheque = tokensRead.count
-            if hofinfo != nil {
-                self.pickerStations.selectRow(hofinfo, inComponent: 0, animated: true)
-                rowSelected = hofinfo
-                hofString = stationsRead[hofinfo]
-            }
-        }
-        clientLabel.text = "\(tokensRead.count)"
+        
+        
         // Do any additional setup after loading the view.
         
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
         workingIndicator.isHidden = true
         lineLabel.text = bahninfo
         self.hideKeyboardWhenTappedAround()
@@ -200,6 +202,21 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor2), object: nil, queue: queue) { (notification) in
             self.postButton.isEnabled = true
         }
+        let alert2Monitor3 = "devices2Post"
+        pinObserver3 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor3), object: nil, queue: queue) { (notification) in
+//            self.clientLabel.text = "\(tokensRead.count)"
+            self.clientsRegistered.text = "\(tokensRead.count)"
+            print("ETF \(tokensRead.count) \(tokensRead)")
+        }
+        if tokenCheque == nil {
+            cloudDB.share.returnAllTokensWithOutOwners()
+            tokenCheque = tokensRead.count
+            if hofinfo != nil {
+                self.pickerStations.selectRow(hofinfo, inComponent: 0, animated: true)
+                rowSelected = hofinfo
+                hofString = stationsRead[hofinfo]
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -209,6 +226,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         }
         if pinObserver2 != nil {
             center.removeObserver(pinObserver2)
+        }
+        if pinObserver3 != nil {
+            center.removeObserver(pinObserver3)
         }
     }
     
@@ -248,7 +268,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         }
     }
     
-    var postsMade = 0
+    var postsMade:Int!
     
     func scheduledTimerWithTimeInterval(){
         
@@ -257,14 +277,21 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     @objc func updateCounting(){
-        let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-        let apnsSub = ["alert":apnsSubSub,"category":"pizza.category","mutable-content":1] as [String : Any]
-        let apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString,"image-url":url2Share] as [String : Any]
+        var apnsPayload:[String:Any]!
+        if photoAttached {
+            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
+            let apnsSub = ["alert":apnsSubSub,"category":"photo.category","mutable-content":1] as [String : Any]
+            apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString,"image-url":url2Share] as [String : Any]
+        } else {
+            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
+            let apnsSub = ["alert":apnsSubSub] as [String : Any]
+            apnsPayload = ["aps":apnsSub,"line":bahninfo,"station":hofString] as [String : Any]
+        }
 //        let apnsPayload = ["aps":apnsSub]
         if devices2Post2.count > 0 {
             buildPost(token2U: devices2Post2.removeLast(), apns2S: apnsPayload)
-            clientLabel.text = "\(postsMade)"
             postsMade += 1
+            clientLabel.text = "\(postsMade!)"
         } else {
             timer.invalidate()
             workingIndicator.stopAnimating()

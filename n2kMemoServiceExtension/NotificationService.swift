@@ -37,12 +37,12 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        if bestAttemptContent?.categoryIdentifier == "pizza.category" {
+        if bestAttemptContent?.categoryIdentifier == "photo.category" {
             bestAttemptContent = changePizzaNotificationContent(content: request.content)
         }
         if let bestAttemptContent = bestAttemptContent {
             // Modify the notification content here...
-            bestAttemptContent.title = "\(bestAttemptContent.title) -push Pizza"
+            bestAttemptContent.title = "\(bestAttemptContent.title) -push Photo"
             
             contentHandler(bestAttemptContent)
         }

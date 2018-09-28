@@ -19,7 +19,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     @IBOutlet weak var postingButton: UIButton!
     @IBOutlet weak var configButton: UIButton!
     
-    
+
     
     //    var stationsRegistered:[String] = ["English","French","Italian","German"]
     

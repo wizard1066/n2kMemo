@@ -477,8 +477,8 @@ class cloudDB: NSObject {
     
     
     
-    public func returnAllTokens() {
-        let predicate = NSPredicate(value: true)
+    public func returnAllTokensWithOutOwners() {
+        let predicate = NSPredicate(format: "%K == %@", remoteAttributes.lineOwner, "")
         let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
@@ -486,9 +486,12 @@ class cloudDB: NSObject {
             } else {
                 for record in records! {
                     tokensRead.append(record[remoteAttributes.deviceRegistered]!)
-                    tokenOwner[record.recordID.recordName] = record[remoteAttributes.deviceRegistered]!
+//                    tokenOwner[record.recordID.recordName] = record[remoteAttributes.deviceRegistered]!
                 }
                 print("tokens read \(tokensRead)")
+                
+                let peru = Notification.Name("devices2Post")
+                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             }
         }
     }
