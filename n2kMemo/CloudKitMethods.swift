@@ -306,13 +306,10 @@ class cloudDB: NSObject {
             if error != nil {
                 print(error!.localizedDescription)
             } else {
-                
                 if records?.count == 0 {
                     self.saveLine(lineName: lineName, stationNames: stationNames, linePassword: linePassword)
                 } else {
                     let customRecord = records!.first
-                    // Cannot change the name of a line once created
-                    //                  customRecord![remoteAttributes.lineName] = lineName
                     customRecord![remoteAttributes.linePassword] = linePassword
                     customRecord![remoteAttributes.stationNames] = stationNames
                     if url2Share != nil {
@@ -328,10 +325,11 @@ class cloudDB: NSObject {
                         }
                     }
                     CKContainer.default().publicCloudDatabase.add(operation)
+                    self.updateTokenOwner(line2U: lineName, token2U:ownerToken, recordID:(records!.first?.recordID)!)
                 }
+                
             }
         }
-        
     }
     
     public func returnAllLines() {
@@ -347,7 +345,9 @@ class cloudDB: NSObject {
                     let point = record[remoteAttributes.lineOwner] as? CKRecord.Reference
                     
                     lineOwner[record[remoteAttributes.lineName]!] = point?.recordID.recordName
-                    url2ShareDictionary[record[remoteAttributes.lineName]!] = record[remoteAttributes.lineURL]!
+                    if url2ShareDictionary[record[remoteAttributes.lineName]!] != nil {
+                        url2ShareDictionary[record[remoteAttributes.lineName]!] = record[remoteAttributes.lineURL]!
+                    }
                 }
                 let peru = Notification.Name("showPin")
                 NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
@@ -388,7 +388,8 @@ class cloudDB: NSObject {
                         NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                         stationDictionary[line2Seek] = stationsRead
                     }
-                    self.returnTokenWithID(record: records!.first!.object(forKey: remoteAttributes.lineOwner) as? CKRecord.Reference)
+                    self.returnTokensWithOwner(token2U: ownerToken, line2U: line2Seek)
+//                    self.returnTokenWithID(record: records!.first!.object(forKey: remoteAttributes.lineOwner) as? CKRecord.Reference)
                 }
             }
         }
@@ -416,6 +417,26 @@ class cloudDB: NSObject {
         }
     }
     
+    private func returnTokensWithOwner(token2U: String, line2U: String) {
+        let rightToken = NSPredicate(format: "%K = %@", remoteAttributes.deviceRegistered, token2U)
+        let rightLine = NSPredicate(format: "%K = %@", remoteAttributes.lineOwner, line2U)
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [rightToken, rightLine])
+        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+                return
+            }
+            if records!.count > 0 {
+                let peru = Notification.Name("enablePost")
+                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+            } else {
+                let peru = Notification.Name("disablePost")
+                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+            }
+        }
+    }
+    
     public func returnTokenWithID(record: CKRecord.Reference?) {
         if record == nil { return }
         cloudDB.share.publicDB.fetch(withRecordID: (record?.recordID)!) { (record, error) in
@@ -435,21 +456,33 @@ class cloudDB: NSObject {
         }
     }
     
-//    public func setToken(token2Set: String) {
-//        let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Set)
-//        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
-//        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
-//            if error != nil {
-//                print(error!.localizedDescription)
-//            } else {
-//                if records?.count == 0 {
-////                    self.saveToken(token2Save: token2Save, line2Save: lineLink)
-//                } else {
-//                    self.tokenReference = CKRecord.Reference(record: (records?.first!)!, action: CKRecord_Reference_Action.none)
-//                }
-//            }
-//        }
-//    }
+    public func updateTokenOwner(line2U: String, token2U:String, recordID: CKRecord.ID) {
+        let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2U)
+        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (returnedRecords, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                if returnedRecords?.count == 0 {
+//                    self.saveToken(token2Save: token2Save, line2Save: lineLink)
+                } else {
+                    let returnedRecord = returnedRecords!.first
+                    returnedRecord![remoteAttributes.lineReference] = CKRecord.Reference(recordID: recordID, action: .none)
+                    returnedRecord![remoteAttributes.lineOwner] = line2U as CKRecordValue
+                    let operation = CKModifyRecordsOperation(recordsToSave: [returnedRecord!], recordIDsToDelete: nil)
+                    operation.savePolicy = .changedKeys
+                    operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                        if error != nil {
+                            print("modify error\(error!.localizedDescription)")
+                        } else {
+                            print("record Updated \(savedRecords)")
+                        }
+                    }
+                    CKContainer.default().publicCloudDatabase.add(operation)
+                }
+            }
+        }
+    }
     
     public func logToken(token2Save: String, lineLink: CKRecord.Reference?) {
         let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Save)
