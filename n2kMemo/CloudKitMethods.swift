@@ -326,6 +326,7 @@ class cloudDB: NSObject {
                     }
                     CKContainer.default().publicCloudDatabase.add(operation)
                     self.updateTokenOwner(line2U: lineName, token2U:ownerToken, recordID:(records!.first?.recordID)!)
+                    tokenOwner[lineName] = ownerToken
                 }
                 
             }
@@ -534,6 +535,9 @@ class cloudDB: NSObject {
                 for record in records! {
                     tokensRead.append(record[remoteAttributes.deviceRegistered]!)
 //                    tokenOwner[record.recordID.recordName] = record[remoteAttributes.deviceRegistered]!
+                    let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
+                    let target = record[remoteAttributes.deviceRegistered]! as? String
+                    tokenOwner[fix!] = target
                 }
                 print("tokens read \(tokensRead)")
                 
@@ -550,12 +554,12 @@ class cloudDB: NSObject {
             if error != nil {
                 print(error!.localizedDescription)
             } else {
-                print("records.count \(records!.count)")
+                print("returnAllTokensWithOwners \(records!.count)")
                 for record in records! {
                     tokensRead.append(record[remoteAttributes.deviceRegistered]!)
                     let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
                     let target = record[remoteAttributes.deviceRegistered]! as? String
-                    tokenOwner[fix!] = target
+                    tokenOwner[target!] = fix
                     print("tokens read \(tokensRead) \(fix)")
                 }
                 
@@ -563,6 +567,39 @@ class cloudDB: NSObject {
         }
     }
     
+    public func cleanUpImages(zone2U:String) {
+        var records2Delete:[CKRecord.ID] = []
+        let zone2D = CKRecordZone(zoneName: zone2U)
+        // -1 to test tomorrow!!
+        
+        let sevenDaysBefore = Date.changeDaysBy(days: -1)
+        print("sevenDaysBefore \(sevenDaysBefore)")
+        let predicate = NSPredicate(format: "creationDate < %@", sevenDaysBefore as CVarArg)
+        
+        let query = CKQuery(recordType: remoteRecords.notificationMedia, predicate: predicate)
+        query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+        
+        cloudDB.share.privateDB.perform(query, inZoneWith: zone2D.zoneID) { (records, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                for record in records! {
+                    records2Delete.append(record.recordID)
+                }
+                print("answers \(records2Delete)")
+            }
+        }
+    }
+    
+}
+
+extension Date {
+    static func changeDaysBy(days : Int) -> Date {
+        let currentDate = Date()
+        var dateComponents = DateComponents()
+        dateComponents.day = days
+        return Calendar.current.date(byAdding: dateComponents, to: currentDate)!
+    }
 }
 
 extension UIImage {

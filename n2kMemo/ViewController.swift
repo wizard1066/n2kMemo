@@ -83,16 +83,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        //        channelURL.isHidden = true
-        //        channelPass.isHidden = true
-        //        channelUUID.alpha = 0.0
-        
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        //        if !icloudStatus()! {
-        //            // warn user needs cloudKit
-        //        }
         let defaults = UserDefaults.standard
         lineName = defaults.string(forKey: remoteAttributes.lineName)
         let linePass = defaults.string(forKey: remoteAttributes.linePassword)
@@ -105,6 +95,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         stationsPicker.delegate = self
         stationsPicker.dataSource = self
         cloudDB.share.returnAllTokensWithOwners()
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -184,7 +175,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     }
     
     func postingOK(lineName:String) {
-        if ownerToken == tokenOwner[lineName] {
+        if lineName == tokenOwner[ownerToken] {
             let peru = Notification.Name("enablePost")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             } else {
@@ -198,6 +189,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     private var pinObserver3: NSObjectProtocol!
     private var pinObserver4: NSObjectProtocol!
     private var pinObserver5: NSObjectProtocol!
+    private var pinObserver6: NSObjectProtocol!
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -228,9 +220,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             self.postingButton.isEnabled = false
         }
         let alert2Monitor5 = "refresh"
-        pinObserver5 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
+        pinObserver5 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor5), object: nil, queue: queue) { (notification) in
             self.view.setNeedsLayout()
             self.view.setNeedsDisplay()
+        }
+        let alert2Monitor6 = "hidePostingNConfig"
+        pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
+            self.postingButton.isEnabled = false
+            self.configButton.isEnabled = false
         }
         
 //        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showPosting))
@@ -239,7 +236,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //        swipeRight.direction = .right
 //        self.view.addGestureRecognizer(swipeLeft)
 //        self.view.addGestureRecognizer(swipeRight)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.pickerAuto {
                 self.linesPicker.selectRow(0, inComponent: 0, animated: true)
                 self.pickerView(self.linesPicker, didSelectRow:0, inComponent: 0)

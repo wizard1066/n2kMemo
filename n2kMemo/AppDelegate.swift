@@ -120,7 +120,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let peru2 = Notification.Name("showPin")
             NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
             cloudDB.share.logToken(token2Save: ownerToken, lineLink: line2Link)
-            
+            let peru3 = Notification.Name("hidePostingNConfig")
+            NotificationCenter.default.post(name: peru3, object: nil, userInfo: nil)
         }
         CKContainer.default().sharedCloudDatabase.add(op)
     }

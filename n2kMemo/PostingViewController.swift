@@ -107,6 +107,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     @IBAction func liveButton(_ sender: UIButton) {
+        postButton.isEnabled = false
         let picker = UIImagePickerController()
         picker.sourceType = .camera
         picker.mediaTypes = [kUTTypeImage as String]
@@ -123,6 +124,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        postButton.isEnabled = false
         let imageEditedInfo = UIImagePickerController.InfoKey.editedImage
         let imageOriginalInfo = UIImagePickerController.InfoKey.originalImage
         if let image = (info[imageEditedInfo] as? UIImage ?? info[imageOriginalInfo] as? UIImage) {
@@ -139,6 +141,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     @IBAction func libraryButton(_ sender: Any) {
+        postButton.isEnabled = false
         let picker = UIImagePickerController()
         picker.sourceType = .photoLibrary
         picker.mediaTypes = [kUTTypeImage as String]
@@ -181,23 +184,29 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     private var pinObserver2: NSObjectProtocol!
     private var pinObserver3: NSObjectProtocol!
     
+    @objc func deleteAttachment() {
+        if postButton.isEnabled {
+            photoAttached = false
+            postImage.image = nil
+            
+        }
+    }
+    
+    var swipeLeft: UISwipeGestureRecognizer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         postsMade = 0
-        
-        
         photoAttached = false
         titleTextField.delegate = self
         bodyText.delegate = self
-        
-        
-        // Do any additional setup after loading the view.
-        
+        swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(PostingViewController.deleteAttachment))
+        swipeLeft.direction = .left
+        self.view.addGestureRecognizer(swipeLeft)
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
-        
         workingIndicator.isHidden = true
 //        lineLabel.text = bahninfo
         lineLabel.text = selectedLine
@@ -277,6 +286,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             devices2Post2 = tokensRead
             scheduledTimerWithTimeInterval()
         }
+        cloudDB.share.cleanUpImages(zone2U: selectedLine)
     }
     
     var postsMade:Int!
