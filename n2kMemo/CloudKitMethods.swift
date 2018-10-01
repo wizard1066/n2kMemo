@@ -93,6 +93,18 @@ class cloudDB: NSObject {
         cloudDB.share.privateDB.add(modifyOperation)
     }
     
+    func reduceImage(inImage:UIImage?) -> UIImage {
+        var outImage: UIImage!
+        if inImage != nil {
+            outImage = inImage?.resize(size: CGSize(width: 1080, height: 1920))
+//            image2D = UIImageJPEGRepresentation(newImage!, 1.0)
+        }
+//        else {
+//            image2D = UIImageJPEGRepresentation(UIImage(named: "noun_1348715_cc")!, 1.0)
+//        }
+        return outImage
+    }
+    
     public func saveImage2File(file2Save: UIImage)-> URL {
         let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("image2Post")
         let data2Save = file2Save.pngData()
@@ -102,6 +114,7 @@ class cloudDB: NSObject {
     
     
     public func saveImage2Share(image2Save: UIImage) {
+//        let sizedImage = reduceImage(inImage: image2Save)
         let zone2D = CKRecordZone(zoneName: linesRead[0])
         let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
 //        let fileURL = Bundle.main.bundleURL.appendingPathComponent("Marley.png")
@@ -334,6 +347,7 @@ class cloudDB: NSObject {
                     let point = record[remoteAttributes.lineOwner] as? CKRecord.Reference
                     
                     lineOwner[record[remoteAttributes.lineName]!] = point?.recordID.recordName
+                    url2ShareDictionary[record[remoteAttributes.lineName]!] = record[remoteAttributes.lineURL]!
                 }
                 let peru = Notification.Name("showPin")
                 NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
@@ -516,6 +530,34 @@ class cloudDB: NSObject {
         }
     }
     
+}
+
+extension UIImage {
+    func resize(width: CGFloat) -> UIImage {
+        let height = (width/self.size.width)*self.size.height
+        return self.resize(size: CGSize(width: width, height: height))
+    }
+    
+    func resize(height: CGFloat) -> UIImage {
+        let width = (height/self.size.height)*self.size.width
+        return self.resize(size: CGSize(width: width, height: height))
+    }
+    
+    func resize(size: CGSize) -> UIImage {
+        let widthRatio  = size.width/self.size.width
+        let heightRatio = size.height/self.size.height
+        var updateSize = size
+        if(widthRatio > heightRatio) {
+            updateSize = CGSize(width:self.size.width*heightRatio, height:self.size.height*heightRatio)
+        } else if heightRatio > widthRatio {
+            updateSize = CGSize(width:self.size.width*widthRatio,  height:self.size.height*widthRatio)
+        }
+        UIGraphicsBeginImageContextWithOptions(updateSize, false, UIScreen.main.scale)
+        self.draw(in: CGRect(origin: .zero, size: updateSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
 }
 
 

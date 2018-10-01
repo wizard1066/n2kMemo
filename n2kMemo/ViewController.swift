@@ -79,6 +79,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     //    }
     
     var lineName: String!
+    var pickerAuto: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,11 +145,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if pickerView.tag == 1 {
             if row < stationsRead.count {
                 pickerLabel?.text = stationsRead[row]
+                selectedStation = pickerLabel?.text
             }
         } else {
             
             pickerLabel?.text = linesRead[row]
-            
+            selectedLine = pickerLabel?.text
         }
         
         if row == rowSelected {
@@ -165,17 +167,18 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         rowSelected = row
+        pickerAuto = false
         pickerView.reloadAllComponents()
         if pickerView.tag == 0 {
             if linesRead.count > 0 && row < linesRead.count {
                     postingOK(lineName: linesRead[row])
                     cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
-                    selectedLine = linesRead[row]
+//                    selectedLine = linesRead[row]
             }
         } else {
             if stationsRead.count > 0 && row < stationsRead.count {
                 stationSelected = row
-                selectedStation = stationsRead[row]
+//                selectedStation = stationsRead[row]
             }
         }
     }
@@ -237,12 +240,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //        self.view.addGestureRecognizer(swipeLeft)
 //        self.view.addGestureRecognizer(swipeRight)
         DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-            self.linesPicker.selectRow(0, inComponent: 0, animated: true)
-            self.pickerView(self.linesPicker, didSelectRow:0, inComponent: 0)
-            self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
-            if linesRead.count > 0 {
-                selectedLine = linesRead[0]
-                selectedStation = stationsRead[0]
+            if self.pickerAuto {
+                self.linesPicker.selectRow(0, inComponent: 0, animated: true)
+                self.pickerView(self.linesPicker, didSelectRow:0, inComponent: 0)
+                self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
             }
         }
     }
@@ -299,9 +300,9 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         let destination = segue.destination.contents
         if segue.identifier == segueNames.posting {
             let pVC = destination as? PostingViewController
-            pVC?.bahninfo = lineSelected
-            pVC?.hofinfo = stationSelected
-            print("posting \(lineSelected) \(stationSelected)")
+//            pVC?.bahninfo = selectedLine
+//            pVC?.hofinfo = selectedStation
+//            print("posting \(lineSelected) \(stationSelected)")
         }
         if segue.identifier == segueNames.configuration {
             let pVC = destination as? ConfigViewController

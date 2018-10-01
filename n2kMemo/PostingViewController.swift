@@ -8,11 +8,12 @@
 
 import UIKit
 import MobileCoreServices
+import SafariServices
 
 var testURL = "https://www.dropbox.com/s/ztnaguussrcraxf/Marley.PNG?dl=1"
 var photoAttached: Bool = false
 
-class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UITextViewDelegate {
+class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
     
     //    var stationsRegistered:[String] = ["English","French","Italian","German"]
     
@@ -35,49 +36,49 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return stationsRead.count
-    }
-    
-    //    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    //        return stationsRegistered[row]
-    //    }
-    
-    var rowSelected:Int?
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        
-        var pickerLabel = view as? UILabel;
-        if (pickerLabel == nil)
-        {
-            pickerLabel = UILabel()
-            
-            pickerLabel?.font = UIFont(name: "AvenirNextCondensed-DemiBoldItalic", size: 20)
-            pickerLabel?.textAlignment = NSTextAlignment.center
-        }
-        
-        pickerLabel?.text = stationsRead[row]
-        
-        if row == rowSelected {
-            pickerLabel?.textColor = UIColor.white
-            pickerLabel?.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        } else {
-            pickerLabel?.textColor = UIColor.black
-            pickerLabel?.backgroundColor = UIColor.clear
-        }
-        
-        return pickerLabel!;
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        rowSelected = row
-        selectedStation = stationsRead[row]
-        pickerView.reloadAllComponents()
-    }
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 1
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        return stationsRead.count
+//    }
+//
+//    //    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//    //        return stationsRegistered[row]
+//    //    }
+//
+//    var rowSelected:Int?
+//
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//
+//        var pickerLabel = view as? UILabel;
+//        if (pickerLabel == nil)
+//        {
+//            pickerLabel = UILabel()
+//
+//            pickerLabel?.font = UIFont(name: "AvenirNextCondensed-DemiBoldItalic", size: 20)
+//            pickerLabel?.textAlignment = NSTextAlignment.center
+//        }
+//
+//        pickerLabel?.text = stationsRead[row]
+//
+//        if row == rowSelected {
+//            pickerLabel?.textColor = UIColor.white
+//            pickerLabel?.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+//        } else {
+//            pickerLabel?.textColor = UIColor.black
+//            pickerLabel?.backgroundColor = UIColor.clear
+//        }
+//
+//        return pickerLabel!;
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        rowSelected = row
+//        selectedStation = stationsRead[row]
+//        pickerView.reloadAllComponents()
+//    }
     
     
     @IBOutlet weak var postButton: UIButton!
@@ -87,12 +88,19 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var lineLabel: UILabel!
     @IBOutlet weak var returnLabel: UIButton!
-    @IBOutlet weak var pickerStations: UIPickerView!
+//    @IBOutlet weak var pickerStations: UIPickerView!
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var postImage: UIImageView!
+    @IBOutlet weak var webButton: UIButton!
     
+    
+    @IBOutlet weak var stationLabel: UILabel!
     @IBOutlet weak var clientsRegistered: UILabel!
     @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
+    
+    @IBAction func webButton(_ sender: Any) {
+        
+    }
     
     @IBAction func returnAction(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -193,6 +201,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         workingIndicator.isHidden = true
 //        lineLabel.text = bahninfo
         lineLabel.text = selectedLine
+        stationLabel.text = selectedStation
         self.hideKeyboardWhenTappedAround()
         let center = NotificationCenter.default
         let queue = OperationQueue.main
@@ -214,9 +223,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             cloudDB.share.returnAllTokensWithOutOwners()
             tokenCheque = tokensRead.count
             if hofinfo != nil {
-                self.pickerStations.selectRow(hofinfo, inComponent: 0, animated: true)
-                rowSelected = hofinfo
-                selectedStation = stationsRead[hofinfo]
+//                self.pickerStations.selectRow(hofinfo, inComponent: 0, animated: true)
+//                rowSelected = hofinfo
+//                selectedStation = stationsRead[hofinfo]
             }
         }
     }

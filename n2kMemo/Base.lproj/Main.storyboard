@@ -32,7 +32,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uFR-IM-pb6">
-                                <rect key="frame" x="67.5" y="269.5" width="240" height="128"/>
+                                <rect key="frame" x="67.5" y="448" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="8NH-FQ-MuN"/>
@@ -54,8 +54,8 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avr-6n-BZ5">
-                                <rect key="frame" x="164.5" y="622" width="46" height="37"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="18"/>
+                                <rect key="frame" x="165.5" y="622" width="44" height="37"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="18"/>
                                 <state key="normal" title="Return"/>
                                 <connections>
                                     <action selector="returnAction:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="AQh-ZT-wQj"/>
@@ -76,16 +76,16 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KI-La-fkq">
-                                <rect key="frame" x="133.5" y="72" width="108" height="62"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="36"/>
+                                <rect key="frame" x="134.5" y="72" width="106" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Register"/>
                                 <connections>
                                     <action selector="registerButton:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="b3R-lk-10r"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stations" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QzM-i2-2jM">
-                                <rect key="frame" x="146.5" y="241.5" width="82" height="20"/>
-                                <fontDescription key="fontDescription" name="HoeflerText-Black" family="Hoefler Text" pointSize="20"/>
+                                <rect key="frame" x="158.5" y="412.5" width="58" height="27.5"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -108,7 +108,7 @@
                             <constraint firstItem="042-Py-Bao" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="Nal-0u-ZIG"/>
                             <constraint firstItem="27p-4G-VBp" firstAttribute="top" secondItem="avr-6n-BZ5" secondAttribute="bottom" constant="8" id="Pbb-bW-Qlo"/>
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="TOc-Zc-TXB"/>
-                            <constraint firstItem="uFR-IM-pb6" firstAttribute="centerY" secondItem="aol-Xf-HN3" secondAttribute="centerY" id="aMV-f2-IEq"/>
+                            <constraint firstItem="8oG-nk-uvb" firstAttribute="top" secondItem="uFR-IM-pb6" secondAttribute="bottom" constant="16" id="Y7j-98-xI9"/>
                             <constraint firstItem="3KI-La-fkq" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="cUN-O9-eaf"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="nJu-no-QQj"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="top" secondItem="3KI-La-fkq" secondAttribute="bottom" constant="8" id="tR9-xQ-MOJ"/>
@@ -151,14 +151,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bzQ-Wf-4ZK">
-                                <rect key="frame" x="16" y="315" width="44" height="37"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="18"/>
+                                <rect key="frame" x="16" y="315" width="43" height="37"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="18"/>
                                 <state key="normal" title="Config"/>
                                 <connections>
                                     <segue destination="2Mf-O2-AOP" kind="show" identifier="configuration" id="M4x-Aw-iDu"/>
                                 </connections>
                             </button>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9S0-7A-4eI">
+                            <pickerView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9S0-7A-4eI">
                                 <rect key="frame" x="67.5" y="98" width="240" height="216"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="pjO-WD-aZl"/>
@@ -175,8 +175,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91M-hZ-z8l">
-                                <rect key="frame" x="308" y="315" width="51" height="37"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="18"/>
+                                <rect key="frame" x="310" y="315" width="49" height="37"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="18"/>
                                 <state key="normal" title="Posting"/>
                                 <connections>
                                     <segue destination="VZS-w6-muU" kind="show" identifier="posting" id="ETE-pj-9V2"/>
@@ -246,7 +246,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="ReY-xk-YZo">
-                                <rect key="frame" x="111" y="410" width="153" height="34"/>
+                                <rect key="frame" x="84" y="478.5" width="207" height="34"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ayb-E1-pJI">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="34"/>
@@ -272,10 +272,18 @@
                                             <action selector="dropNdragButton:" destination="sTY-l2-MkH" eventType="touchUpInside" id="ohD-mc-ftg"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Hg-1ea">
+                                        <rect key="frame" x="177" y="0.0" width="30" height="34"/>
+                                        <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
+                                        <state key="normal" title="Web"/>
+                                        <connections>
+                                            <action selector="webButton:" destination="sTY-l2-MkH" eventType="touchUpInside" id="wGt-6P-fCQ"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="InfoBahn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caW-mZ-IRW">
-                                <rect key="frame" x="153" y="556" width="69.5" height="27.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Line" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caW-mZ-IRW">
+                                <rect key="frame" x="171.5" y="556" width="32" height="27.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="20"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -288,8 +296,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="She-hv-ZWZ">
-                                <rect key="frame" x="168.5" y="625" width="38" height="34"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="16"/>
+                                <rect key="frame" x="168" y="625" width="39" height="34"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="16"/>
                                 <state key="normal" title="Return"/>
                                 <connections>
                                     <action selector="returnAction:" destination="sTY-l2-MkH" eventType="touchUpInside" id="ycb-n9-X4g"/>
@@ -307,8 +315,8 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLI-f7-QE2">
-                                <rect key="frame" x="159" y="64" width="57" height="62"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBoldItalic" family="Avenir Next Condensed" pointSize="36"/>
+                                <rect key="frame" x="160.5" y="64" width="54" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Post"/>
                                 <connections>
                                     <action selector="postAction:" destination="sTY-l2-MkH" eventType="touchUpInside" id="tQq-SH-3ow"/>
@@ -323,18 +331,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6h6-0z-ByE">
-                                <rect key="frame" x="67.5" y="452" width="240" height="96"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="96" id="5sg-Z9-bh6"/>
-                                    <constraint firstAttribute="width" constant="240" id="Uyb-tN-tK4"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="sTY-l2-MkH" id="8EP-eB-Dt0"/>
-                                    <outlet property="delegate" destination="sTY-l2-MkH" id="JGu-pi-AI4"/>
-                                </connections>
-                            </pickerView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LNp-1J-HSh">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LNp-1J-HSh">
                                 <rect key="frame" x="67.5" y="285.5" width="240" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="vDX-e6-k25"/>
@@ -356,12 +353,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Station" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p6i-ld-Xzd">
+                                <rect key="frame" x="161" y="520.5" width="53.5" height="27.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="20"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="AH3-xe-5vp" secondAttribute="bottom" constant="6" id="0tl-Vv-9ej"/>
                             <constraint firstItem="hFD-ja-oCC" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" constant="32" id="5fs-bp-TcY"/>
-                            <constraint firstItem="6h6-0z-ByE" firstAttribute="top" secondItem="ReY-xk-YZo" secondAttribute="bottom" constant="8" id="8uU-Xu-SyY"/>
                             <constraint firstItem="LNp-1J-HSh" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Fu6-CL-dC7"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="kLI-f7-QE2" secondAttribute="bottom" constant="17" id="GWE-H7-Hdu"/>
                             <constraint firstItem="AH3-xe-5vp" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="NuX-fv-T3d"/>
@@ -374,14 +377,15 @@
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="hFD-ja-oCC" secondAttribute="bottom" constant="8" id="c6T-YW-b3z"/>
                             <constraint firstItem="I6m-pu-kP5" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="d7s-CP-n4x"/>
                             <constraint firstItem="AH3-xe-5vp" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="8" id="eIk-b6-IJ1"/>
-                            <constraint firstItem="6h6-0z-ByE" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="ecB-iE-QFN"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="top" secondItem="OU8-zW-25Y" secondAttribute="bottom" constant="8" id="fXn-U2-9Sm"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="g4r-RL-5by"/>
+                            <constraint firstItem="p6i-ld-Xzd" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="hOd-n1-Dg5"/>
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="izl-Yi-mOS"/>
                             <constraint firstItem="kLI-f7-QE2" firstAttribute="top" secondItem="LpY-av-2AR" secondAttribute="bottom" id="mPg-xj-sxh"/>
+                            <constraint firstItem="p6i-ld-Xzd" firstAttribute="top" secondItem="ReY-xk-YZo" secondAttribute="bottom" constant="8" id="nTh-Zg-pjR"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="p26-lT-nZk"/>
+                            <constraint firstItem="caW-mZ-IRW" firstAttribute="top" secondItem="p6i-ld-Xzd" secondAttribute="bottom" constant="8" id="tDN-Yf-YRU"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="I6m-pu-kP5" secondAttribute="bottom" constant="8" id="vo6-4s-sfO"/>
-                            <constraint firstItem="caW-mZ-IRW" firstAttribute="top" secondItem="6h6-0z-ByE" secondAttribute="bottom" constant="8" id="wEQ-e2-ni6"/>
                             <constraint firstItem="OU8-zW-25Y" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" constant="-32" id="wS6-z1-kI4"/>
                             <constraint firstItem="ReY-xk-YZo" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="x74-Lj-pkd"/>
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="top" secondItem="3KJ-qa-u42" secondAttribute="bottom" constant="8" id="xco-AI-G5f"/>
@@ -397,11 +401,12 @@
                         <outlet property="libraryButton" destination="U1P-ha-e5c" id="4bT-nv-6w1"/>
                         <outlet property="lineLabel" destination="caW-mZ-IRW" id="wjr-VG-saQ"/>
                         <outlet property="liveButton" destination="Ayb-E1-pJI" id="JD0-1Q-eRp"/>
-                        <outlet property="pickerStations" destination="6h6-0z-ByE" id="isp-tD-emV"/>
                         <outlet property="postButton" destination="kLI-f7-QE2" id="uh4-8z-clb"/>
                         <outlet property="postImage" destination="LNp-1J-HSh" id="658-P9-Ctm"/>
                         <outlet property="returnLabel" destination="She-hv-ZWZ" id="lbc-q4-7Zx"/>
+                        <outlet property="stationLabel" destination="p6i-ld-Xzd" id="Hxp-7I-Z7m"/>
                         <outlet property="titleTextField" destination="3KJ-qa-u42" id="Wq4-K8-blc"/>
+                        <outlet property="webButton" destination="Qrh-Hg-1ea" id="ZJD-s4-5UC"/>
                         <outlet property="workingIndicator" destination="I6m-pu-kP5" id="JLD-Ab-qtI"/>
                     </connections>
                 </viewController>

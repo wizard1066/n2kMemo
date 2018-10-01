@@ -29,16 +29,16 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func fetch(_ sender: Any) {
-        //        cloudDB.share.fetchPublicInZone(zone2Search: linesRead[0])
-//        cloudDB.share.saveImage2Share()
-    }
+//    @IBAction func fetch(_ sender: Any) {
+//        //        cloudDB.share.fetchPublicInZone(zone2Search: linesRead[0])
+////        cloudDB.share.saveImage2Share()
+//    }
     
-    @IBOutlet weak var getText: UITextField!
+//    @IBOutlet weak var getText: UITextField!
     
-    @IBAction func get(_ sender: Any) {
-        cloudDB.share.accessShare(URL2D: getText.text!)
-    }
+//    @IBAction func get(_ sender: Any) {
+//        cloudDB.share.accessShare(URL2D: getText.text!)
+//    }
     @IBOutlet weak var imageFetched: UIImageView!
     
     @IBAction func registerButton(_ sender: UIButton) {
@@ -97,6 +97,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let verify = linesDictionary[newText + newPass]
         if verify != nil && !changed! {
             cloudDB.share.returnStationsOnLine(line2Seek: newText)
+            zeroURL.text = url2ShareDictionary[newText]
             bon = true
         } else {
             passText.textColor = UIColor.red
