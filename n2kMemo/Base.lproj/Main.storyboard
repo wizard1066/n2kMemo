@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Star Strella.otf">
+            <string>StarStrella</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Config View Controller-->
         <scene sceneID="d3q-pp-xBn">
@@ -278,6 +283,7 @@
                                         <state key="normal" title="Web"/>
                                         <connections>
                                             <action selector="webButton:" destination="sTY-l2-MkH" eventType="touchUpInside" id="wGt-6P-fCQ"/>
+                                            <segue destination="oef-QF-fxW" kind="show" identifier="WebViewController" id="uv1-7W-NKO"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -408,6 +414,7 @@
                         <outlet property="titleTextField" destination="3KJ-qa-u42" id="Wq4-K8-blc"/>
                         <outlet property="webButton" destination="Qrh-Hg-1ea" id="ZJD-s4-5UC"/>
                         <outlet property="workingIndicator" destination="I6m-pu-kP5" id="JLD-Ab-qtI"/>
+                        <segue destination="wmr-vn-LnC" kind="unwind" unwindAction="unwindToRootViewControllerWithSegue:" id="MXF-g0-Sdy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bfY-AS-hF6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -450,8 +457,93 @@
             </objects>
             <point key="canvasLocation" x="247" y="121"/>
         </scene>
+        <!--Web View Controller-->
+        <scene sceneID="5gD-nL-6bV">
+            <objects>
+                <viewController id="oef-QF-fxW" customClass="WebViewController" customModule="n2k_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7sy-A0-B0d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xia-Tm-7hv">
+                                <rect key="frame" x="0.0" y="138" width="375" height="529"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <searchBar contentMode="redraw" text="https://" placeholder="https://" showsSearchResultsButton="YES" showsBookmarkButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fJ3-oc-ZbO">
+                                <rect key="frame" x="148" y="64" width="207" height="56"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="yes" keyboardType="URL" smartQuotesType="no" textContentType="url"/>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wGN-8g-dLc">
+                                <rect key="frame" x="8" y="64" width="64" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="6TB-co-2o0"/>
+                                    <constraint firstAttribute="width" constant="64" id="8lc-xc-hzI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="StarStrella" family="Star Strella" pointSize="16"/>
+                                <state key="normal" backgroundImage="noun_back_542006"/>
+                                <connections>
+                                    <action selector="backButtonAction:" destination="oef-QF-fxW" eventType="touchUpInside" id="5xr-nk-Caj"/>
+                                </connections>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wox-wa-oFY">
+                                <rect key="frame" x="8" y="128" width="347" height="2"/>
+                            </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ryH-nx-41x">
+                                <rect key="frame" x="80" y="64" width="60" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="gNZ-b7-0aE"/>
+                                    <constraint firstAttribute="width" constant="60" id="hZB-ab-D1J"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="StarStrella" family="Star Strella" pointSize="16"/>
+                                <state key="normal" backgroundImage="noun_Next_538847"/>
+                                <connections>
+                                    <action selector="forwardButtonAction:" destination="oef-QF-fxW" eventType="touchUpInside" id="z67-uP-4Mp"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wGN-8g-dLc" firstAttribute="centerY" secondItem="fJ3-oc-ZbO" secondAttribute="centerY" id="0ce-XS-6mf"/>
+                            <constraint firstItem="Xia-Tm-7hv" firstAttribute="leading" secondItem="itv-ZF-U2a" secondAttribute="leading" id="0tZ-M6-muS"/>
+                            <constraint firstItem="Xia-Tm-7hv" firstAttribute="bottom" secondItem="itv-ZF-U2a" secondAttribute="bottom" id="58o-d2-q2e"/>
+                            <constraint firstItem="wox-wa-oFY" firstAttribute="leading" secondItem="7sy-A0-B0d" secondAttribute="leading" constant="8" id="AaQ-Oh-uf1"/>
+                            <constraint firstItem="Xia-Tm-7hv" firstAttribute="top" secondItem="wox-wa-oFY" secondAttribute="bottom" constant="8" id="Akn-8B-Ex8"/>
+                            <constraint firstItem="wGN-8g-dLc" firstAttribute="leading" secondItem="itv-ZF-U2a" secondAttribute="leading" constant="8" id="Bid-xi-Ba2"/>
+                            <constraint firstItem="fJ3-oc-ZbO" firstAttribute="top" secondItem="itv-ZF-U2a" secondAttribute="top" id="O8n-wa-0D7"/>
+                            <constraint firstItem="wox-wa-oFY" firstAttribute="top" secondItem="fJ3-oc-ZbO" secondAttribute="bottom" constant="8" id="PbW-Et-2bN"/>
+                            <constraint firstItem="itv-ZF-U2a" firstAttribute="trailing" secondItem="fJ3-oc-ZbO" secondAttribute="trailing" constant="20" id="S5a-94-Pav"/>
+                            <constraint firstItem="Xia-Tm-7hv" firstAttribute="top" secondItem="wox-wa-oFY" secondAttribute="bottom" constant="8" id="U3U-vr-Nqm"/>
+                            <constraint firstItem="Xia-Tm-7hv" firstAttribute="trailing" secondItem="itv-ZF-U2a" secondAttribute="trailing" id="aEI-rn-iYs"/>
+                            <constraint firstItem="ryH-nx-41x" firstAttribute="leading" secondItem="wGN-8g-dLc" secondAttribute="trailing" constant="8" id="jo7-gz-j6Z"/>
+                            <constraint firstItem="ryH-nx-41x" firstAttribute="centerY" secondItem="fJ3-oc-ZbO" secondAttribute="centerY" id="kYQ-aV-uI6"/>
+                            <constraint firstAttribute="trailing" secondItem="wox-wa-oFY" secondAttribute="trailing" constant="20" id="pcc-7A-aEX"/>
+                            <constraint firstItem="fJ3-oc-ZbO" firstAttribute="leading" secondItem="ryH-nx-41x" secondAttribute="trailing" constant="8" id="qnG-hF-9L9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="itv-ZF-U2a"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="dYf-8Y-jyt"/>
+                    <connections>
+                        <outlet property="backButton" destination="wGN-8g-dLc" id="f9m-af-9c9"/>
+                        <outlet property="forwardButton" destination="ryH-nx-41x" id="y5B-PE-K1Z"/>
+                        <outlet property="progressBar" destination="wox-wa-oFY" id="L8E-Ek-cKy"/>
+                        <outlet property="searchBar" destination="fJ3-oc-ZbO" id="caz-Ck-iCZ"/>
+                        <outlet property="webView" destination="Xia-Tm-7hv" id="01q-8Y-ePG"/>
+                        <outlet property="webViewOutlet" destination="Xia-Tm-7hv" id="UcR-RO-AFp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pCD-3r-coH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="wmr-vn-LnC" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="3727" y="134"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Wordle_Information_Overload_Stress" width="690" height="343"/>
+        <image name="noun_Next_538847" width="700" height="700"/>
+        <image name="noun_back_542006" width="700" height="700"/>
     </resources>
 </document>

@@ -59,3 +59,5 @@ var tokenOwner:[String: String?] = [:]
 var selectedLine: String!
 var selectedStation: String!
 var url2ShareDictionary:[String:String] = [:]
+var webSite2Send: URL?
+var urlSeek: URL?

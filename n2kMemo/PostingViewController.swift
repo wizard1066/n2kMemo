@@ -13,9 +13,13 @@ import SafariServices
 var testURL = "https://www.dropbox.com/s/ztnaguussrcraxf/Marley.PNG?dl=1"
 var photoAttached: Bool = false
 
-class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate,SFSafariViewControllerDelegate {
     
     //    var stationsRegistered:[String] = ["English","French","Italian","German"]
+    
+    @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
+        print("Unwind to Root View Controller")
+    }
     
     var bahninfo: String!
     var hofString: String!
@@ -183,6 +187,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     private var pinObserver: NSObjectProtocol!
     private var pinObserver2: NSObjectProtocol!
     private var pinObserver3: NSObjectProtocol!
+    private var pinObserver4: NSObjectProtocol!
     
     @objc func deleteAttachment() {
         if postButton.isEnabled {
@@ -227,6 +232,15 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
 //            self.clientLabel.text = "\(tokensRead.count)"
             self.clientsRegistered.text = "\(tokensRead.count)"
             print("ETF \(tokensRead.count) \(tokensRead)")
+        }
+        let alert2Monitor4 = "showWeb"
+        pinObserver3 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
+            let request2D = notification.userInfo!["http-url"] as? String
+            if let url = URL(string: request2D!) {
+                let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+                vc.delegate = self
+                self.present(vc, animated: true)
+            }
         }
         if tokenCheque == nil {
             cloudDB.share.returnAllTokensWithOutOwners()
@@ -307,6 +321,11 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
             let apnsSub = ["alert":apnsSubSub] as [String : Any]
             apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation] as [String : Any]
+        }
+        if webSite2Send != nil {
+            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
+            let apnsSub = ["alert":apnsSubSub,"category":"web.category"] as [String : Any]
+            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"http-url":webSite2Send?.absoluteString] as [String : Any]
         }
 //        let apnsPayload = ["aps":apnsSub]
         if devices2Post2.count > 0 {

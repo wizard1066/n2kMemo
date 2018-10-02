@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BBD400121634DF3006AB145 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD400021634DF3006AB145 /* WebViewController.swift */; };
 		7BBD6387215CC043000924F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD6386215CC043000924F0 /* AppDelegate.swift */; };
 		7BBD6389215CC043000924F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD6388215CC043000924F0 /* ViewController.swift */; };
 		7BBD638C215CC043000924F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BBD638A215CC043000924F0 /* Main.storyboard */; };
@@ -78,6 +79,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7BBD400021634DF3006AB145 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		7BBD6383215CC043000924F0 /* n2kMemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = n2kMemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BBD6386215CC043000924F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BBD6388215CC043000924F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				7BBD63B6215CFEE9000924F0 /* n2kMemo.entitlements */,
+				7BBD400021634DF3006AB145 /* WebViewController.swift */,
 				7BBD63EC215D27D6000924F0 /* Certificates.pem */,
 				7BBD63EE215D4530000924F0 /* Certificates.p12 */,
 				7BBD6386215CC043000924F0 /* AppDelegate.swift */,
@@ -473,6 +476,7 @@
 				7BBD63B5215CFD11000924F0 /* Common.swift in Sources */,
 				7BBD63E9215D2209000924F0 /* ConfigViewController.swift in Sources */,
 				7BBD6387215CC043000924F0 /* AppDelegate.swift in Sources */,
+				7BBD400121634DF3006AB145 /* WebViewController.swift in Sources */,
 				7BBD63E0215D205F000924F0 /* CloudKitMethods.swift in Sources */,
 				7BBD63E7215D21F3000924F0 /* PostingViewController.swift in Sources */,
 			);

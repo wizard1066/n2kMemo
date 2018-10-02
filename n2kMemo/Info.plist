@@ -48,6 +48,21 @@
 	<key>CKSharingSupported</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera option needed to optionally send in notifications</string>
+	<string>Camera option needed to optionally send photoin notifications</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>apple.com</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
 </dict>
 </plist>

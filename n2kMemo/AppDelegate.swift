@@ -10,6 +10,7 @@
 import UIKit
 import UserNotifications
 import CloudKit
+import SafariServices
 
 
 
@@ -49,9 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func setCategories(){
-        let snoozeAction = UNNotificationAction(identifier: "snooze.action", title: "Snooze", options: [])
-        let snoozeCategory = UNNotificationCategory(identifier: "pizza.category", actions: [snoozeAction], intentIdentifiers: [], options: [])
-        UNUserNotificationCenter.current().setNotificationCategories([snoozeCategory])
+        let webAction = UNNotificationAction(identifier: "web.action", title: "Web", options: [])
+        let webCategory = UNNotificationCategory(identifier: "web.category", actions: [webAction], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([webCategory])
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -167,11 +168,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return content
     }
     
+    var urlString: String?
+    var urlSeek: String?
+    
     // Mark: Delegates
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo as! [String:Any]
 //        completionHandler([.alert,.sound,.badge])
+        
+        if let urlString = userInfo["http-url"] as? String {
+            urlSeek = urlString
+        }
         
         if let stationFired = userInfo["station"] as? String {
             print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
@@ -195,15 +203,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let action = response.actionIdentifier
         let request = response.notification.request
         
-        if action == "snooze.action"{
-            let content = changePizzaNotificationContent(content: request.content)
-            let snoozeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
-            let snoozeRequest = UNNotificationRequest(identifier: "pizza.snooze", content: content, trigger: snoozeTrigger)
-            UNUserNotificationCenter.current().add(snoozeRequest, withCompletionHandler: { (error) in
-                if error != nil {
-                    print("Snooze Error: \(error?.localizedDescription)")
-                }
-            })
+        if action == "web.action"{
+//            let svc = SFSafariViewController(url: urlSeek!)
+            var dict:[String:Any] = [:]
+            dict["http-url"] = urlSeek
+            let peru = Notification.Name("showWeb")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
+            
+//            present(svc, animated: true, completion: nil)
+//            let content = changePizzaNotificationContent(content: request.content)
+//            let snoozeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
+//            let snoozeRequest = UNNotificationRequest(identifier: "pizza.snooze", content: content, trigger: snoozeTrigger)
+//            UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+//                if error != nil {
+//                    print("Web Error: \(error?.localizedDescription)")
+//                }
+//            })
         }
         
         completionHandler()
