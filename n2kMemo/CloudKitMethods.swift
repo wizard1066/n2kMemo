@@ -116,7 +116,9 @@ class cloudDB: NSObject {
     public func saveImage2Share(image2Save: UIImage) {
 //        let sizedImage = reduceImage(inImage: image2Save)
         let zone2D = CKRecordZone(zoneName: linesRead[0])
-        let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
+//        let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
+        let customID = CKRecord.ID(recordName: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
+        let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, recordID: customID)
 //        let fileURL = Bundle.main.bundleURL.appendingPathComponent("Marley.png")
         let fileURL = saveImage2File(file2Save: image2Save)
         let ckAsset = CKAsset(fileURL: fileURL)
@@ -568,29 +570,37 @@ class cloudDB: NSObject {
     }
     
     public func cleanUpImages(zone2U:String) {
+        
         var records2Delete:[CKRecord.ID] = []
         let zone2D = CKRecordZone(zoneName: zone2U)
         // -1 to test tomorrow!!
         
-        let sevenDaysBefore = Date.changeDaysBy(days: -1)
-        print("sevenDaysBefore \(sevenDaysBefore)")
-        let predicate = NSPredicate(format: "creationDate < %@", sevenDaysBefore as CVarArg)
+        let sevenDaysBefore = Date.changeDaysBy(days: -1) as? NSDate
+        print("sevenDaysBefore \(sevenDaysBefore) \(zone2D)")
+        //        let predicate = NSPredicate(format: "creationDate < %@", sevenDaysBefore!)
+        let predicate = NSPredicate(value: true)
         
         let query = CKQuery(recordType: remoteRecords.notificationMedia, predicate: predicate)
-        query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+        let operation = CKQueryOperation(query: query)
+        operation.zoneID = zone2D.zoneID
         
-        cloudDB.share.privateDB.perform(query, inZoneWith: zone2D.zoneID) { (records, error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                for record in records! {
-                    records2Delete.append(record.recordID)
-                }
-                print("answers \(records2Delete)")
-            }
+        operation.recordFetchedBlock = { record in
+            records2Delete.append(record.recordID)
         }
+        operation.queryCompletionBlock = { cursor, error in
+            print(records2Delete.count)
+            let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: records2Delete)
+            operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                if error != nil {
+                    print("modify error\(error!.localizedDescription)")
+                } else {
+                    print("record Updated \(deletedRecordIDs?.count)")
+                }
+            }
+            CKContainer.default().privateCloudDatabase.add(operation)
+        }
+        cloudDB.share.privateDB.add(operation)
     }
-    
 }
 
 extension Date {

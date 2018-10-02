@@ -27,6 +27,7 @@ enum remoteRecords {
 
 enum remoteAttributes {
     static let stationNames = "stationNames"
+    static let stationName = "stationName"
     static let linePassword = "linePassword"
     static let lineName = "lineName"
     static let lineOwner = "lineOwner"

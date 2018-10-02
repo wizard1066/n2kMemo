@@ -209,10 +209,12 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(PostingViewController.deleteAttachment))
         swipeLeft.direction = .left
         self.view.addGestureRecognizer(swipeLeft)
+        
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
+        cloudDB.share.cleanUpImages(zone2U: selectedLine)
         workingIndicator.isHidden = true
 //        lineLabel.text = bahninfo
         lineLabel.text = selectedLine
@@ -306,7 +308,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             devices2Post2 = tokensRead
             scheduledTimerWithTimeInterval()
         }
-        cloudDB.share.cleanUpImages(zone2U: selectedLine)
+//        cloudDB.share.cleanUpImages(zone2U: selectedLine)
     }
     
     var postsMade:Int!

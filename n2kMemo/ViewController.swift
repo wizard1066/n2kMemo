@@ -80,6 +80,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     //    }
     
     var lineName: String!
+    var stationName: String!
     var pickerAuto: Bool = true
     
     override func viewDidLoad() {
@@ -87,6 +88,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         let defaults = UserDefaults.standard
         lineName = defaults.string(forKey: remoteAttributes.lineName)
         let linePass = defaults.string(forKey: remoteAttributes.linePassword)
+        stationName = defaults.string(forKey: remoteAttributes.stationName)
+        
         //        stationsRegistered = (defaults.array(forKey: remoteRecords.stationNames) as? [String])!
         
         cloudDB.share.returnAllLines()
@@ -100,7 +103,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         UNUserNotificationCenter.current().delegate = self
         let content = UNMutableNotificationContent()
         content.title = "Welcome"
-        content.body = "You configure which lines/stations your interested or click on the configuration link sent along with the request to download me"
+        content.body = "You need to configure which lines/stations your interested or click on the configuration link sent along with the request to download me"
         
         let inSeconds:TimeInterval = 4.0
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
@@ -152,11 +155,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             if row < stationsRead.count {
                 pickerLabel?.text = stationsRead[row]
                 selectedStation = pickerLabel?.text
+                let defaults = UserDefaults.standard
+                defaults.set(selectedStation, forKey: remoteAttributes.stationName)
             }
         } else {
-            
             pickerLabel?.text = linesRead[row]
             selectedLine = pickerLabel?.text
+            let defaults = UserDefaults.standard
+            defaults.set(selectedLine, forKey: remoteAttributes.stationName)
         }
         
         if row == rowSelected {
@@ -215,7 +221,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         let alert2Monitor = "showPin"
         pinObserver = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor), object: nil, queue: queue) { (notification) in
             if self.linesPicker != nil {
-                self.linesPicker.selectRow(0, inComponent: 0, animated: true)
+                let index = linesRead.index(where:{ $0 == self.lineName })
+                if index != nil {
+                    self.linesPicker.selectRow(index!, inComponent: 0, animated: true)
+                }
+                
+                let index2 = stationsRead.index(where:{ $0 == self.stationName })
+                if index2 != nil {
+                    self.linesPicker.selectRow(index2!, inComponent: 0, animated: true)
+                }
                 self.linesPicker.reloadAllComponents()
             }
         }
@@ -246,12 +260,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             self.configButton.isEnabled = false
         }
         
-//        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showPosting))
-//        swipeLeft.direction = .left
-//        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.showConfig))
-//        swipeRight.direction = .right
-//        self.view.addGestureRecognizer(swipeLeft)
-//        self.view.addGestureRecognizer(swipeRight)
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if self.pickerAuto {
                 self.linesPicker.selectRow(0, inComponent: 0, animated: true)
@@ -259,30 +267,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
                 self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
             }
         }
-    }
-    
-    @objc func showPosting() {
-        //        if segue.identifier == segueNames.posting {
-        //            let pVC = destination as? PostingViewController
-        //            pVC?.bahninfo = lineSelected
-        //            pVC?.hofinfo = stationSelected
-        //            print("posting \(lineSelected) \(stationSelected)")
-        //        }
-        //        let destination = segue.destination.contents
-        //        let pVC = destination as? PostingViewController
-        //        self.navigationController?.pushViewController(pVC, animated: true)
-        //        performSegue(withIdentifier: segueNames.posting, sender: self)
-    }
-    
-    @objc func showConfig() {
-        //        let destination = segue.destination.contents
-        //        let pVC = destination as? ConfigViewController
-        //        self.navigationController?.pushViewController(pVC, animated: true)
-        //
-        //        if segue.identifier == segueNames.configuration {
-        //            let pVC = destination as? ConfigViewController
-        //            print("config")
-        //        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -312,13 +296,13 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination.contents
         if segue.identifier == segueNames.posting {
-            let pVC = destination as? PostingViewController
+//            let pVC = destination as? PostingViewController
 //            pVC?.bahninfo = selectedLine
 //            pVC?.hofinfo = selectedStation
 //            print("posting \(lineSelected) \(stationSelected)")
         }
         if segue.identifier == segueNames.configuration {
-            let pVC = destination as? ConfigViewController
+//            let pVC = destination as? ConfigViewController
             print("config")
             stationDictionary = [:]
         }
