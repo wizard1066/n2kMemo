@@ -9,8 +9,9 @@
 import UIKit
 import SafariServices
 import CloudKit
+import UserNotifications
 
-class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFieldDelegate, URLSessionDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFieldDelegate, URLSessionDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UNUserNotificationCenterDelegate {
     
     
     
@@ -96,6 +97,20 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         stationsPicker.dataSource = self
         cloudDB.share.returnAllTokensWithOwners()
         UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().delegate = self
+        let content = UNMutableNotificationContent()
+        content.title = "Welcome"
+        content.body = "You configure which lines/stations your interested or click on the configuration link sent along with the request to download me"
+        
+        let inSeconds:TimeInterval = 4.0
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
+        let request = UNNotificationRequest(identifier: "welcome", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+            if error != nil {
+                print("Welcome: \(error?.localizedDescription)")
+            }
+        })
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -194,6 +209,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     override func viewDidAppear(_ animated: Bool) {
         //        doAnimation()
+        url2Share = nil
         let center = NotificationCenter.default
         let queue = OperationQueue.main
         let alert2Monitor = "showPin"
@@ -306,6 +322,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             print("config")
             stationDictionary = [:]
         }
+    }
+    
+    //MARK: Delegates
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
     }
 }
 

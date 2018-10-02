@@ -83,6 +83,10 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, U
 //        if challenge2A != nil {
 //            challenge()
 //        }
+        
+        webSnap = self.view.toImage()
+        let peru = Notification.Name("webSnap")
+        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -111,6 +115,9 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, U
             }
         }
         
+        let searchTextAppearance = UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
+        searchTextAppearance.font = UIFont(name: "AvenirNextCondensed-Medium", size: 18)
+//        searchTextAppearance.textColor = .green
         // Do any additional setup after loading the view.
     }
     
@@ -154,8 +161,14 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, U
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+}
 
-
-
+extension UIView {
+    func toImage() -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
+        drawHierarchy(in: self.bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
 }

@@ -52,7 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func setCategories(){
         let webAction = UNNotificationAction(identifier: "web.action", title: "Web", options: [])
         let webCategory = UNNotificationCategory(identifier: "web.category", actions: [webAction], intentIdentifiers: [], options: [])
-        UNUserNotificationCenter.current().setNotificationCategories([webCategory])
+        let photoCategory = UNNotificationCategory(identifier: "photo.category", actions: [webAction], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([webCategory, photoCategory])
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -210,7 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let peru = Notification.Name("showWeb")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
             
-//            present(svc, animated: true, completion: nil)
+
 //            let content = changePizzaNotificationContent(content: request.content)
 //            let snoozeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
 //            let snoozeRequest = UNNotificationRequest(identifier: "pizza.snooze", content: content, trigger: snoozeTrigger)

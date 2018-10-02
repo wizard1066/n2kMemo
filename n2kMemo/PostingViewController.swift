@@ -188,6 +188,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     private var pinObserver2: NSObjectProtocol!
     private var pinObserver3: NSObjectProtocol!
     private var pinObserver4: NSObjectProtocol!
+    private var pinObserver5: NSObjectProtocol!
     
     @objc func deleteAttachment() {
         if postButton.isEnabled {
@@ -234,13 +235,18 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             print("ETF \(tokensRead.count) \(tokensRead)")
         }
         let alert2Monitor4 = "showWeb"
-        pinObserver3 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
+        pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
             let request2D = notification.userInfo!["http-url"] as? String
             if let url = URL(string: request2D!) {
-                let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+                let vc = SFSafariViewController(url: url)
                 vc.delegate = self
                 self.present(vc, animated: true)
             }
+        }
+        let alert2Monitor5 = "webSnap"
+        pinObserver5 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor5), object: nil, queue: queue) { (notification) in
+//            let request2D = notification.userInfo!["http-url"] as? String
+            self.postImage.image = webSnap
         }
         if tokenCheque == nil {
             cloudDB.share.returnAllTokensWithOutOwners()

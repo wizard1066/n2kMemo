@@ -61,3 +61,4 @@ var selectedStation: String!
 var url2ShareDictionary:[String:String] = [:]
 var webSite2Send: URL?
 var urlSeek: URL?
+var webSnap: UIImage!
