@@ -100,9 +100,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lZz-co-yf0">
+                                <rect key="frame" x="144.5" y="218" width="86" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="36"/>
+                                <state key="normal" title="Report"/>
+                                <connections>
+                                    <action selector="reportButton:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="iqU-S8-5wk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="lZz-co-yf0" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="0gj-ey-uAK"/>
                             <constraint firstItem="uFR-IM-pb6" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="24m-ID-Rn2"/>
                             <constraint firstItem="3KI-La-fkq" firstAttribute="top" secondItem="5IL-V9-A5g" secondAttribute="bottom" constant="8" id="32w-P4-h3i"/>
                             <constraint firstItem="avr-6n-BZ5" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="DiJ-ba-1Kl"/>
@@ -115,6 +124,7 @@
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="TOc-Zc-TXB"/>
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="top" secondItem="uFR-IM-pb6" secondAttribute="bottom" constant="16" id="Y7j-98-xI9"/>
                             <constraint firstItem="3KI-La-fkq" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="cUN-O9-eaf"/>
+                            <constraint firstItem="lZz-co-yf0" firstAttribute="top" secondItem="042-Py-Bao" secondAttribute="bottom" constant="8" id="f4P-FG-HRu"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="nJu-no-QQj"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="top" secondItem="3KI-La-fkq" secondAttribute="bottom" constant="8" id="tR9-xQ-MOJ"/>
                         </constraints>
@@ -251,7 +261,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="ReY-xk-YZo">
-                                <rect key="frame" x="111" y="478.5" width="153" height="34"/>
+                                <rect key="frame" x="84" y="478.5" width="207" height="34"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ayb-E1-pJI">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="34"/>
@@ -277,8 +287,8 @@
                                             <action selector="dropNdragButton:" destination="sTY-l2-MkH" eventType="touchUpInside" id="ohD-mc-ftg"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Hg-1ea">
-                                        <rect key="frame" x="153" y="0.0" width="0.0" height="34"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Hg-1ea">
+                                        <rect key="frame" x="177" y="0.0" width="30" height="34"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                         <state key="normal" title="Web"/>
                                         <connections>

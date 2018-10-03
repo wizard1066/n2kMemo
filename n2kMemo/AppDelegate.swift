@@ -118,6 +118,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             lineZoneID = self.item.object(forKey: remoteAttributes.zoneID) as? String
             linesRead = [line2S]
             stationsRead = station2S
+            selectedLine = linesRead.first
+            selectedStation = stationsRead.first
+            let defaults = UserDefaults.standard
+            defaults.set(selectedStation, forKey: remoteAttributes.stationName)
+            defaults.set(selectedLine, forKey: remoteAttributes.lineName)
             let peru = Notification.Name("stationPin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             let peru2 = Notification.Name("showPin")
@@ -151,25 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-//    func changePizzaNotificationContent(content oldContent:UNNotificationContent)-> UNMutableNotificationContent{
-//        let content = oldContent.mutableCopy() as! UNMutableNotificationContent
-//        let userInfo = content.userInfo as! [String:Any]
-//        //add the subtitle
-//        if let subtitle = userInfo["subtitle"] {
-//            content.subtitle = subtitle as! String
-//        }
-//
-//        if let orderEntry = userInfo["order"]{
-//            let orders = orderEntry as! [String]
-//            var body = ""
-//            for item in orders{
-//                body += item + ", "
-//            }
-//            content.body = body
-//        }
-//        return content
-//    }
-    
     var urlString: String?
     var urlSeek: String?
     
@@ -177,7 +163,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo as! [String:Any]
-//        completionHandler([.alert,.sound,.badge])
         
         if let urlString = userInfo["http-url"] as? String {
             urlSeek = urlString
@@ -186,7 +171,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let stationFired = userInfo["station"] as? String {
             print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
             if stationFired == selectedStation {
-                
                 if let lineFired = userInfo["line"] as? String {
                     print("lineFired == selectedline <\(lineFired)> == <\(selectedLine)>")
                     if lineFired == selectedLine {
@@ -206,23 +190,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let request = response.notification.request
         
         if action == "web.action"{
-//            let svc = SFSafariViewController(url: urlSeek!)
             var dict:[String:Any] = [:]
             dict["http-url"] = urlSeek
             let peru = Notification.Name("showWeb")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
-            
-
-//            let content = changePizzaNotificationContent(content: request.content)
-//            let snoozeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
-//            let snoozeRequest = UNNotificationRequest(identifier: "pizza.snooze", content: content, trigger: snoozeTrigger)
-//            UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
-//                if error != nil {
-//                    print("Web Error: \(error?.localizedDescription)")
-//                }
-//            })
         }
-        
         completionHandler()
     }
 

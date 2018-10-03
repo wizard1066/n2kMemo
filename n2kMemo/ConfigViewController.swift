@@ -42,18 +42,34 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var imageFetched: UIImageView!
     
     @IBAction func registerButton(_ sender: UIButton) {
+        registerButton.isEnabled = false
+        selectedLine = newText
+//        if stationsRegistered.count > 0 {
+//            selectedStation = stationsRegistered[0]
+//        }
         cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, linePassword: newPass)
-        let peru = Notification.Name("showPin")
-        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+//        let peru = Notification.Name("showPin")
+//        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
         
 //        let peru2 = Notification.Name("stationPin")
 //        NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
     }
     
+    @IBAction func reportButton(_ sender: UIButton) {
+        if newText != nil {
+            cloudDB.share.returnLine(lineName: newText)
+        }
+    }
+    
     func confirmRegistration() {
+        let defaults = UserDefaults.standard
+        defaults.set(selectedStation, forKey: remoteAttributes.stationName)
+        defaults.set(selectedLine, forKey: remoteAttributes.lineName)
         let alert = UIAlertController(title: "Line registered", message: "Your new line is registered", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
+        registerButton.isEnabled = true
+        
     }
     
     // MARK: textfield delegate
@@ -99,6 +115,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if verify != nil && !changed! {
             cloudDB.share.returnStationsOnLine(line2Seek: newText)
             zeroURL.text = url2ShareDictionary[newText]
+            
             bon = true
         } else {
             passText.textColor = UIColor.red
@@ -242,6 +259,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private var pinObserver3: NSObjectProtocol!
     private var pinObserver4: NSObjectProtocol!
     private var pinObserver5: NSObjectProtocol!
+    private var pinObserver6: NSObjectProtocol!
     
     override func viewDidAppear(_ animated: Bool) {
         let center = NotificationCenter.default
@@ -257,13 +275,17 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         let alert2Monitor5 = "sharePin"
         pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor5), object: nil, queue: queue) { (notification) in
-            self.zeroURL.text = url2Share
+            self.zeroURL.text = url2Share!
         }
         let alert2Monitor4 = "doImage"
         pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
             self.imageFetched.image = image2D
         }
-        
+        let alert2Monitor6 = "showURL"
+        pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
+            let request2D = notification.userInfo![remoteAttributes.lineURL] as? String
+            self.zeroURL.text = request2D
+        }
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(ConfigViewController.keyboardWillShow(_:)),

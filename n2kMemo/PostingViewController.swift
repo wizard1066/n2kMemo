@@ -214,7 +214,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     
     
     override func viewDidAppear(_ animated: Bool) {
-        cloudDB.share.cleanUpImages(zone2U: selectedLine)
+        if selectedLine != nil {
+            cloudDB.share.cleanUpImages(zone2U: selectedLine)
+        }
         workingIndicator.isHidden = true
 //        lineLabel.text = bahninfo
         lineLabel.text = selectedLine
@@ -242,7 +244,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             if let url = URL(string: request2D!) {
                 let vc = SFSafariViewController(url: url)
                 vc.delegate = self
-                self.present(vc, animated: true)
+                if self.parent?.presentingViewController == self {
+                    self.present(vc, animated: true)
+                }
             }
         }
         let alert2Monitor5 = "webSnap"
@@ -343,29 +347,11 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         }
         if webSite2Send != nil {
             apnsSub["category"] = "web.category"
-            
             apnsPayload["http-url"] = (webSite2Send?.absoluteString)!
         }
         apnsPayload["line"] = selectedLine
         apnsPayload["station"] = selectedStation
         apnsPayload["aps"] = apnsSub
-        
-       
-        
-//        if photoAttached {
-//            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-//            let apnsSub = ["alert":apnsSubSub,"category":"photo.category","mutable-content":1] as [String : Any]
-//            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"image-url":url2Share!] as [String : Any]
-//        } else {
-//            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-//            let apnsSub = ["alert":apnsSubSub] as [String : Any]
-//            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation] as [String : Any]
-//        }
-//        if webSite2Send != nil {
-//            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-//            let apnsSub = ["alert":apnsSubSub,"category":"web.category"] as [String : Any]
-//            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"http-url":webSite2Send?.absoluteString] as [String : Any]
-//        }
 
         if devices2Post2.count > 0 {
             buildPost(token2U: devices2Post2.removeLast(), apns2S: apnsPayload)
@@ -393,7 +379,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             print(content)
         }
         loginRequest.httpBody = data
-        print("apnsPayLoad URL \((webSite2Send?.absoluteString)!)")
+//        print("apnsPayLoad URL \((webSite2Send?.absoluteString)!)")
         let loginTask = session.dataTask(with: loginRequest) { data, response, error in
             print("error \(error) \(response)")
         }

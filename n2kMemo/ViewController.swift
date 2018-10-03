@@ -11,7 +11,10 @@ import SafariServices
 import CloudKit
 import UserNotifications
 
-class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFieldDelegate, URLSessionDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UNUserNotificationCenterDelegate {
+// Useful it you want to get localnotification in foreground with the delegate method
+// UNUserNotificationCenterDelegate
+
+class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFieldDelegate, URLSessionDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
     
@@ -89,14 +92,21 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         super.viewDidLoad()
 //        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
 //        jsonString(dictionary: dictionary)
+        
         let defaults = UserDefaults.standard
-//        lineName = defaults.string(forKey: remoteAttributes.lineName)
-        let linePass = defaults.string(forKey: remoteAttributes.linePassword)
-//        stationName = defaults.string(forKey: remoteAttributes.stationName)
+        
+        lineName = defaults.string(forKey: remoteAttributes.lineName)
+        if lineName != nil {
+            stationName = defaults.string(forKey: remoteAttributes.stationName)
+            if stationName != nil {
+                stationsRead.append(stationName)
+            }
+            linesRead.append(lineName)
+        }
         
         //        stationsRegistered = (defaults.array(forKey: remoteRecords.stationNames) as? [String])!
         
-        cloudDB.share.returnAllLines()
+//        cloudDB.share.returnAllLines()
         postingButton.isEnabled = true
         linesPicker.delegate = self
         linesPicker.dataSource = self
@@ -104,20 +114,20 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         stationsPicker.dataSource = self
         cloudDB.share.returnAllTokensWithOwners()
         UIApplication.shared.applicationIconBadgeNumber = 0
-        UNUserNotificationCenter.current().delegate = self
-        let content = UNMutableNotificationContent()
-        content.title = "Welcome"
-        content.body = "You need to configure which lines/stations your interested or click on the configuration link sent along with the request to download me"
-        
-        let inSeconds:TimeInterval = 4.0
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
-        let request = UNNotificationRequest(identifier: "welcome", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
-            if error != nil {
-                print("Welcome: \(error?.localizedDescription)")
-            }
-        })
+//        UNUserNotificationCenter.current().delegate = self
+//        let content = UNMutableNotificationContent()
+//        content.title = "Welcome"
+//        content.body = "You need to configure which lines/stations your interested or click on the configuration link sent along with the request to download me"
+//
+//        let inSeconds:TimeInterval = 4.0
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
+//        let request = UNNotificationRequest(identifier: "welcome", content: content, trigger: trigger)
+//
+//        UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+//            if error != nil {
+//                print("Welcome: \(error?.localizedDescription)")
+//            }
+//        })
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -159,14 +169,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             if row < stationsRead.count {
                 pickerLabel?.text = stationsRead[row]
                 selectedStation = pickerLabel?.text
-                let defaults = UserDefaults.standard
-                defaults.set(selectedStation, forKey: remoteAttributes.stationName)
+                
+                
             }
         } else {
             pickerLabel?.text = linesRead[row]
             selectedLine = pickerLabel?.text
-            let defaults = UserDefaults.standard
-            defaults.set(selectedLine, forKey: remoteAttributes.stationName)
+            
+            
         }
         
         if row == rowSelected {
@@ -215,6 +225,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     private var pinObserver4: NSObjectProtocol!
     private var pinObserver5: NSObjectProtocol!
     private var pinObserver6: NSObjectProtocol!
+    private var pinObserver7: NSObjectProtocol!
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -263,8 +274,19 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             self.postingButton.isEnabled = false
             self.configButton.isEnabled = false
         }
+        let alert2Monitor7 = "showWeb"
+        pinObserver7 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor7), object: nil, queue: queue) { (notification) in
+            let request2D = notification.userInfo!["http-url"] as? String
+            if let url = URL(string: request2D!) {
+                let vc = SFSafariViewController(url: url)
+                vc.delegate = self
+//                if self.parent?.presentingViewController == self {
+                    self.present(vc, animated: true)
+//                }
+            }
+        }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.pickerAuto {
                 self.linesPicker.selectRow(0, inComponent: 0, animated: true)
                 self.pickerView(self.linesPicker, didSelectRow:0, inComponent: 0)
@@ -312,7 +334,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         }
     }
     
-    //MARK: Delegates
+    //MARK: Delegates, note it overides the one you got in the app delegate!!
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert, .sound])
