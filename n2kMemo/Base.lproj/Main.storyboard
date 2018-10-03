@@ -251,7 +251,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="ReY-xk-YZo">
-                                <rect key="frame" x="84" y="478.5" width="207" height="34"/>
+                                <rect key="frame" x="111" y="478.5" width="153" height="34"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ayb-E1-pJI">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="34"/>
@@ -277,8 +277,8 @@
                                             <action selector="dropNdragButton:" destination="sTY-l2-MkH" eventType="touchUpInside" id="ohD-mc-ftg"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Hg-1ea">
-                                        <rect key="frame" x="177" y="0.0" width="30" height="34"/>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Hg-1ea">
+                                        <rect key="frame" x="153" y="0.0" width="0.0" height="34"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                         <state key="normal" title="Web"/>
                                         <connections>
@@ -459,7 +459,7 @@
         <!--Web View Controller-->
         <scene sceneID="5gD-nL-6bV">
             <objects>
-                <viewController id="oef-QF-fxW" customClass="WebViewController" customModule="n2k_Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oef-QF-fxW" customClass="WebViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7sy-A0-B0d">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

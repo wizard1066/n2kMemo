@@ -52,7 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func setCategories(){
         let webAction = UNNotificationAction(identifier: "web.action", title: "Web", options: [])
         let webCategory = UNNotificationCategory(identifier: "web.category", actions: [webAction], intentIdentifiers: [], options: [])
-        let photoCategory = UNNotificationCategory(identifier: "photo.category", actions: [webAction], intentIdentifiers: [], options: [])
+        let photoAction = UNNotificationAction(identifier: "photo.action", title: "Photo", options: [])
+        let photoCategory = UNNotificationCategory(identifier: "photo.category", actions: [photoAction], intentIdentifiers: [], options: [])
         UNUserNotificationCenter.current().setNotificationCategories([webCategory, photoCategory])
     }
     
@@ -150,24 +151,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func changePizzaNotificationContent(content oldContent:UNNotificationContent)-> UNMutableNotificationContent{
-        let content = oldContent.mutableCopy() as! UNMutableNotificationContent
-        let userInfo = content.userInfo as! [String:Any]
-        //add the subtitle
-        if let subtitle = userInfo["subtitle"] {
-            content.subtitle = subtitle as! String
-        }
-        
-        if let orderEntry = userInfo["order"]{
-            let orders = orderEntry as! [String]
-            var body = ""
-            for item in orders{
-                body += item + ", "
-            }
-            content.body = body
-        }
-        return content
-    }
+//    func changePizzaNotificationContent(content oldContent:UNNotificationContent)-> UNMutableNotificationContent{
+//        let content = oldContent.mutableCopy() as! UNMutableNotificationContent
+//        let userInfo = content.userInfo as! [String:Any]
+//        //add the subtitle
+//        if let subtitle = userInfo["subtitle"] {
+//            content.subtitle = subtitle as! String
+//        }
+//
+//        if let orderEntry = userInfo["order"]{
+//            let orders = orderEntry as! [String]
+//            var body = ""
+//            for item in orders{
+//                body += item + ", "
+//            }
+//            content.body = body
+//        }
+//        return content
+//    }
     
     var urlString: String?
     var urlSeek: String?

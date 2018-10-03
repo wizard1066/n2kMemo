@@ -319,23 +319,54 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateCounting), userInfo: nil, repeats: true)
     }
     
+    func jsonString(dictionary: [String:Any]) {
+        if let theJSONData = try?  JSONSerialization.data(
+            withJSONObject: dictionary,
+            options: .prettyPrinted
+            ),
+            let theJSONText = String(data: theJSONData,
+                                     encoding: String.Encoding.ascii) {
+            print("JSON string = \n\(theJSONText)")
+        }
+    }
+    
     @objc func updateCounting(){
-        var apnsPayload:[String:Any]!
+        var apnsPayload:[String:Any] = [:]
+        var apnsSub:[String:Any] = [:]
+        var apnsSubSub:[String:Any] = [:]
+        apnsSubSub = ["title":titleTextField.text!,"body":bodyText.text!] as [String : Any]
+        apnsSub["alert"] = apnsSubSub as [String : Any]
         if photoAttached {
-            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-            let apnsSub = ["alert":apnsSubSub,"category":"photo.category","mutable-content":1] as [String : Any]
-            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"image-url":url2Share!] as [String : Any]
-        } else {
-            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-            let apnsSub = ["alert":apnsSubSub] as [String : Any]
-            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation] as [String : Any]
+            apnsSub["category"] = "photo.category"
+            apnsSub["mutable-content"] = 1
+            apnsPayload["image-url"] = url2Share!
         }
         if webSite2Send != nil {
-            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
-            let apnsSub = ["alert":apnsSubSub,"category":"web.category"] as [String : Any]
-            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"http-url":webSite2Send?.absoluteString] as [String : Any]
+            apnsSub["category"] = "web.category"
+            
+            apnsPayload["http-url"] = (webSite2Send?.absoluteString)!
         }
-//        let apnsPayload = ["aps":apnsSub]
+        apnsPayload["line"] = selectedLine
+        apnsPayload["station"] = selectedStation
+        apnsPayload["aps"] = apnsSub
+        
+       
+        
+//        if photoAttached {
+//            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
+//            let apnsSub = ["alert":apnsSubSub,"category":"photo.category","mutable-content":1] as [String : Any]
+//            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"image-url":url2Share!] as [String : Any]
+//        } else {
+//            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
+//            let apnsSub = ["alert":apnsSubSub] as [String : Any]
+//            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation] as [String : Any]
+//        }
+//        if webSite2Send != nil {
+//            let apnsSubSub = ["title":titleTextField.text,"body":bodyText.text]
+//            let apnsSub = ["alert":apnsSubSub,"category":"web.category"] as [String : Any]
+//            apnsPayload = ["aps":apnsSub,"line":selectedLine,"station":selectedStation,"http-url":webSite2Send?.absoluteString] as [String : Any]
+//        }
+
         if devices2Post2.count > 0 {
             buildPost(token2U: devices2Post2.removeLast(), apns2S: apnsPayload)
             postsMade += 1
@@ -362,7 +393,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             print(content)
         }
         loginRequest.httpBody = data
-        print("apnsPayLoad URL \(url2Share)")
+        print("apnsPayLoad URL \((webSite2Send?.absoluteString)!)")
         let loginTask = session.dataTask(with: loginRequest) { data, response, error in
             print("error \(error) \(response)")
         }

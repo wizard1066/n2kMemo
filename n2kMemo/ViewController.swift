@@ -83,12 +83,16 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     var stationName: String!
     var pickerAuto: Bool = true
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
+//        jsonString(dictionary: dictionary)
         let defaults = UserDefaults.standard
-        lineName = defaults.string(forKey: remoteAttributes.lineName)
+//        lineName = defaults.string(forKey: remoteAttributes.lineName)
         let linePass = defaults.string(forKey: remoteAttributes.linePassword)
-        stationName = defaults.string(forKey: remoteAttributes.stationName)
+//        stationName = defaults.string(forKey: remoteAttributes.stationName)
         
         //        stationsRegistered = (defaults.array(forKey: remoteRecords.stationNames) as? [String])!
         
