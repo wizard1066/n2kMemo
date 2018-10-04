@@ -14,13 +14,12 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var registerButton: UIButton!
     
     @IBOutlet weak var stationsTable: UITableView!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var messagesLabel: UILabel!
-    @IBOutlet weak var creditsLabel: UILabel!
+    
     @IBOutlet weak var returnButton: UIButton!
     @IBOutlet weak var lineText: UITextField!
     @IBOutlet weak var passText: UITextField!
     
+    @IBOutlet weak var reportButton: UIButton!
     @IBOutlet weak var zeroURL: UILabel!
     @IBOutlet weak var dropZone: UILabel!
     
@@ -106,7 +105,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         newText = String(lineText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         newPass = String(passText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         
-        print("newText \(newText) newPass \(newPass)")
+        reportButton.isEnabled = true
+        registerButton.isEnabled = true
         
         if !linesRead.contains(lineText.text!) {
             return true
@@ -243,6 +243,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerButton.isEnabled = false
+        reportButton.isEnabled = false
         stationsTable.rowHeight = 32
         lineText.delegate = self
         passText.delegate = self

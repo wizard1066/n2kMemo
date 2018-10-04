@@ -89,7 +89,7 @@ class cloudDB: NSObject {
             url2Share = share.url?.absoluteString
             let peru = Notification.Name("sharePin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 32)
+            self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 16)
         }
         cloudDB.share.privateDB.add(modifyOperation)
     }
@@ -99,7 +99,7 @@ class cloudDB: NSObject {
             if url2Share != nil {
                 self.updateLineURL(line2U: lineName, url2U: shareName)
             } else {
-                self.redo(lineName: lineName, shareName: shareName, gogo: .now() + 32)
+                self.redo(lineName: lineName, shareName: shareName, gogo: .now() + 16)
                 print("redo")
             }
         }
@@ -341,10 +341,12 @@ class cloudDB: NSObject {
                     NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                     selectedLine = linesRead.first
                     selectedStation = stationsRead.first
-                    let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
-                    let peru2 = Notification.Name("showURL")
-                    let dict = [remoteAttributes.lineURL:pass2U]
-                    NotificationCenter.default.post(name: peru2, object: nil, userInfo: dict)
+                    if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {
+                        let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
+                        let peru2 = Notification.Name("showURL")
+                        let dict = [remoteAttributes.lineURL:pass2U]
+                        NotificationCenter.default.post(name: peru2, object: nil, userInfo: dict)
+                    }
                 }
             }
         }

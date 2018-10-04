@@ -135,6 +135,7 @@
                         <outlet property="lineText" destination="vdI-VJ-p3q" id="hBV-fC-1WI"/>
                         <outlet property="passText" destination="042-Py-Bao" id="OYe-Wu-3U6"/>
                         <outlet property="registerButton" destination="3KI-La-fkq" id="7zp-t7-nFc"/>
+                        <outlet property="reportButton" destination="lZz-co-yf0" id="OMs-ev-Z2O"/>
                         <outlet property="returnButton" destination="avr-6n-BZ5" id="b7X-x6-mO0"/>
                         <outlet property="stationsTable" destination="uFR-IM-pb6" id="Idh-rb-X1L"/>
                         <outlet property="zeroURL" destination="8oG-nk-uvb" id="wH9-fu-IrO"/>
