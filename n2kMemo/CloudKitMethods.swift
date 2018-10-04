@@ -32,6 +32,7 @@ class cloudDB: NSObject {
         operation.modifyRecordZonesCompletionBlock = { savedRecords, deletedRecordIDs, error in
             if error != nil {
                 print("\(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 35)
             } else {
                 print("customZoneID \(customZone.zoneID)")
                 self.parentZone = customZone
@@ -82,6 +83,7 @@ class cloudDB: NSObject {
         modifyOperation.modifyRecordsCompletionBlock = {records, recordIDs, error in
             if error != nil {
                 print("modifyOperation error \(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 86)
             }
             print("share url \(share.url) \(share.participants)")
             url2Share = share.url?.absoluteString
@@ -146,6 +148,7 @@ class cloudDB: NSObject {
         modifyOperation.modifyRecordsCompletionBlock = {records, recordIDs, error in
             if error != nil {
                 print("modifyOperation error \(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 151)
             }
             print("Marley banked \(share.url?.absoluteURL)")
             url2Share = share.url?.absoluteString
@@ -162,6 +165,7 @@ class cloudDB: NSObject {
         metadataOperation.perShareMetadataBlock = {url, metadata, error in
             if error != nil {
                 print("record completion \(url) \(metadata) \(error)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 168)
                 return
             }
             let acceptShareOperation = CKAcceptSharesOperation(shareMetadatas: [metadata!])
@@ -180,6 +184,7 @@ class cloudDB: NSObject {
         metadataOperation.fetchShareMetadataCompletionBlock = { error in
             if error != nil {
                 print("metadata error \(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 187)
             }
         }
         CKContainer.default().add(metadataOperation)
@@ -195,6 +200,7 @@ class cloudDB: NSObject {
         op.perRecordCompletionBlock = { record, _, error in
             if error != nil {
                 print("error \(error?.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 203)
                 return
             }
             self.imageRex = record
@@ -208,6 +214,7 @@ class cloudDB: NSObject {
         op.fetchRecordsCompletionBlock = { records, error in
             if error != nil {
                 print("error \(error?.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 217)
                 return
             }
         }
@@ -225,6 +232,7 @@ class cloudDB: NSObject {
             if error != nil {
                 
                 print("saveLine error \(error)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 235)
             } else {
                 let defaults = UserDefaults.standard
                 defaults.set(lineName, forKey: remoteAttributes.lineName)
@@ -264,11 +272,15 @@ class cloudDB: NSObject {
     
     var tokenReference: CKRecord.Reference!
     
-    public func saveToken(token2Save: String, line2Save: CKRecord.Reference?) {
+    public func saveToken(token2Save: String, line2Save: CKRecord.Reference?, line2U: String?) {
         
         let customRecord = CKRecord(recordType: remoteRecords.devicesLogged)
         customRecord[remoteAttributes.deviceRegistered] = token2Save
-        customRecord[remoteAttributes.lineOwner] = ""
+        if line2U != nil {
+            customRecord[remoteAttributes.lineOwner] = line2U
+        } else {
+            customRecord[remoteAttributes.lineOwner] = line2U
+        }
         //        let rex2D = CKRecordID(recordName: line2Save)
         //        let token2D = CKReference(recordID: rex2D, action: .none)
         if line2Save != nil {
@@ -277,6 +289,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.save(customRecord, completionHandler: ({returnRecord, error in
             if error != nil {
                 print("saveLine error \(error)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 292)
             } else {
                 self.tokenReference = CKRecord.Reference(record: customRecord, action: CKRecord_Reference_Action.none)
             }
@@ -289,6 +302,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 305)
             } else {
                 let customRecord = records!.first
                 // Cannot change the name of a line once created
@@ -299,6 +313,7 @@ class cloudDB: NSObject {
                 operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                     if error != nil {
                         print("modify error\(error!.localizedDescription)")
+                        self.parseCloudError(errorCode: error as! CKError, lineno: 316)
                     } else {
                         print("record Updated \(savedRecords)")
                     }
@@ -315,6 +330,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 333)
             } else {
                 if records?.count == 0 {
                     // report error
@@ -343,6 +359,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 362)
             } else {
                 if records?.count == 0 {
                     self.saveLine(lineName: lineName, stationNames: stationNames, linePassword: linePassword)
@@ -363,6 +380,7 @@ class cloudDB: NSObject {
                     operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                         if error != nil {
                             print("modify error\(error) \(error!.localizedDescription)")
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 383)
                         } else {
                             print("record Updated \(savedRecords)")
                         }
@@ -382,6 +400,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 403)
             } else {
                 for record in records! {
                     linesRead.append(record[remoteAttributes.lineName]!)
@@ -421,6 +440,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 443)
             } else {
                 if records!.count > 0 {
                     let stationsFound = records!.first!.object(forKey: remoteAttributes.stationNames)
@@ -444,6 +464,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.fetch(withRecordID: (record?.recordID)!) { (returnedRecord, error) in
             if error != nil {
                 print("updateTokenerror \(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 467)
             } else {
                 returnedRecord![remoteAttributes.lineReference] = link2Save
                 returnedRecord![remoteAttributes.lineOwner] = lineOwner
@@ -452,6 +473,7 @@ class cloudDB: NSObject {
                 operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                     if error != nil {
                         print("modify error\(error!.localizedDescription)")
+                        self.parseCloudError(errorCode: error as! CKError, lineno: 476)
                     } else {
                         print("record Updated \(savedRecords)")
                     }
@@ -469,6 +491,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 494)
                 return
             }
             if records!.count > 0 {
@@ -486,6 +509,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.fetch(withRecordID: (record?.recordID)!) { (record, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 512)
             } else {
                 let tokenDiscovered = record!.object(forKey: remoteAttributes.deviceRegistered) as? String
                 if ownerToken == tokenDiscovered {
@@ -506,6 +530,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (returnedRecords, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 533)
             } else {
                 if returnedRecords?.count == 0 {
 //                    self.saveToken(token2Save: token2Save, line2Save: lineLink)
@@ -518,6 +543,7 @@ class cloudDB: NSObject {
                     operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                         if error != nil {
                             print("modify error\(error!.localizedDescription)")
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 546)
                         } else {
                             print("record Updated \(savedRecords)")
                         }
@@ -528,15 +554,16 @@ class cloudDB: NSObject {
         }
     }
     
-    public func logToken(token2Save: String, lineLink: CKRecord.Reference?) {
+    public func logToken(token2Save: String, lineLink: CKRecord.Reference?, lineName: String?) {
         let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Save)
         let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 563)
             } else {
                 if records?.count == 0 {
-                    self.saveToken(token2Save: token2Save, line2Save: lineLink)
+                    self.saveToken(token2Save: token2Save, line2Save: lineLink, line2U: lineName)
                 } else {
                     self.tokenReference = CKRecord.Reference(record: (records?.first!)!, action: CKRecord_Reference_Action.none)
                 }
@@ -550,10 +577,12 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 580)
             } else {
                 cloudDB.share.publicDB.delete(withRecordID: (records!.first?.recordID)!) { (recordID, error) in
                     if error != nil {
                         print(error!.localizedDescription)
+                        self.parseCloudError(errorCode: error as! CKError, lineno: 585)
                         return
                     }
                     print("Record \(recordID) was successfully deleted")
@@ -570,6 +599,7 @@ class cloudDB: NSObject {
         cloudDB.share.sharedDB.perform(query, inZoneWith: zone2D.zoneID) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 602)
             } else {
                 for record in records! {
                     if let asset = record["mediaFile"] as? CKAsset,
@@ -592,6 +622,7 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 624)
             } else {
                 for record in records! {
                     tokensRead.append(record[remoteAttributes.deviceRegistered]!)
@@ -614,18 +645,20 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 648)
             } else {
                 print("returnAllTokensWithOwners \(records!.count)")
                 for record in records! {
                     tokensRead.append(record[remoteAttributes.deviceRegistered]!)
-                    let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
-                    let target = record[remoteAttributes.deviceRegistered]! as? String
-                    tokenOwner[target!] = fix
-                    print("tokens read \(tokensRead) \(fix)")
+                    if record.object(forKey: remoteAttributes.lineOwner) != nil {
+                        let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
+                        let target = record[remoteAttributes.deviceRegistered]! as? String
+                        tokenOwner[target!] = fix
+                    }
+                    print("tokens read \(tokensRead) ")
                     let peru = Notification.Name("showPin")
                     NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                 }
-                
             }
         }
     }
@@ -654,6 +687,7 @@ class cloudDB: NSObject {
             operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                 if error != nil {
                     print("modify error\(error!.localizedDescription)")
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 690)
                 } else {
                     print("record Updated \(deletedRecordIDs?.count)")
                 }
@@ -661,6 +695,102 @@ class cloudDB: NSObject {
             CKContainer.default().privateCloudDatabase.add(operation)
         }
         cloudDB.share.privateDB.add(operation)
+    }
+    
+    func parseCloudError(errorCode: CKError, lineno: Int) {
+        switch errorCode {
+        case CKError.internalError:
+            doAlert(title: "iCloudError" + String(lineno), message:  "CloudKit.framework encountered an error.  This is a non-recoverable error.")
+            break
+        case CKError.partialFailure:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Some items failed, but the operation succeeded overall.")
+            break
+        case CKError.networkUnavailable:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Network not available.")
+            break
+        case CKError.networkFailure:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Network error (available but CFNetwork gave us an error).")
+            break
+        case CKError.badContainer:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Un-provisioned or unauthorized container. Try provisioning the container before retrying the operation.")
+            break
+        case CKError.serviceUnavailable:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Service unavailable.")
+            break
+        case CKError.requestRateLimited:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Client is being rate limited.")
+            break
+        case CKError.missingEntitlement:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Missing entitlement.")
+            break
+        case CKError.notAuthenticated:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Not authenticated (writing without being logged in, no user record).")
+            break
+        case CKError.permissionFailure:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Access failure (save or fetch.  This is a non-recoverable error.")
+            break
+        case CKError.unknownItem:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Record does not exist.  This is a non-recoverable error.")
+            break
+        case CKError.invalidArguments:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Bad client request (bad record graph, malformed predicate).")
+            break
+        case CKError.serverRecordChanged:
+            doAlert(title: "iCloudError" + String(lineno), message:  "The record was rejected because the version on the server was different.")
+            break
+        case CKError.serverRejectedRequest:
+            doAlert(title: "iCloudError" + String(lineno), message:  "The server rejected this request.  This is a non-recoverable error.")
+            break
+        case CKError.assetFileNotFound:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Asset file was not found.")
+            break
+        case CKError.assetFileModified:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Asset file content was modified while being saved.")
+            break
+        case CKError.incompatibleVersion:
+            doAlert(title: "iCloudError" + String(lineno), message:  "App version is less than the minimum allowed version.")
+            break
+        case CKError.constraintViolation: /*  */
+            doAlert(title: "iCloudError" + String(lineno), message:  "The server rejected the request because there was a conflict with a unique field.")
+            break
+        case CKError.operationCancelled: /* */
+            doAlert(title: "iCloudError" + String(lineno), message:  "A CKOperation was explicitly cancelled.")
+            break
+        case CKError.changeTokenExpired: /*  */
+            doAlert(title: "iCloudError" + String(lineno), message:  "The previousServerChangeToken value is too old and the client must re-sync from scratch.")
+            break
+        case CKError.batchRequestFailed:
+            doAlert(title: "iCloudError" + String(lineno), message:  "One of the items in this batch operation failed in a zone with atomic updates, so the entire batch was rejected.")
+            break
+        case CKError.zoneBusy:
+            doAlert(title: "iCloudError" + String(lineno), message:  "The server is too busy to handle this zone operation. Try the operation again in a few seconds.")
+            break
+        case CKError.badDatabase:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Operation could not be completed on the given database. Likely caused by attempting to modify zones in the public database.")
+            break
+        case CKError.quotaExceeded:
+            doAlert(title: "iCloudError" + String(lineno), message:  "Saving a record would exceed quota.")
+            break
+        case CKError.zoneNotFound:
+            doAlert(title: "iCloudError" + String(lineno), message:  "The specified zone does not exist on the server.")
+            break
+        case CKError.limitExceeded:
+            doAlert(title: "iCloudError" + String(lineno), message:  "The request to the server was too large. Retry this request as a smaller batch")
+            break
+        case CKError.userDeletedZone:
+            doAlert(title: "iCloudError" + String(lineno), message:  "The user deleted this zone through the settings UI. Your client should either remove its local data or prompt the user before attempting to re-upload any data to this zone.")
+            break
+        default:
+            // do nothing
+            break
+        }
+    }
+    
+    
+    func doAlert(title: String, message:String) {
+        let peru = Notification.Name(localObservers.showAlert)
+        let dict = [localdefault.alertMessage:message]
+        NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
     }
 }
 
@@ -699,6 +829,8 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage!
     }
+    
+    
 }
 
 

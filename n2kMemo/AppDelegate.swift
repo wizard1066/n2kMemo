@@ -61,15 +61,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Successful registration. Token is:")
         print(tokenString(deviceToken))
         ownerToken = tokenString(deviceToken)
-        cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil)
         let defaults = UserDefaults.standard
         let previousToken = defaults.string(forKey: localdefault.tokentab)
         if previousToken == nil {
             defaults.set(ownerToken, forKey:localdefault.tokentab)
+            cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, lineName: nil)
         } else {
             if previousToken != ownerToken {
-                cloudDB.share.deleteToken(token2Delete: ownerToken)
+                cloudDB.share.deleteToken(token2Delete: previousToken!)
                 defaults.set(ownerToken, forKey:localdefault.tokentab)
+                let line2U = defaults.string(forKey: remoteAttributes.lineName)
+                cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, lineName: line2U)
             }
         }
     }
@@ -135,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             let peru2 = Notification.Name("showPin")
             NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
-            cloudDB.share.logToken(token2Save: ownerToken, lineLink: line2Link)
+            cloudDB.share.logToken(token2Save: ownerToken, lineLink: line2Link, lineName: selectedLine)
             let peru3 = Notification.Name("hidePostingNConfig")
             NotificationCenter.default.post(name: peru3, object: nil, userInfo: nil)
             

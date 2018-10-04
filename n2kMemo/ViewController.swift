@@ -226,6 +226,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     private var pinObserver5: NSObjectProtocol!
     private var pinObserver6: NSObjectProtocol!
     private var pinObserver7: NSObjectProtocol!
+    private var pinObserver8: NSObjectProtocol!
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -285,6 +286,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //                }
             }
         }
+        let alert2Monitor8 = localObservers.showAlert
+        pinObserver8 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor8), object: nil, queue: queue) { (notification) in
+            let message2D = notification.userInfo![localdefault.alertMessage] as? String
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title:"Attention", message:message2D, preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.pickerAuto {
@@ -312,6 +322,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if pinObserver5 != nil {
             center.removeObserver(pinObserver5)
         }
+        if pinObserver5 != nil {
+            center.removeObserver(pinObserver6)
+        }
+        if pinObserver5 != nil {
+            center.removeObserver(pinObserver7)
+        }
+        if pinObserver5 != nil {
+            center.removeObserver(pinObserver8)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -331,6 +350,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //            let pVC = destination as? ConfigViewController
             print("config")
             stationDictionary = [:]
+        }
+        
+        func doAlert(title: String, message:String) {
+            
         }
     }
     

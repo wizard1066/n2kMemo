@@ -43,6 +43,11 @@ enum remoteAttributes {
 
 enum localdefault {
     static let tokentab = "tokentab"
+    static let alertMessage = "alertMessage"
+}
+
+enum localObservers {
+    static let showAlert = "showAlert"
 }
 
 var ownerToken: String!
