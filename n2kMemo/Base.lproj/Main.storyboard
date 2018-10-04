@@ -157,7 +157,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.25" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wordle_Information_Overload_Stress" translatesAutoresizingMaskIntoConstraints="NO" id="dYa-dl-z7R">
+                            <imageView userInteractionEnabled="NO" alpha="0.25" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notification" translatesAutoresizingMaskIntoConstraints="NO" id="dYa-dl-z7R">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="InfoBahn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya4-9q-0CQ">
@@ -551,7 +551,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Wordle_Information_Overload_Stress" width="690" height="343"/>
+        <image name="notification" width="512" height="512"/>
         <image name="noun_Next_538847" width="700" height="700"/>
         <image name="noun_back_542006" width="700" height="700"/>
     </resources>
