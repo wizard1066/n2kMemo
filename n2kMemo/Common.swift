@@ -41,6 +41,10 @@ enum remoteAttributes {
     static let lineURL = "lineURL"
 }
 
+enum localdefault {
+    static let tokentab = "tokentab"
+}
+
 var ownerToken: String!
 var tokensRead:[String] = []
 var linesRead:[String] = []

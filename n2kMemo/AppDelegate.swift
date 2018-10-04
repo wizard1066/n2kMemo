@@ -62,8 +62,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(tokenString(deviceToken))
         ownerToken = tokenString(deviceToken)
         cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil)
-        //        let peru = Notification.Name("refresh")
-        //        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+        let defaults = UserDefaults.standard
+        let previousToken = defaults.string(forKey: localdefault.tokentab)
+        if previousToken == nil {
+            defaults.set(ownerToken, forKey:localdefault.tokentab)
+        } else {
+            if previousToken != ownerToken {
+                cloudDB.share.deleteToken(token2Delete: ownerToken)
+                defaults.set(ownerToken, forKey:localdefault.tokentab)
+            }
+        }
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -130,6 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             cloudDB.share.logToken(token2Save: ownerToken, lineLink: line2Link)
             let peru3 = Notification.Name("hidePostingNConfig")
             NotificationCenter.default.post(name: peru3, object: nil, userInfo: nil)
+            
         }
         CKContainer.default().sharedCloudDatabase.add(op)
     }

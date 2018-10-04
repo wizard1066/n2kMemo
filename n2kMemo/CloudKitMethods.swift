@@ -544,6 +544,24 @@ class cloudDB: NSObject {
         }
     }
     
+    public func deleteToken(token2Delete: String) {
+        let predicate = NSPredicate(format: remoteAttributes.deviceRegistered + " = %@", token2Delete)
+        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                cloudDB.share.publicDB.delete(withRecordID: (records!.first?.recordID)!) { (recordID, error) in
+                    if error != nil {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    print("Record \(recordID) was successfully deleted")
+                }
+            }
+        }
+    }
+    
     public func fetchPublicInZone(zone2Search: String) {
         let zone2D = CKRecordZone(zoneName: zone2Search)
         let predicate = NSPredicate(value: true)
