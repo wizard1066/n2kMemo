@@ -48,6 +48,7 @@ enum localdefault {
 
 enum localObservers {
     static let showAlert = "showAlert"
+    static let noLineFound = "noLineFound"
 }
 
 var ownerToken: String!

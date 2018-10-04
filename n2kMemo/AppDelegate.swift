@@ -62,18 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(tokenString(deviceToken))
         ownerToken = tokenString(deviceToken)
         let defaults = UserDefaults.standard
-        let previousToken = defaults.string(forKey: localdefault.tokentab)
-        if previousToken == nil {
-            defaults.set(ownerToken, forKey:localdefault.tokentab)
-            cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, lineName: nil)
-        } else {
-            if previousToken != ownerToken {
-                cloudDB.share.deleteToken(token2Delete: previousToken!)
-                defaults.set(ownerToken, forKey:localdefault.tokentab)
-                let line2U = defaults.string(forKey: remoteAttributes.lineName)
-                cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, lineName: line2U)
-            }
-        }
+        let line2U = defaults.string(forKey: remoteAttributes.lineName)
+        cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, lineName: line2U)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -87,11 +77,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         acceptSharing.qualityOfService = .userInteractive
         acceptSharing.perShareCompletionBlock = {meta, share, error in
             print("successfully shared \(meta) \(share) \(error)")
+            if error != nil {
+                cloudDB.share.parseCloudError(errorCode: error as! CKError, lineno: 81)
+                return
+            }
         }
         acceptSharing.acceptSharesCompletionBlock = {
             error in
-            guard (error == nil) else{
+            if error != nil {
                 print("Error \(error?.localizedDescription ?? "")")
+                cloudDB.share.parseCloudError(errorCode: error as! CKError, lineno: 88)
                 return
             }
             
@@ -112,6 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         op.perRecordCompletionBlock = { record, _, error in
             if error != nil {
                 print("error \(error?.localizedDescription)")
+                cloudDB.share.parseCloudError(errorCode: error as! CKError, lineno: 108)
                 return
             }
             self.item = record
@@ -119,6 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         op.fetchRecordsCompletionBlock = { records, error in
             if error != nil {
                 print("error \(error?.localizedDescription)")
+                cloudDB.share.parseCloudError(errorCode: error as! CKError, lineno: 116)
                 return
             }
             print("record \(self.item)")

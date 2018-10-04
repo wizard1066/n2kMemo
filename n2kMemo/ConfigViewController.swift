@@ -19,7 +19,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var lineText: UITextField!
     @IBOutlet weak var passText: UITextField!
     
-    @IBOutlet weak var reportButton: UIButton!
+    
     @IBOutlet weak var zeroURL: UILabel!
     @IBOutlet weak var dropZone: UILabel!
     
@@ -54,11 +54,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //        NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
     }
     
-    @IBAction func reportButton(_ sender: UIButton) {
-        if newText != nil {
-            cloudDB.share.returnLine(lineName: newText)
-        }
-    }
+ 
     
     func confirmRegistration() {
         let defaults = UserDefaults.standard
@@ -105,24 +101,30 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         newText = String(lineText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         newPass = String(passText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         
-        reportButton.isEnabled = true
+        
         registerButton.isEnabled = true
         
-        if !linesRead.contains(lineText.text!) {
-            return true
-        }
+//        if !linesRead.contains(lineText.text!) {
+//            return true
+//        }
+//        let verify = linesDictionary[newText + newPass]
+//        if verify != nil && !changed! {
+        cloudDB.share.getLine(lineName: newText, linePassword: newPass)
+        return true
+    }
+        
+    func handin() -> Bool {
         let verify = linesDictionary[newText + newPass]
-        if verify != nil && !changed! {
+        if verify != nil {
             cloudDB.share.returnStationsOnLine(line2Seek: newText)
             zeroURL.text = url2ShareDictionary[newText]
-            
             bon = true
         } else {
             passText.textColor = UIColor.red
             UIView.animate(withDuration: 0.75, delay: 0.25, options: [.curveEaseOut], animations: {
                 self.passText.alpha = 0.0
             }) { (status) in
-                self.passText.text = ""
+//                self.passText.text = ""
                 self.passText.alpha = 1.0
                 self.passText.textColor = UIColor.black
             }
@@ -244,7 +246,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         registerButton.isEnabled = false
-        reportButton.isEnabled = false
+        
         stationsTable.rowHeight = 32
         lineText.delegate = self
         passText.delegate = self
@@ -262,6 +264,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private var pinObserver4: NSObjectProtocol!
     private var pinObserver5: NSObjectProtocol!
     private var pinObserver6: NSObjectProtocol!
+    private var pinObserver7: NSObjectProtocol!
     
     override func viewDidAppear(_ animated: Bool) {
         let center = NotificationCenter.default
@@ -276,17 +279,29 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.stationsTable.reloadData()
         }
         let alert2Monitor5 = "sharePin"
-        pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor5), object: nil, queue: queue) { (notification) in
+        pinObserver5 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor5), object: nil, queue: queue) { (notification) in
             self.zeroURL.text = url2Share!
         }
         let alert2Monitor4 = "doImage"
-        pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
+        pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
             self.imageFetched.image = image2D
         }
         let alert2Monitor6 = "showURL"
-        pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
+        pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
             let request2D = notification.userInfo![remoteAttributes.lineURL] as? String
             self.zeroURL.text = request2D
+        }
+        let alert2Monitor7 = localObservers.noLineFound
+        pinObserver7 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor7), object: nil, queue: queue) { (notification) in
+            let message2D = "No Line or Password wrong ..."
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title:"Attention", message:message2D, preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                self.passText.text = ""
+                self.lineText.text = ""
+            }
+            
         }
         NotificationCenter.default.addObserver(
             self,
@@ -309,8 +324,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     @objc func keyboardWillHide(_ notification: Notification) {
         // keyboard off screen
-        _ = verifyFields(textField: lineText)
-        _ = verifyFields(textField: passText)
+//        _ = verifyFields(textField: lineText)
+//        _ = verifyFields(textField: passText)
     }
     
     @objc func copyURL() {

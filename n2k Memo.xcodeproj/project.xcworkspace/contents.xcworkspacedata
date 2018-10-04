@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:n2kMemo.xcodeproj">
+      location = "self:/Users/localadmin/Desktop/n2kMemo/n2k Memo.xcodeproj">
    </FileRef>
 </Workspace>

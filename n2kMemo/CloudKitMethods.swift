@@ -40,6 +40,7 @@ class cloudDB: NSObject {
             }
         }
         CKContainer.default().privateCloudDatabase.add(operation)
+        
     }
     
     var parentRecord: CKRecord!
@@ -89,21 +90,24 @@ class cloudDB: NSObject {
             url2Share = share.url?.absoluteString
             let peru = Notification.Name("sharePin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 16)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+//                self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 15)
+                self.updateLineURL(line2U: lineName, url2U: url2Share!)
+            }
         }
         cloudDB.share.privateDB.add(modifyOperation)
     }
     
-    func redo(lineName: String, shareName: String, gogo: DispatchTime) {
-        DispatchQueue.main.asyncAfter(deadline: gogo) {
-            if url2Share != nil {
-                self.updateLineURL(line2U: lineName, url2U: shareName)
-            } else {
-                self.redo(lineName: lineName, shareName: shareName, gogo: .now() + 16)
-                print("redo")
-            }
-        }
-    }
+//    func redo(lineName: String, shareName: String?, gogo: DispatchTime) {
+//        DispatchQueue.main.asyncAfter(deadline: gogo) {
+//            if shareName != nil {
+//                self.updateLineURL(line2U: lineName, url2U: shareName!)
+//            } else {
+//                self.redo(lineName: lineName, shareName: shareName, gogo: .now() + 15)
+//                print("redo")
+//            }
+//        }
+//    }
     
     func reduceImage(inImage:UIImage?) -> UIImage {
         var outImage: UIImage!
@@ -251,13 +255,31 @@ class cloudDB: NSObject {
     }
     
     public func deleteLine(lineName: String, linePassword: String) {
-        let recordID2Access = linesDictionary[lineName + linePassword]
-        cloudDB.share.publicDB.delete(withRecordID: recordID2Access!) { (recordID, error) in
-            guard let recordID = recordID else {
+        // Need to delete SHARE too!!
+        //        let recordID2Access = linesDictionary[lineName + linePassword]
+        let predicate = NSPredicate(format: remoteAttributes.lineName + " = %@", lineName)
+        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
                 print(error!.localizedDescription)
-                return
+                self.parseCloudError(errorCode: error as! CKError, lineno: 305)
+            } else {
+                if records!.count > 0 {
+                    cloudDB.share.publicDB.delete(withRecordID: (records!.first?.recordID)!) { (recordID, error) in
+                        if error != nil {
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 270)
+                        }
+                        print("Record \(recordID) was successfully deleted")
+                    }
+                    let zone2Zap = CKRecordZone(zoneName: lineName)
+                    CKContainer.default().sharedCloudDatabase.delete(withRecordZoneID: zone2Zap.zoneID) { (zoneDeleted, error) in
+                        if error != nil {
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 270)
+                        }
+                        print("Zone \(lineName) was successfully deleted")
+                    }
+                }
             }
-            print("Record \(recordID) was successfully deleted")
         }
     }
     
@@ -322,6 +344,37 @@ class cloudDB: NSObject {
             }
         }
                 
+    }
+    
+    public func getLine(lineName: String, linePassword: String) {
+        let predicate = NSPredicate(format: "%K = %@",remoteAttributes.lineName,lineName)
+        let predicate2 = NSPredicate(format: "%K = %@",remoteAttributes.linePassword,linePassword)
+        let predicate3 = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
+        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate3)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 333)
+            } else {
+                if records?.count == 0 {
+                    let peru = Notification.Name(localObservers.noLineFound)
+                    NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+                } else {
+                    linesRead = [records!.first?.object(forKey: remoteAttributes.lineName) as! String]
+                    stationsRead = records!.first?.object(forKey: remoteAttributes.stationNames) as! [String]
+                    let peru = Notification.Name("stationPin")
+                    NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+                    selectedLine = linesRead.first
+                    selectedStation = stationsRead.first
+                    if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {
+                        let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
+                        let peru2 = Notification.Name("showURL")
+                        let dict = [remoteAttributes.lineURL:pass2U]
+                        NotificationCenter.default.post(name: peru2, object: nil, userInfo: dict)
+                    }
+                }
+            }
+        }
     }
     
     public func returnLine(lineName: String) {
