@@ -376,12 +376,29 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         let data = try? JSONSerialization.data(withJSONObject: apns2S, options:[])
         if let content = String(data: data!, encoding: String.Encoding.utf8) {
             // here `content` is the JSON dictionary containing the String
-            print(content)
+//            print(content)
         }
         loginRequest.httpBody = data
 //        print("apnsPayLoad URL \((webSite2Send?.absoluteString)!)")
         let loginTask = session.dataTask(with: loginRequest) { data, response, error in
-            print("error \(error) \(response)")
+//            print("error \(error) \(response)")
+            let httpResponse = response as! HTTPURLResponse
+            print("statusCode \(httpResponse.statusCode)")
+            if httpResponse.statusCode == 410 {
+                cloudDB.share.deleteToken(token2Delete: token2U)
+            }
+/*
+             APNS reponse codes https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/CommunicatingwithAPNs.html
+            200 Success
+            400 Bad request
+            403 There was an error with the certificate or with the provider authentication token
+            405 The request used a bad :method value. Only POST requests are supported.
+            410 The device token is no longer active for the topic.
+            413 The notification payload was too large.
+            429 The server received too many requests for the same device token.
+            500 Internal server error
+            503 The server is shutting down and unavailable.
+ */
         }
         loginTask.resume()
     }

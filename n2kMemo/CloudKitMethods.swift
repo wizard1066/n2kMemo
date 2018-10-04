@@ -370,11 +370,14 @@ class cloudDB: NSObject {
                     if url2Share != nil {
                         customRecord![remoteAttributes.lineURL] = url2Share
                     }
-                    let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
-                    url2ShareDictionary[lineName] = records!.first?.object(forKey: remoteAttributes.lineURL) as? String
-                    let peru = Notification.Name("showURL")
-                    let dict = [remoteAttributes.lineURL:pass2U]
-                    NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
+                    if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {
+                        let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
+                        url2ShareDictionary[lineName] = records!.first?.object(forKey: remoteAttributes.lineURL) as? String
+                        let peru = Notification.Name("showURL")
+                        let dict = [remoteAttributes.lineURL:pass2U]
+                        NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
+                    }
+                    
                     let operation = CKModifyRecordsOperation(recordsToSave: [customRecord!], recordIDsToDelete: nil)
                     operation.savePolicy = .changedKeys
                     operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
