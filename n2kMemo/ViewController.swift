@@ -90,10 +90,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let defaults = UserDefaults.standard
+//        defaults.set(nil, forKey: remoteAttributes.lineName)
+//        defaults.set(nil, forKey: remoteAttributes.linePassword)
+//        defaults.set(nil, forKey: remoteAttributes.stationNames)
 //        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
 //        jsonString(dictionary: dictionary)
         
-        let defaults = UserDefaults.standard
+        
         
         lineName = defaults.string(forKey: remoteAttributes.lineName)
         if lineName != nil {
@@ -161,7 +165,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         {
             pickerLabel = UILabel()
             
-            pickerLabel?.font = UIFont(name: "AvenirNextCondensed-DemiBoldItalic", size: 20)
+            pickerLabel?.font = UIFont(name: "BradleyHandITCTT-Bold", size: 20)
             pickerLabel?.textAlignment = NSTextAlignment.center
         }
         

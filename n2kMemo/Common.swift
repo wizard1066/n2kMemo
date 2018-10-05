@@ -63,6 +63,8 @@ var controller:UICloudSharingController!
 var url2Share: String? {
     didSet {
         cloudDB.share.updateLineURL(line2U: selectedLine, url2U: url2Share)
+        let peru = Notification.Name("sharePin")
+        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
     }
 }
 var image2D: UIImage!

@@ -88,8 +88,7 @@ class cloudDB: NSObject {
             }
 //            print("share url \(share.url) \(share.participants)")
             url2Share = share.url?.absoluteString
-            let peru = Notification.Name("sharePin")
-            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+            
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
 //                self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 15)
 //                self.updateLineURL(line2U: lineName, url2U: url2Share!)
@@ -268,10 +267,14 @@ class cloudDB: NSObject {
 //                        print("Record \(recordID) was successfully deleted")
                     }
                     let zone2Zap = CKRecordZone(zoneName: lineName)
-                    CKContainer.default().sharedCloudDatabase.delete(withRecordZoneID: zone2Zap.zoneID) { (zoneDeleted, error) in
+                    CKContainer.default().privateCloudDatabase.delete(withRecordZoneID: zone2Zap.zoneID) { (zoneDeleted, error) in
                         if error != nil {
                             self.parseCloudError(errorCode: error as! CKError, lineno: 270)
                         }
+                        let defaults = UserDefaults.standard
+                        defaults.set(nil, forKey: remoteAttributes.lineName)
+                        defaults.set(nil, forKey: remoteAttributes.linePassword)
+                        defaults.set(nil, forKey: remoteAttributes.stationNames)
 //                        print("Zone \(lineName) was successfully deleted")
                     }
                 }
@@ -324,21 +327,23 @@ class cloudDB: NSObject {
                 print(error!.localizedDescription)
                 self.parseCloudError(errorCode: error as! CKError, lineno: 305)
             } else {
-                let customRecord = records!.first
-                // Cannot change the name of a line once created
-                //                  customRecord![remoteAttributes.lineName] = lineName
-                customRecord![remoteAttributes.lineURL] = url2U
-                let operation = CKModifyRecordsOperation(recordsToSave: [customRecord!], recordIDsToDelete: nil)
-                operation.savePolicy = .allKeys
-                operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-                    if error != nil {
-                        print("modify error\(error!.localizedDescription)")
-                        self.parseCloudError(errorCode: error as! CKError, lineno: 316)
-                    } else {
-//                        print("record Updated \(savedRecords)")
+                if records!.count > 0 {
+                    let customRecord = records!.first
+                    // Cannot change the name of a line once created
+                    //                  customRecord![remoteAttributes.lineName] = lineName
+                    customRecord![remoteAttributes.lineURL] = url2U
+                    let operation = CKModifyRecordsOperation(recordsToSave: [customRecord!], recordIDsToDelete: nil)
+                    operation.savePolicy = .allKeys
+                    operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                        if error != nil {
+                            print("modify error\(error!.localizedDescription)")
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 316)
+                        } else {
+                            //                        print("record Updated \(savedRecords)")
+                        }
                     }
+                    CKContainer.default().publicCloudDatabase.add(operation)
                 }
-                CKContainer.default().publicCloudDatabase.add(operation)
             }
         }
                 

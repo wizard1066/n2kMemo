@@ -143,7 +143,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
         cell.textLabel?.text = stationsRegistered[indexPath.row]
-        cell.textLabel?.font = UIFont(name: "AvenirNextCondensed-DemiBoldItalic", size: 20)
+        cell.textLabel?.font = UIFont(name: "BradleyHandITCTT-Bold", size: 20)
         cell.textLabel?.textAlignment = NSTextAlignment.center
         return cell
     }
@@ -279,7 +279,9 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         let alert2Monitor5 = "sharePin"
         pinObserver5 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor5), object: nil, queue: queue) { (notification) in
-            self.zeroURL.text = url2Share!
+            if url2Share != nil {
+                self.zeroURL.text = url2Share!
+            }
         }
         let alert2Monitor4 = "doImage"
         pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
