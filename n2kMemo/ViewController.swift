@@ -348,7 +348,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         }
         if segue.identifier == segueNames.configuration {
 //            let pVC = destination as? ConfigViewController
-            print("config")
+//            print("config")
             stationDictionary = [:]
         }
         
