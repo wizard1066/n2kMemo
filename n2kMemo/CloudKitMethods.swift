@@ -34,7 +34,7 @@ class cloudDB: NSObject {
                 print("\(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 35)
             } else {
-                print("customZoneID \(customZone.zoneID)")
+//                print("customZoneID \(customZone.zoneID)")
                 self.parentZone = customZone
                 self.saveShare(lineName: zone2U, zone2ID: customZone.zoneID, notificationLink: notificationReference, station2Save: stationNames)
             }
@@ -79,14 +79,14 @@ class cloudDB: NSObject {
         
         modifyOperation.savePolicy = .ifServerRecordUnchanged
         modifyOperation.perRecordCompletionBlock = {record, error in
-            print("record completion \(record) and \(error)")
+//            print("record completion \(record) and \(error)")
         }
         modifyOperation.modifyRecordsCompletionBlock = {records, recordIDs, error in
             if error != nil {
                 print("modifyOperation error \(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 86)
             }
-            print("share url \(share.url) \(share.participants)")
+//            print("share url \(share.url) \(share.participants)")
             url2Share = share.url?.absoluteString
             let peru = Notification.Name("sharePin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
@@ -98,16 +98,6 @@ class cloudDB: NSObject {
         cloudDB.share.privateDB.add(modifyOperation)
     }
     
-//    func redo(lineName: String, shareName: String?, gogo: DispatchTime) {
-//        DispatchQueue.main.asyncAfter(deadline: gogo) {
-//            if shareName != nil {
-//                self.updateLineURL(line2U: lineName, url2U: shareName!)
-//            } else {
-//                self.redo(lineName: lineName, shareName: shareName, gogo: .now() + 15)
-//                print("redo")
-//            }
-//        }
-//    }
     
     func reduceImage(inImage:UIImage?) -> UIImage {
         var outImage: UIImage!
@@ -130,8 +120,9 @@ class cloudDB: NSObject {
     
     
     public func saveImage2Share(image2Save: UIImage) {
+        if selectedLine == nil { return }
 //        let sizedImage = reduceImage(inImage: image2Save)
-        let zone2D = CKRecordZone(zoneName: linesRead[0])
+        let zone2D = CKRecordZone(zoneName: selectedLine)
 //        let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
         let customID = CKRecord.ID(recordName: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
         let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, recordID: customID)
@@ -147,14 +138,14 @@ class cloudDB: NSObject {
         let modifyOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [customRecord, share], recordIDsToDelete: nil)
         modifyOperation.savePolicy = .ifServerRecordUnchanged
         modifyOperation.perRecordCompletionBlock = {record, error in
-            print("record completion \(record) and \(error)")
+//            print("record completion \(record) and \(error)")
         }
         modifyOperation.modifyRecordsCompletionBlock = {records, recordIDs, error in
             if error != nil {
                 print("modifyOperation error \(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 151)
             }
-            print("Marley banked \(share.url?.absoluteURL)")
+//            print("Marley banked \(share.url?.absoluteURL)")
             url2Share = share.url?.absoluteString
             let peru = Notification.Name("enablePost")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
@@ -176,11 +167,16 @@ class cloudDB: NSObject {
             acceptShareOperation.qualityOfService = .background
             acceptShareOperation.perShareCompletionBlock = {meta, share, error in
                 print("meta \(meta) share \(share) error \(error)")
+                if error != nil {
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 173)
+                }
                 self.getShare(meta)
             }
             acceptShareOperation.acceptSharesCompletionBlock = {error in
                 print("error in accept share completion \(error)")
-                /// Send your user to wear that need to go in your app
+                if error != nil {
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 173)
+                }
                 
             }
             CKContainer.default().add(acceptShareOperation)
@@ -246,7 +242,7 @@ class cloudDB: NSObject {
                 //                linesGood2Go = !linesGood2Go
                 let peru = Notification.Name("confirmPin")
                 NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-                print("didSet")
+                
                 let newReference = CKRecord.Reference(record: customRecord, action: .none)
                 self.saveZone(zone2U: lineName, notificationReference: newReference, stationNames: stationNames)
                 self.updateTokenWithID(record: self.tokenReference, link2Save: newReference, lineOwner: lineName)
@@ -269,28 +265,28 @@ class cloudDB: NSObject {
                         if error != nil {
                             self.parseCloudError(errorCode: error as! CKError, lineno: 270)
                         }
-                        print("Record \(recordID) was successfully deleted")
+//                        print("Record \(recordID) was successfully deleted")
                     }
                     let zone2Zap = CKRecordZone(zoneName: lineName)
                     CKContainer.default().sharedCloudDatabase.delete(withRecordZoneID: zone2Zap.zoneID) { (zoneDeleted, error) in
                         if error != nil {
                             self.parseCloudError(errorCode: error as! CKError, lineno: 270)
                         }
-                        print("Zone \(lineName) was successfully deleted")
+//                        print("Zone \(lineName) was successfully deleted")
                     }
                 }
             }
         }
     }
     
-    public func modifyStations(lineName: String, stationName: String) {
-        
-    }
+//    public func modifyStations(lineName: String, stationName: String) {
+//
+//    }
     
-    public func readLines() -> [String] {
-        var linesRead:[String]!
-        return linesRead
-    }
+//    public func readLines() -> [String] {
+//        let linesRead:[String]!
+//        return linesRead
+//    }
     
     var tokenReference: CKRecord.Reference!
     
@@ -310,10 +306,11 @@ class cloudDB: NSObject {
         }
         cloudDB.share.publicDB.save(customRecord, completionHandler: ({returnRecord, error in
             if error != nil {
-                print("saveLine error \(error)")
+                print("saveLine error \(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 292)
             } else {
                 self.tokenReference = CKRecord.Reference(record: customRecord, action: CKRecord_Reference_Action.none)
+                tokensRead.append(ownerToken)
             }
         }))
     }
@@ -338,7 +335,7 @@ class cloudDB: NSObject {
                         print("modify error\(error!.localizedDescription)")
                         self.parseCloudError(errorCode: error as! CKError, lineno: 316)
                     } else {
-                        print("record Updated \(savedRecords)")
+//                        print("record Updated \(savedRecords)")
                     }
                 }
                 CKContainer.default().publicCloudDatabase.add(operation)
@@ -479,7 +476,7 @@ class cloudDB: NSObject {
                 }
                 let peru = Notification.Name("showPin")
                 NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-                print("linesRead read \(linesRead)")
+                
                 if linesRead.count > 0 {
                     self.returnStationsOnLine(line2Seek: linesRead[0])
                 }
@@ -490,16 +487,7 @@ class cloudDB: NSObject {
     }
     
     public func returnStationsOnLine(line2Seek: String) {
-//        print("returnStationsOnLine \(stationDictionary[line2Seek])")
-//        if stationDictionary[line2Seek] != nil {
-//            stationsRead = (stationDictionary[line2Seek] as? [String])!
-//            let peru = Notification.Name("stationPin")
-//            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-//            return
-//        }
-//        if (stationDictionary[line2Seek] as! [String]).count > 0 {
-//            stationsRead = (stationDictionary[line2Seek] as! [String])
-//        }
+
         let predicate = NSPredicate(format: remoteAttributes.lineName + " = %@", line2Seek)
         let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
@@ -610,7 +598,7 @@ class cloudDB: NSObject {
                             print("modify error\(error!.localizedDescription)")
                             self.parseCloudError(errorCode: error as! CKError, lineno: 546)
                         } else {
-                            print("record Updated \(savedRecords)")
+//                            print("record Updated \(savedRecords)")
                         }
                     }
                     CKContainer.default().publicCloudDatabase.add(operation)
@@ -650,7 +638,7 @@ class cloudDB: NSObject {
                         self.parseCloudError(errorCode: error as! CKError, lineno: 585)
                         return
                     }
-                    print("Record \(recordID) was successfully deleted")
+//                    print("Record \(recordID) was successfully deleted")
                 }
             }
         }
@@ -674,7 +662,7 @@ class cloudDB: NSObject {
                         NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                     }
                 }
-                print("tokens read \(tokensRead)")
+//                print("tokens read \(tokensRead)")
             }
         }
     }
@@ -696,7 +684,7 @@ class cloudDB: NSObject {
                     let target = record[remoteAttributes.deviceRegistered]! as? String
                     tokenOwner[fix!] = target
                 }
-                print("tokens read \(tokensRead)")
+//                print("tokens read \(tokensRead)")
                 
                 let peru = Notification.Name("devices2Post")
                 NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
@@ -712,7 +700,7 @@ class cloudDB: NSObject {
                 print(error!.localizedDescription)
                 self.parseCloudError(errorCode: error as! CKError, lineno: 648)
             } else {
-                print("returnAllTokensWithOwners \(records!.count)")
+//                print("returnAllTokensWithOwners \(records!.count)")
                 for record in records! {
                     tokensRead.append(record[remoteAttributes.deviceRegistered]!)
                     if record.object(forKey: remoteAttributes.lineOwner) != nil {
@@ -720,7 +708,7 @@ class cloudDB: NSObject {
                         let target = record[remoteAttributes.deviceRegistered]! as? String
                         tokenOwner[target!] = fix
                     }
-                    print("tokens read \(tokensRead) ")
+//                    print("tokens read \(tokensRead) ")
                     let peru = Notification.Name("showPin")
                     NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                 }
@@ -734,8 +722,8 @@ class cloudDB: NSObject {
         let zone2D = CKRecordZone(zoneName: zone2U)
         // -1 to test tomorrow!!
         
-        let sevenDaysBefore = Date.changeDaysBy(days: -1) as? NSDate
-        print("sevenDaysBefore \(sevenDaysBefore) \(zone2D)")
+        let sevenDaysBefore = Date.changeDaysBy(days: -7) as? NSDate
+//        print("sevenDaysBefore \(sevenDaysBefore) \(zone2D)")
         //        let predicate = NSPredicate(format: "creationDate < %@", sevenDaysBefore!)
         let predicate = NSPredicate(value: true)
         
@@ -754,7 +742,7 @@ class cloudDB: NSObject {
                     print("modify error\(error!.localizedDescription)")
                     self.parseCloudError(errorCode: error as! CKError, lineno: 690)
                 } else {
-                    print("record Updated \(deletedRecordIDs?.count)")
+//                    print("record Updated \(deletedRecordIDs?.count)")
                 }
             }
             CKContainer.default().privateCloudDatabase.add(operation)

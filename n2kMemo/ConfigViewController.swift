@@ -349,7 +349,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @objc func copyURL() {
         UIPasteboard.general.string = self.zeroURL.text
-        print("copied")
+        
         zeroURL.alpha = 0
         UIView.animate(withDuration: 0.75, delay: 0.25, options: [.curveEaseOut], animations: {
             self.zeroURL.alpha = 1.0

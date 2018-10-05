@@ -236,7 +236,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         pinObserver3 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor3), object: nil, queue: queue) { (notification) in
 //            self.clientLabel.text = "\(tokensRead.count)"
             self.clientsRegistered.text = "\(tokensRead.count)"
-            print("ETF \(tokensRead.count) \(tokensRead)")
+            
         }
         let alert2Monitor4 = "showWeb"
         pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
@@ -330,7 +330,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             ),
             let theJSONText = String(data: theJSONData,
                                      encoding: String.Encoding.ascii) {
-            print("JSON string = \n\(theJSONText)")
+//            print("JSON string = \n\(theJSONText)")
         }
     }
     
@@ -365,7 +365,6 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     func buildPost(token2U: String, apns2S: Any) {
-        print("tokenPosted \(token2U)")
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue.main)
         
         var loginRequest = URLRequest(url: URL(string: "https://api.sandbox.push.apple.com/3/device/" + token2U)!)
@@ -376,14 +375,10 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         let data = try? JSONSerialization.data(withJSONObject: apns2S, options:[])
         if let content = String(data: data!, encoding: String.Encoding.utf8) {
             // here `content` is the JSON dictionary containing the String
-//            print(content)
         }
         loginRequest.httpBody = data
-//        print("apnsPayLoad URL \((webSite2Send?.absoluteString)!)")
         let loginTask = session.dataTask(with: loginRequest) { data, response, error in
-//            print("error \(error) \(response)")
             let httpResponse = response as! HTTPURLResponse
-            print("statusCode \(httpResponse.statusCode)")
             if httpResponse.statusCode == 410 {
                 cloudDB.share.deleteToken(token2Delete: token2U)
             }
