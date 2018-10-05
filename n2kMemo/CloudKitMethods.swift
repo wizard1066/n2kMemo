@@ -90,10 +90,10 @@ class cloudDB: NSObject {
             url2Share = share.url?.absoluteString
             let peru = Notification.Name("sharePin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
 //                self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 15)
-                self.updateLineURL(line2U: lineName, url2U: url2Share!)
-            }
+//                self.updateLineURL(line2U: lineName, url2U: url2Share!)
+//            }
         }
         cloudDB.share.privateDB.add(modifyOperation)
     }
@@ -318,8 +318,9 @@ class cloudDB: NSObject {
         }))
     }
     
-    private func updateLineURL(line2U: String, url2U: String) {
-        let predicate = NSPredicate(format: remoteAttributes.lineName + " = %@", line2U)
+    public func updateLineURL(line2U: String?, url2U: String?) {
+        if url2U == nil || line2U == nil { return }
+        let predicate = NSPredicate(format: remoteAttributes.lineName + " = %@", line2U!)
         let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
@@ -348,29 +349,35 @@ class cloudDB: NSObject {
     
     public func getLine(lineName: String, linePassword: String) {
         let predicate = NSPredicate(format: "%K = %@",remoteAttributes.lineName,lineName)
-        let predicate2 = NSPredicate(format: "%K = %@",remoteAttributes.linePassword,linePassword)
-        let predicate3 = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
-        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate3)
+//        let predicate2 = NSPredicate(format: "%K = %@",remoteAttributes.linePassword,linePassword)
+//        let predicate3 = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
+        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
                 self.parseCloudError(errorCode: error as! CKError, lineno: 333)
             } else {
                 if records?.count == 0 {
-                    let peru = Notification.Name(localObservers.noLineFound)
+                    let peru = Notification.Name(localObservers.newLine)
                     NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                 } else {
-                    linesRead = [records!.first?.object(forKey: remoteAttributes.lineName) as! String]
-                    stationsRead = records!.first?.object(forKey: remoteAttributes.stationNames) as! [String]
-                    let peru = Notification.Name("stationPin")
-                    NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-                    selectedLine = linesRead.first
-                    selectedStation = stationsRead.first
-                    if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {
-                        let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
-                        let peru2 = Notification.Name("showURL")
-                        let dict = [remoteAttributes.lineURL:pass2U]
-                        NotificationCenter.default.post(name: peru2, object: nil, userInfo: dict)
+                    let passwordOnfile = records!.first?.object(forKey: remoteAttributes.linePassword) as! String
+                    if passwordOnfile == linePassword {
+                        linesRead = [records!.first?.object(forKey: remoteAttributes.lineName) as! String]
+                        stationsRead = records!.first?.object(forKey: remoteAttributes.stationNames) as! [String]
+                        let peru = Notification.Name("stationPin")
+                        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+                        selectedLine = linesRead.first
+                        selectedStation = stationsRead.first
+                        if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {
+                            let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
+                            let peru2 = Notification.Name("showURL")
+                            let dict = [remoteAttributes.lineURL:pass2U]
+                            NotificationCenter.default.post(name: peru2, object: nil, userInfo: dict)
+                        }
+                    } else {
+                        let peru = Notification.Name(localObservers.noLineFound)
+                        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                     }
                 }
             }

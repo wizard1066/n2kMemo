@@ -49,6 +49,7 @@ enum localdefault {
 enum localObservers {
     static let showAlert = "showAlert"
     static let noLineFound = "noLineFound"
+    static let newLine = "newLine"
 }
 
 var ownerToken: String!
@@ -59,7 +60,11 @@ var linesGood2Go: Bool = false
 
 var linesDictionary:[String:CKRecord.ID] = [:]
 var controller:UICloudSharingController!
-var url2Share: String?
+var url2Share: String? {
+    didSet {
+        cloudDB.share.updateLineURL(line2U: selectedLine, url2U: url2Share)
+    }
+}
 var image2D: UIImage!
 var lineZoneID: String!
 

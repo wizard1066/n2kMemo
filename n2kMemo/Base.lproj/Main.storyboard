@@ -18,7 +18,7 @@
         <!--Config View Controller-->
         <scene sceneID="d3q-pp-xBn">
             <objects>
-                <viewController storyboardIdentifier="configuration" id="0Vh-s0-xvt" customClass="ConfigViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="configuration" id="0Vh-s0-xvt" customClass="ConfigViewController" customModule="n2k_Memo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5IL-V9-A5g"/>
                         <viewControllerLayoutGuide type="bottom" id="27p-4G-VBp"/>
@@ -81,9 +81,9 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KI-La-fkq">
-                                <rect key="frame" x="134.5" y="72" width="106" height="62"/>
+                                <rect key="frame" x="140.5" y="72" width="94" height="62"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-MediumItalic" family="Avenir Next Condensed" pointSize="36"/>
-                                <state key="normal" title="Register"/>
+                                <state key="normal" title="Update"/>
                                 <connections>
                                     <action selector="registerButton:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="b3R-lk-10r"/>
                                 </connections>
@@ -97,6 +97,12 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Link URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8oG-nk-uvb">
                                 <rect key="frame" x="162.5" y="592" width="50" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9g-Um-hbc">
+                                <rect key="frame" x="168.5" y="218" width="38" height="28"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -115,6 +121,8 @@
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="TOc-Zc-TXB"/>
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="top" secondItem="uFR-IM-pb6" secondAttribute="bottom" constant="16" id="Y7j-98-xI9"/>
                             <constraint firstItem="3KI-La-fkq" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="cUN-O9-eaf"/>
+                            <constraint firstItem="s9g-Um-hbc" firstAttribute="top" secondItem="042-Py-Bao" secondAttribute="bottom" constant="8" id="hhc-rO-5g9"/>
+                            <constraint firstItem="s9g-Um-hbc" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="k0e-dv-BeO"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="nJu-no-QQj"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="top" secondItem="3KI-La-fkq" secondAttribute="bottom" constant="8" id="tR9-xQ-MOJ"/>
                         </constraints>
@@ -137,7 +145,7 @@
         <!--View Controller-->
         <scene sceneID="7sA-iJ-WVx">
             <objects>
-                <viewController storyboardIdentifier="principle" id="CdQ-GP-5qa" customClass="ViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="principle" id="CdQ-GP-5qa" customClass="ViewController" customModule="n2k_Memo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HfF-Ax-XaG"/>
                         <viewControllerLayoutGuide type="bottom" id="mrt-pl-6VE"/>
@@ -241,7 +249,7 @@
         <!--Posting View Controller-->
         <scene sceneID="gBK-Hl-IXT">
             <objects>
-                <viewController storyboardIdentifier="posting" id="sTY-l2-MkH" customClass="PostingViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="posting" id="sTY-l2-MkH" customClass="PostingViewController" customModule="n2k_Memo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LpY-av-2AR"/>
                         <viewControllerLayoutGuide type="bottom" id="NAP-d2-xm1"/>
@@ -459,7 +467,7 @@
         <!--Web View Controller-->
         <scene sceneID="5gD-nL-6bV">
             <objects>
-                <viewController id="oef-QF-fxW" customClass="WebViewController" customModule="n2kMemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oef-QF-fxW" customClass="WebViewController" customModule="n2k_Memo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7sy-A0-B0d">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

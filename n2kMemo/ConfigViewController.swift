@@ -47,6 +47,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //            selectedStation = stationsRegistered[0]
 //        }
         cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, linePassword: newPass)
+        
 //        let peru = Notification.Name("showPin")
 //        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
         
@@ -104,11 +105,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         registerButton.isEnabled = true
         
-//        if !linesRead.contains(lineText.text!) {
-//            return true
-//        }
-//        let verify = linesDictionary[newText + newPass]
-//        if verify != nil && !changed! {
+        // do a newlinw based on a second search just for the name
+        
         cloudDB.share.getLine(lineName: newText, linePassword: newPass)
         return true
     }
@@ -265,6 +263,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private var pinObserver5: NSObjectProtocol!
     private var pinObserver6: NSObjectProtocol!
     private var pinObserver7: NSObjectProtocol!
+    private var pinObserver8: NSObjectProtocol!
     
     override func viewDidAppear(_ animated: Bool) {
         let center = NotificationCenter.default
@@ -290,6 +289,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
             let request2D = notification.userInfo![remoteAttributes.lineURL] as? String
             self.zeroURL.text = request2D
+            self.registerButton.isEnabled = true
         }
         let alert2Monitor7 = localObservers.noLineFound
         pinObserver7 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor7), object: nil, queue: queue) { (notification) in
@@ -300,6 +300,25 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.present(alert, animated: true, completion: nil)
                 self.passText.text = ""
                 self.lineText.text = ""
+            }
+            
+        }
+        let alert2Monitor8 = localObservers.newLine
+        pinObserver8 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor8), object: nil, queue: queue) { (notification) in
+            let message2D = "No line found, do you want to create a new one"
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title:"Wait ...", message:message2D, preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+                    self.passText.text = ""
+                    self.lineText.text = ""
+                }))
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+//                    registerButton.isEnabled = false
+                    selectedLine = self.newText
+                    cloudDB.share.updateLine(lineName: self.newText, stationNames: self.stationsRegistered, linePassword: self.newPass)
+                }))
+                self.present(alert, animated: true, completion: nil)
+                
             }
             
         }
@@ -347,9 +366,25 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if pinObserver2 != nil {
             center.removeObserver(pinObserver2)
         }
-        if pinObserver5 != nil {
-            center.removeObserver(pinObserver2)
+        if pinObserver3 != nil {
+            center.removeObserver(pinObserver3)
         }
+        if pinObserver4 != nil {
+            center.removeObserver(pinObserver4)
+        }
+        if pinObserver5 != nil {
+            center.removeObserver(pinObserver5)
+        }
+        if pinObserver6 != nil {
+            center.removeObserver(pinObserver6)
+        }
+        if pinObserver7 != nil {
+            center.removeObserver(pinObserver7)
+        }
+        if pinObserver8 != nil {
+            center.removeObserver(pinObserver8)
+        }
+        
         NotificationCenter.default.removeObserver(self)
         //        if pinObserver4 != nil {
         //            center.removeObserver(pinObserver2)
