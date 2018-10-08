@@ -255,13 +255,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             self.postImage.image = webSnap
         }
         if tokenCheque == nil {
-            cloudDB.share.returnAllTokensWithOutOwners()
+//            cloudDB.share.returnAllTokensWithOutOwners()
+            cloudDB.share.returnTokensWithLinks(lineLink: lineLink, stationLink: stationLink)
             tokenCheque = tokensRead.count
-            if hofinfo != nil {
-//                self.pickerStations.selectRow(hofinfo, inComponent: 0, animated: true)
-//                rowSelected = hofinfo
-//                selectedStation = stationsRead[hofinfo]
-            }
         }
     }
     
@@ -343,7 +339,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         if photoAttached {
             apnsSub["category"] = "photo.category"
             apnsSub["mutable-content"] = 1
-            apnsPayload["image-url"] = url2Share!
+            apnsPayload["image-url"] = media2Share!
         }
         if webSite2Send != nil {
             apnsSub["category"] = "web.category"

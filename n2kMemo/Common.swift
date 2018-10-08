@@ -23,6 +23,7 @@ enum remoteRecords {
     static let devicesLogged = "devicesLogged"
     static let notificationShare = "notificationShare"
     static let notificationMedia = "notificationMedia"
+    static let notificationStation = "notificationStation"
 }
 
 enum remoteAttributes {
@@ -39,6 +40,7 @@ enum remoteAttributes {
     static let lineReference = "lineReference"
     static let zoneID = "zoneID"
     static let lineURL = "lineURL"
+    static let stationReference = "stationReference"
 }
 
 enum localdefault {
@@ -67,6 +69,7 @@ var url2Share: String? {
         NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
     }
 }
+var media2Share: String?
 var image2D: UIImage!
 var lineZoneID: String!
 
@@ -80,3 +83,6 @@ var url2ShareDictionary:[String:String] = [:]
 var webSite2Send: URL?
 var urlSeek: URL?
 var webSnap: UIImage!
+
+var lineLink: CKRecord.Reference!
+var stationLink: CKRecord.Reference!

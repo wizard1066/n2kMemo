@@ -13,7 +13,7 @@ class NotificationService: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
     
-    func changePizzaNotificationContent(content oldContent:UNNotificationContent)-> UNMutableNotificationContent{
+    func changePhotoNotificationContent(content oldContent:UNNotificationContent)-> UNMutableNotificationContent{
         let content = oldContent.mutableCopy() as! UNMutableNotificationContent
         let userInfo = content.userInfo as! [String:Any]
         //add the subtitle
@@ -36,10 +36,11 @@ class NotificationService: UNNotificationServiceExtension {
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
     
         self.contentHandler = contentHandler
+
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if bestAttemptContent?.categoryIdentifier == "photo.category" {
-            bestAttemptContent = changePizzaNotificationContent(content: request.content)
+            bestAttemptContent = changePhotoNotificationContent(content: request.content)
         }
 
         if let bestAttemptContent = bestAttemptContent {
@@ -57,5 +58,44 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(bestAttemptContent)
         }
     }
+    
+//    var lineName: String!
+//    var stationName: String!
+//
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        let userInfo = notification.request.content.userInfo as! [String:Any]
+//
+//
+//        let defaults = UserDefaults.standard
+//        lineName = defaults.string(forKey: "remoteAttributes.lineName")
+//        if lineName != nil {
+//            stationName = defaults.string(forKey: "remoteAttributes.stationName")
+//        }
+//
+//        if let stationLocal = userInfo["stationName"] as? String {
+//            stationName = stationLocal
+//        }
+//        if let lineLocal = userInfo["lineName"] as? String {
+//            lineName = lineLocal
+//        }
+//
+//
+//        if let stationFired = userInfo["station"] as? String {
+////             if let stationFired = "default" as? String {
+////            print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
+//            if stationFired == stationName {
+//                if let lineFired = userInfo["line"] as? String {
+////                    print("lineFired == selectedline <\(lineFired)> == <\(selectedLine)>")
+//                    if lineFired == lineName {
+//                        completionHandler([.alert,.sound,.badge])
+//                    } else {
+//                        completionHandler([])
+//                    }
+//                }
+//            }
+//        } else {
+//            completionHandler([])
+//        }
+//    }
 
 }

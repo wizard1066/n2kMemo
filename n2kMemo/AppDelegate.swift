@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         ownerToken = tokenString(deviceToken)
         let defaults = UserDefaults.standard
         let line2U = defaults.string(forKey: remoteAttributes.lineName)
-        cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, lineName: line2U)
+//        cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, stationLink: nil, lineName: line2U)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -118,25 +118,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 cloudDB.share.parseCloudError(errorCode: error as! CKError, lineno: 116)
                 return
             }
-            print("record \(self.item)")
-            let line2S = self.item.object(forKey: remoteAttributes.lineName) as! String
-            let station2S = self.item.object(forKey: remoteAttributes.stationNames) as! [String]
-            let line2Link = self.item.object(forKey: remoteAttributes.lineReference) as! CKRecord.Reference
-            lineZoneID = self.item.object(forKey: remoteAttributes.zoneID) as? String
-            linesRead = [line2S]
-            stationsRead = station2S
-            selectedLine = linesRead.first
-            selectedStation = stationsRead.first
-            let defaults = UserDefaults.standard
-            defaults.set(selectedStation, forKey: remoteAttributes.stationName)
-            defaults.set(selectedLine, forKey: remoteAttributes.lineName)
-            let peru = Notification.Name("stationPin")
-            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            let peru2 = Notification.Name("showPin")
-            NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
-            cloudDB.share.logToken(token2Save: ownerToken, lineLink: line2Link, lineName: selectedLine)
-            let peru3 = Notification.Name("hidePostingNConfig")
-            NotificationCenter.default.post(name: peru3, object: nil, userInfo: nil)
+            if (records?.count)! > 0 {
+            print("record0810 \(self.item) \(records?.count)")
+                let line2S = self.item.object(forKey: remoteAttributes.lineName) as! String
+                let station2S = self.item.object(forKey: remoteAttributes.stationNames) as! [String]
+                let line2Link = self.item.object(forKey: remoteAttributes.lineReference) as! CKRecord.Reference
+                let station2Link = self.item.object(forKey: remoteAttributes.stationReference) as! CKRecord.Reference
+                lineZoneID = self.item.object(forKey: remoteAttributes.zoneID) as? String
+                linesRead = [line2S]
+                stationsRead = station2S
+                selectedLine = linesRead.first
+                selectedStation = stationsRead.first
+                let defaults = UserDefaults.standard
+                defaults.set(selectedStation, forKey: remoteAttributes.stationName)
+                defaults.set(selectedLine, forKey: remoteAttributes.lineName)
+                let peru = Notification.Name("stationPin")
+                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+                let peru2 = Notification.Name("showPin")
+                NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
+                cloudDB.share.logToken(token2Save: ownerToken, lineLink: line2Link, stationLink: station2Link, lineName: selectedLine)
+                let peru3 = Notification.Name("hidePostingNConfig")
+                NotificationCenter.default.post(name: peru3, object: nil, userInfo: nil)
+            } else {
+                print("What the fudge, no record found")
+            }
             
         }
         CKContainer.default().sharedCloudDatabase.add(op)

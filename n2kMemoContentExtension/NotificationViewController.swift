@@ -47,6 +47,43 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         
     }
     
+//    var lineName: String!
+//    var stationName: String!
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        let userInfo = notification.request.content.userInfo as! [String:Any]
+//        
+//        let defaults = UserDefaults.standard
+//        lineName = defaults.string(forKey: "remoteAttributes.lineName")
+//        if lineName != nil {
+//            stationName = defaults.string(forKey: "remoteAttributes.stationName")
+//        }
+//        
+//        if let stationLocal = userInfo["stationName"] as? String {
+//            stationName = stationLocal
+//        }
+//        if let lineLocal = userInfo["lineName"] as? String {
+//            lineName = lineLocal
+//        }
+//        
+//        if let stationFired = userInfo["station"] as? String {
+////            if let stationFired = "default" as? String {
+//            //            print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
+//            if stationFired == stationName {
+//                if let lineFired = userInfo["line"] as? String {
+//                    //                    print("lineFired == selectedline <\(lineFired)> == <\(selectedLine)>")
+//                    if lineFired == lineName {
+//                        completionHandler([.alert,.sound,.badge])
+//                    } else {
+//                        completionHandler([])
+//                    }
+//                }
+//            }
+//        } else {
+//            completionHandler([])
+//        }
+//    }
+    
     public func accessShare(URL2D: String) {
         let URL2C = URL(string: URL2D)
         let metadataOperation = CKFetchShareMetadataOperation.init(shareURLs: [URL2C!])

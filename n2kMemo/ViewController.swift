@@ -98,7 +98,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //        jsonString(dictionary: dictionary)
         
         
-        
         lineName = defaults.string(forKey: remoteAttributes.lineName)
         if lineName != nil {
             stationName = defaults.string(forKey: remoteAttributes.stationName)
@@ -108,6 +107,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             linesRead.append(lineName)
         }
         
+        
+//        stationName = "alpha1"
         //        stationsRegistered = (defaults.array(forKey: remoteRecords.stationNames) as? [String])!
         
 //        cloudDB.share.returnAllLines()
@@ -116,12 +117,16 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         linesPicker.dataSource = self
         stationsPicker.delegate = self
         stationsPicker.dataSource = self
-        cloudDB.share.returnAllTokensWithOwners()
+//        cloudDB.share.returnAllTokensWithOwners()
         UIApplication.shared.applicationIconBadgeNumber = 0
 //        UNUserNotificationCenter.current().delegate = self
 //        let content = UNMutableNotificationContent()
 //        content.title = "Welcome"
 //        content.body = "You need to configure which lines/stations your interested or click on the configuration link sent along with the request to download me"
+//        content.userInfo["stationName"] = stationName
+//        content.userInfo["lineName"] = lineName
+//
+//        print("fcuk08102018 \(lineName.debugDescription) \(stationName.debugDescription)")
 //
 //        let inSeconds:TimeInterval = 4.0
 //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
@@ -202,7 +207,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if pickerView.tag == 0 {
             if linesRead.count > 0 && row < linesRead.count {
                     postingOK(lineName: linesRead[row])
-                    cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
+//                    cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
+                    cloudDB.share.returnLine(lineName: linesRead[row])
 //                    selectedLine = linesRead[row]
             }
         } else {
@@ -363,9 +369,9 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     //MARK: Delegates, note it overides the one you got in the app delegate!!
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .sound])
-    }
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        completionHandler([.alert, .sound])
+//    }
 }
 
 

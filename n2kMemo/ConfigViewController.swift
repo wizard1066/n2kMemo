@@ -46,7 +46,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //        if stationsRegistered.count > 0 {
 //            selectedStation = stationsRegistered[0]
 //        }
-        cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, linePassword: newPass)
+        cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, stationSelected: stationsRegistered[0], linePassword: newPass)
         
 //        let peru = Notification.Name("showPin")
 //        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
@@ -109,25 +109,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         cloudDB.share.getLine(lineName: newText, linePassword: newPass)
         return true
-    }
-        
-    func handin() -> Bool {
-        let verify = linesDictionary[newText + newPass]
-        if verify != nil {
-            cloudDB.share.returnStationsOnLine(line2Seek: newText)
-            zeroURL.text = url2ShareDictionary[newText]
-            bon = true
-        } else {
-            passText.textColor = UIColor.red
-            UIView.animate(withDuration: 0.75, delay: 0.25, options: [.curveEaseOut], animations: {
-                self.passText.alpha = 0.0
-            }) { (status) in
-//                self.passText.text = ""
-                self.passText.alpha = 1.0
-                self.passText.textColor = UIColor.black
-            }
-        }
-        return bon
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -317,7 +298,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
 //                    registerButton.isEnabled = false
                     selectedLine = self.newText
-                    cloudDB.share.updateLine(lineName: self.newText, stationNames: self.stationsRegistered, linePassword: self.newPass)
+                    selectedStation = self.stationsRegistered[0]
+                    cloudDB.share.updateLine(lineName: self.newText, stationNames: self.stationsRegistered, stationSelected: self.stationsRegistered[0], linePassword: self.newPass)
                 }))
                 self.present(alert, animated: true, completion: nil)
                 
