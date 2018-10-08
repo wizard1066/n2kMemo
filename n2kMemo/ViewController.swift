@@ -90,22 +90,22 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let defaults = UserDefaults.standard
-//        defaults.set(nil, forKey: remoteAttributes.lineName)
-//        defaults.set(nil, forKey: remoteAttributes.linePassword)
-//        defaults.set(nil, forKey: remoteAttributes.stationNames)
-//        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
-//        jsonString(dictionary: dictionary)
-        
-        
-        lineName = defaults.string(forKey: remoteAttributes.lineName)
-        if lineName != nil {
-            stationName = defaults.string(forKey: remoteAttributes.stationName)
-            if stationName != nil {
-                stationsRead.append(stationName)
-            }
-            linesRead.append(lineName)
-        }
+//        let defaults = UserDefaults.standard
+////        defaults.set(nil, forKey: remoteAttributes.lineName)
+////        defaults.set(nil, forKey: remoteAttributes.linePassword)
+////        defaults.set(nil, forKey: remoteAttributes.stationNames)
+////        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
+////        jsonString(dictionary: dictionary)
+//
+//
+//        lineName = defaults.string(forKey: remoteAttributes.lineName)
+//        if lineName != nil {
+//            stationName = defaults.string(forKey: remoteAttributes.stationName)
+//            if stationName != nil {
+//                stationsRead.append(stationName)
+//            }
+//            linesRead.append(lineName)
+//        }
         
         
 //        stationName = "alpha1"
@@ -229,6 +229,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         }
     }
     
+    @IBOutlet weak var theLine: UILabel!
+    @IBOutlet weak var theStation: UILabel!
+    
+    var leLine: String!
+    var leStation: String!
+    
     private var pinObserver: NSObjectProtocol!
     private var pinObserver2: NSObjectProtocol!
     private var pinObserver3: NSObjectProtocol!
@@ -240,6 +246,24 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        let defaults = UserDefaults.standard
+        //        defaults.set(nil, forKey: remoteAttributes.lineName)
+        //        defaults.set(nil, forKey: remoteAttributes.linePassword)
+        //        defaults.set(nil, forKey: remoteAttributes.stationNames)
+        //        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
+        //        jsonString(dictionary: dictionary)
+        
+        
+        lineName = defaults.string(forKey: remoteAttributes.lineName)
+        if lineName != nil {
+            stationName = defaults.string(forKey: remoteAttributes.stationName)
+            if stationName != nil {
+                stationsRead.append(stationName)
+            }
+            linesRead.append(lineName)
+        }
+        
         //        doAnimation()
         url2Share = nil
         let center = NotificationCenter.default
@@ -365,6 +389,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         func doAlert(title: String, message:String) {
             
         }
+    }
+    
+    @IBAction func unwindToLanding(_ sender: UIStoryboardSegue) {
+        self.linesPicker.reloadAllComponents()
     }
     
     //MARK: Delegates, note it overides the one you got in the app delegate!!

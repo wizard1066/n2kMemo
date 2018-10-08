@@ -401,8 +401,8 @@ class cloudDB: NSObject {
 //                        stationsRead = records!.first?.object(forKey: remoteAttributes.stationNames) as! [String]
                         let newReference = CKRecord.Reference(record: records!.first!, action: .none)
                         self.returnStationsOnLine(line2Seek: newReference)
-                        let peru = Notification.Name("stationPin")
-                        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+//                        let peru = Notification.Name("stationPin")
+//                        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                         selectedLine = linesRead.first
                         selectedStation = stationsRead.first
                         if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {

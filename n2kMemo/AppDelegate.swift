@@ -181,21 +181,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             urlSeek = urlString
         }
         
-        if let stationFired = userInfo["station"] as? String {
-            print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
-            if stationFired == selectedStation {
-                if let lineFired = userInfo["line"] as? String {
-                    print("lineFired == selectedline <\(lineFired)> == <\(selectedLine)>")
-                    if lineFired == selectedLine {
-                        completionHandler([.alert,.sound,.badge])
-                    } else {
-                        completionHandler([])
-                    }
-                } 
-            }
-        } else {
-            completionHandler([])
-        }
+        completionHandler([.alert,.sound,.badge])
+//        if let stationFired = userInfo["station"] as? String {
+//            print("stationFired == selectedStation <\(stationFired)> == <\(selectedStation)>")
+//            if stationFired == selectedStation {
+//                if let lineFired = userInfo["line"] as? String {
+//                    print("lineFired == selectedline <\(lineFired)> == <\(selectedLine)>")
+//                    if lineFired == selectedLine {
+//                        completionHandler([.alert,.sound,.badge])
+//                    } else {
+//                        completionHandler([])
+//                    }
+//                }
+//            }
+//        } else {
+//            completionHandler([])
+//        }
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {

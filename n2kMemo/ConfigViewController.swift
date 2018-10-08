@@ -24,9 +24,9 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var dropZone: UILabel!
     
     
-    @IBAction func returnAction(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-    }
+//    @IBAction func returnAction(_ sender: UIButton) {
+//        dismiss(animated: true, completion: nil)
+//    }
     
 //    @IBAction func fetch(_ sender: Any) {
 //        //        cloudDB.share.fetchPublicInZone(zone2Search: linesRead[0])
@@ -43,16 +43,18 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func registerButton(_ sender: UIButton) {
         registerButton.isEnabled = false
         selectedLine = newText
+        
+        let defaults = UserDefaults.standard
+        defaults.set(selectedStation, forKey: remoteAttributes.stationName)
+        defaults.set(selectedLine, forKey: remoteAttributes.lineName)
 //        if stationsRegistered.count > 0 {
 //            selectedStation = stationsRegistered[0]
 //        }
         cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, stationSelected: stationsRegistered[0], linePassword: newPass)
         
-//        let peru = Notification.Name("showPin")
-//        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+        linesRead.append(selectedLine)
+        stationsRead.append(selectedStation)
         
-//        let peru2 = Notification.Name("stationPin")
-//        NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
     }
     
  
@@ -65,7 +67,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
         registerButton.isEnabled = true
-        
+        linesRead.append(selectedLine)
+        stationsRead.append(selectedStation)
     }
     
     // MARK: textfield delegate
@@ -374,6 +377,39 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //            center.removeObserver(pinObserver2)
         //        }
     }
+    
+//    override func dismiss(animated flag: Bool, completion: (() -> Void)?)
+//    {
+//        super.dismiss(animated: flag, completion:completion)
+////        let destination = parent!.contents
+////        let pVC = destination as? ViewController
+////        pVC?.lineName = selectedLine
+////        pVC?.stationName = selectedStation
+//    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination.contents
+//        if segue.identifier == segueNames.posting {
+//            //            let pVC = destination as? PostingViewController
+//            //            pVC?.bahninfo = selectedLine
+//            //            pVC?.hofinfo = selectedStation
+//            //            print("posting \(lineSelected) \(stationSelected)")
+//        }
+//        if segue.identifier == segueNames.configuration {
+//            //            let pVC = destination as? ConfigViewController
+//            //            print("config")
+//            stationDictionary = [:]
+//        }
+//        if segue.identifier == segueNames.principle {
+            let pVC = destination as? ViewController
+            pVC?.theLine.text = selectedLine
+            pVC?.theStation.text = selectedStation
+            linesRead.append(selectedLine)
+//            stationsRead.append(selectedStation)
+//        }
+    }
+    
+ 
     
     
     
