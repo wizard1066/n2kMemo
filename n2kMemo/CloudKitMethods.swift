@@ -544,7 +544,7 @@ class cloudDB: NSObject {
                         stationsRead.append(stationName!)
                         var rex = stationRecord()
                         rex.name = stationName!
-                        rex.recordID = record.recordID
+                        rex.recordRecord = record
                         station2T.append(rex)
                     }
                     let newReference = CKRecord.Reference(record: records!.first!, action: .none)
@@ -554,6 +554,49 @@ class cloudDB: NSObject {
                     }
                 }
             }
+    }
+    
+    public func updateStationsBelongingTo(line2Seek: CKRecord.Reference, stations2D:[stationRecord?], stations2U:[stationRecord?]) {
+        let predicate = NSPredicate(format:  "lineReference = %@", line2Seek)
+        let query = CKQuery(recordType: remoteRecords.notificationStation, predicate: predicate)
+        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 443)
+            } else {
+                if records!.count > 0 {
+                    var rex2D:[CKRecord.ID] = []
+                    var rex2A:[CKRecord] = []
+                    for rex in stations2D {
+                        rex2D.append((rex?.recordRecord.recordID)!)
+                    }
+                    for rex in stations2U {
+                        if rex?.recordRecord == nil {
+                            let bar = CKRecord(recordType: remoteRecords.notificationStation)
+                            bar.setObject(line2Seek, forKey: remoteAttributes.lineReference)
+                            bar.setObject(rex?.name as __CKRecordObjCValue?, forKey: remoteAttributes.stationName)
+                            rex2A.append(bar)
+                        } else {
+                            if let foo = records!.first(where: {$0.recordID == rex?.recordRecord.recordID}) {
+                                foo.setObject(rex!.name as __CKRecordObjCValue?, forKey: remoteAttributes.stationName)
+                                rex2A.append(foo)
+                            }
+                        }
+                    }
+                    let operation = CKModifyRecordsOperation(recordsToSave: rex2A, recordIDsToDelete: rex2D)
+                    operation.savePolicy = .allKeys
+                    operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                        if error != nil {
+                            print("modify error\(error!.localizedDescription)")
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 476)
+                        } else {
+                            print("record Updated \(savedRecords)")
+                        }
+                    }
+                    CKContainer.default().publicCloudDatabase.add(operation)
+                }
+            }
+        }
     }
     
 //    public func returnStationsOnLine(line2Seek: String) {

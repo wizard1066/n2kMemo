@@ -89,7 +89,7 @@ var stationLink: CKRecord.Reference!
 
 struct stationRecord {
     var name: String!
-    var recordID: CKRecord.ID!
+    var recordRecord: CKRecord!
 }
 
 var station2T:[stationRecord?] = []

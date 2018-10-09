@@ -68,6 +68,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
+                                    <action selector="return2Landing:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="c6P-I3-RFd"/>
                                     <segue destination="7Vn-Zj-SQN" kind="unwind" unwindAction="unwindToLanding:" id="n7T-BM-pxI"/>
                                 </connections>
                             </button>

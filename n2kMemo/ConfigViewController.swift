@@ -10,8 +10,12 @@ import UIKit
 
 class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
+    @IBAction func return2Landing(_ sender: Any) {
+        cloudDB.share.updateStationsBelongingTo(line2Seek: lineLink, stations2D: station2D, stations2U: station2T)
+    }
+    
     @IBAction func Debug(_ sender: Any) {
-//        print("exit \(station2T)\n\n \(station2D)")
+        print("exit \(station2T)\n\n \(station2D)")
         for station in stationsRead {
             print("stationsRead \(station)")
         }
@@ -19,10 +23,10 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print("stationsRegistered \(station)")
         }
         for station in station2T {
-            print("station2T \(station?.name) \(station?.recordID)")
+            print("station2T \(station?.name) ")
         }
         for station in station2D {
-            print("station2D \(station?.name) \(station?.recordID)")
+            print("station2D \(station?.name) ")
         }
     }
     
@@ -181,13 +185,15 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         })
     
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
-            changed = true
-            if let foo = station2T.first(where: {$0!.name == self.stationsRegistered[indexPath.row]}) {
-                station2D.append(foo!)
-                station2T.remove(at: indexPath.row)
+            if self.stationsRegistered.count > 1 {
+                changed = true
+                if let foo = station2T.first(where: {$0!.name == self.stationsRegistered[indexPath.row]}) {
+                    station2D.append(foo!)
+                    station2T.remove(at: indexPath.row)
+                }
+                self.stationsRegistered.remove(at: indexPath.row)
+                print("Do that iCloud update")
             }
-            self.stationsRegistered.remove(at: indexPath.row)
-            print("Do that iCloud update")
             tableView.reloadData()
         })
         
@@ -239,14 +245,16 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
         let modifyAction = UIContextualAction(style: .normal, title:  "Delete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            changed = true
-            if let foo = station2T.first(where: {$0!.name == self.stationsRegistered[indexPath.row]}) {
-                station2D.append(foo!)
-                station2T.remove(at: indexPath.row)
+            if self.stationsRegistered.count > 1 {
+                changed = true
+                if let foo = station2T.first(where: {$0!.name == self.stationsRegistered[indexPath.row]}) {
+                    station2D.append(foo!)
+                    station2T.remove(at: indexPath.row)
+                }
+                self.stationsRegistered.remove(at: indexPath.row)
+                print("Do that iCloud update")
+                tableView.reloadData()
             }
-            self.stationsRegistered.remove(at: indexPath.row)
-            print("Do that iCloud update")
-            tableView.reloadData()
             success(true)
         })
         modifyAction.image = UIImage(named: "hammer")
@@ -272,6 +280,10 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        station2T.removeAll()
+        station2D.removeAll()
+        stationsRead.removeAll()
+        linesRead.removeAll()
         registerButton.isEnabled = false
         
         stationsTable.rowHeight = 32
