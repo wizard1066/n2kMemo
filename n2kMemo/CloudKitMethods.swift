@@ -767,13 +767,15 @@ class cloudDB: NSObject {
                 print(error!.localizedDescription)
                 self.parseCloudError(errorCode: error as! CKError, lineno: 580)
             } else {
-                cloudDB.share.publicDB.delete(withRecordID: (records!.first?.recordID)!) { (recordID, error) in
-                    if error != nil {
-                        print(error!.localizedDescription)
-                        self.parseCloudError(errorCode: error as! CKError, lineno: 585)
-                        return
+                if records!.count > 0 {
+                    cloudDB.share.publicDB.delete(withRecordID: (records!.first?.recordID)!) { (recordID, error) in
+                        if error != nil {
+                            print(error!.localizedDescription)
+                            self.parseCloudError(errorCode: error as! CKError, lineno: 585)
+                            return
+                        }
                     }
-//                    print("Record \(recordID) was successfully deleted")
+                    //                    print("Record \(recordID) was successfully deleted")
                 }
             }
         }

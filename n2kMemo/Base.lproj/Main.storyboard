@@ -27,11 +27,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.66000000000000003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="45426142-vector-blueprint-lightbulb-icon-engineer-and-architect-background- copy" translatesAutoresizingMaskIntoConstraints="NO" id="ChZ-ss-WXn">
+                            <imageView userInteractionEnabled="NO" alpha="0.66000000000000003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ChZ-ss-WXn">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="042-Py-Bao">
-                                <rect key="frame" x="67.5" y="166" width="240" height="30"/>
+                                <rect key="frame" x="67.5" y="180" width="240" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="gTO-gh-B28"/>
                                 </constraints>
@@ -73,7 +74,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vdI-VJ-p3q">
-                                <rect key="frame" x="67.5" y="128" width="240" height="30"/>
+                                <rect key="frame" x="67.5" y="142" width="240" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="SGU-3T-VCS"/>
                                     <constraint firstAttribute="height" constant="30" id="cJ6-QA-OuZ"/>
@@ -93,14 +94,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LINES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9g-Um-hbc">
-                                <rect key="frame" x="171" y="204" width="33" height="22"/>
+                                <rect key="frame" x="171" y="218" width="33" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KI-La-fkq">
-                                <rect key="frame" x="64" y="82" width="247" height="48"/>
-                                <fontDescription key="fontDescription" name="HoeflerText-Black" family="Hoefler Text" pointSize="36"/>
+                                <rect key="frame" x="86.5" y="82" width="202" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Bold" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Configuration">
                                     <color key="titleColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -129,6 +130,13 @@
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0XZ-ed-WvW">
+                                <rect key="frame" x="177.5" y="262" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="jTj-Yk-aOR"/>
+                                    <constraint firstAttribute="width" constant="20" id="of5-k6-7yW"/>
+                                </constraints>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -150,10 +158,12 @@
                             <constraint firstItem="27p-4G-VBp" firstAttribute="top" secondItem="uFR-IM-pb6" secondAttribute="bottom" constant="20" id="fH9-2x-A0s"/>
                             <constraint firstItem="7kq-dm-znA" firstAttribute="trailing" secondItem="9Aa-SM-ZrG" secondAttribute="trailing" constant="16" id="fxu-K2-cwI"/>
                             <constraint firstItem="s9g-Um-hbc" firstAttribute="top" secondItem="042-Py-Bao" secondAttribute="bottom" constant="8" id="hhc-rO-5g9"/>
+                            <constraint firstItem="0XZ-ed-WvW" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="hi0-eQ-G8I"/>
                             <constraint firstItem="8V0-Aw-X4e" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="j2K-PU-bdA"/>
                             <constraint firstItem="s9g-Um-hbc" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="k0e-dv-BeO"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="nJu-no-QQj"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="top" secondItem="3KI-La-fkq" secondAttribute="bottom" constant="-2" id="tR9-xQ-MOJ"/>
+                            <constraint firstItem="0XZ-ed-WvW" firstAttribute="top" secondItem="s9g-Um-hbc" secondAttribute="bottom" constant="22" id="wPJ-FB-8b6"/>
                             <constraint firstItem="7kq-dm-znA" firstAttribute="trailing" secondItem="avr-6n-BZ5" secondAttribute="trailing" constant="16" id="whc-HM-ZQU"/>
                             <constraint firstItem="9Aa-SM-ZrG" firstAttribute="top" secondItem="5IL-V9-A5g" secondAttribute="bottom" constant="8" id="zXC-Z4-9oK"/>
                         </constraints>
@@ -166,6 +176,7 @@
                         <outlet property="registerButton" destination="3KI-La-fkq" id="7zp-t7-nFc"/>
                         <outlet property="returnButton" destination="avr-6n-BZ5" id="b7X-x6-mO0"/>
                         <outlet property="stationsTable" destination="uFR-IM-pb6" id="Idh-rb-X1L"/>
+                        <outlet property="workingIndicator" destination="0XZ-ed-WvW" id="ifZ-IE-0s7"/>
                         <outlet property="zeroURL" destination="8oG-nk-uvb" id="wH9-fu-IrO"/>
                     </connections>
                 </viewController>
@@ -186,12 +197,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.66000000000000003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="45426142-vector-blueprint-lightbulb-icon-engineer-and-architect-background- copy" translatesAutoresizingMaskIntoConstraints="NO" id="dYa-dl-z7R">
+                            <imageView userInteractionEnabled="NO" alpha="0.66000000000000003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dYa-dl-z7R">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Memo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya4-9q-0CQ">
-                                <rect key="frame" x="113" y="319" width="149.5" height="48"/>
-                                <fontDescription key="fontDescription" name="HoeflerText-Black" family="Hoefler Text" pointSize="48"/>
+                                <rect key="frame" x="126.5" y="310" width="122" height="66"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Bold" family="Avenir Next Condensed" pointSize="48"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -206,7 +218,7 @@
                                 </connections>
                             </button>
                             <pickerView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9S0-7A-4eI">
-                                <rect key="frame" x="67.5" y="265" width="240" height="64"/>
+                                <rect key="frame" x="67.5" y="256" width="240" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="5XH-3S-pps"/>
                                     <constraint firstAttribute="width" constant="240" id="pjO-WD-aZl"/>
@@ -227,7 +239,7 @@
                                 </connections>
                             </button>
                             <pickerView multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8M-io-7Me">
-                                <rect key="frame" x="67.5" y="349" width="240" height="64"/>
+                                <rect key="frame" x="67.5" y="358" width="240" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="0Ys-PA-WTc"/>
                                     <constraint firstAttribute="height" constant="64" id="dHA-lt-FW3"/>
@@ -238,13 +250,13 @@
                                 </connections>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STATIONS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1N-2F-iBn">
-                                <rect key="frame" x="160" y="399" width="55.5" height="22"/>
+                                <rect key="frame" x="160" y="408" width="55.5" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAe-Nr-mvX">
-                                <rect key="frame" x="172.5" y="258" width="30.5" height="22"/>
+                                <rect key="frame" x="172.5" y="249" width="30.5" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -298,19 +310,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.66000000000000003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="45426142-vector-blueprint-lightbulb-icon-engineer-and-architect-background- copy" translatesAutoresizingMaskIntoConstraints="NO" id="EKr-um-HLz">
+                            <imageView userInteractionEnabled="NO" alpha="0.66000000000000003" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EKr-um-HLz">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Line" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caW-mZ-IRW">
-                                <rect key="frame" x="167.5" y="594" width="40.5" height="25"/>
+                                <rect key="frame" x="167.5" y="592" width="40.5" height="25"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="20"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Posts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFD-ja-oCC">
-                                <rect key="frame" x="200" y="627" width="36.5" height="20"/>
-                                <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="16"/>
+                                <rect key="frame" x="203.5" y="625" width="30" height="22"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -325,7 +338,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="flN-Bg-NMU">
-                                <rect key="frame" x="67.5" y="167" width="240" height="96"/>
+                                <rect key="frame" x="67.5" y="181" width="240" height="96"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="DZQ-PN-hcZ"/>
@@ -336,7 +349,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3KJ-qa-u42">
-                                <rect key="frame" x="67.5" y="129" width="240" height="30"/>
+                                <rect key="frame" x="67.5" y="143" width="240" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="fBZ-jp-5uh"/>
                                 </constraints>
@@ -345,30 +358,30 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="I6m-pu-kP5">
-                                <rect key="frame" x="177.5" y="101" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="115" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OU8-zW-25Y">
-                                <rect key="frame" x="126" y="627" width="50.5" height="20"/>
-                                <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="16"/>
+                                <rect key="frame" x="131.5" y="625" width="40" height="22"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AH3-xe-5vp">
-                                <rect key="frame" x="185" y="614" width="5" height="47.5"/>
+                                <rect key="frame" x="185" y="612" width="5" height="49.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Station" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p6i-ld-Xzd">
-                                <rect key="frame" x="153.5" y="561" width="68" height="25"/>
+                                <rect key="frame" x="153.5" y="559" width="68" height="25"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="20"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLI-f7-QE2">
-                                <rect key="frame" x="148" y="80" width="79" height="48"/>
-                                <fontDescription key="fontDescription" name="HoeflerText-Black" family="Hoefler Text" pointSize="36"/>
+                                <rect key="frame" x="156.5" y="80" width="62" height="62"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Bold" family="Avenir Next Condensed" pointSize="36"/>
                                 <state key="normal" title="Post">
                                     <color key="titleColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -624,7 +637,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="45426142-vector-blueprint-lightbulb-icon-engineer-and-architect-background- copy" width="1300" height="1300"/>
         <image name="noun_Next_538847" width="700" height="700"/>
         <image name="noun_back_542006" width="700" height="700"/>
     </resources>

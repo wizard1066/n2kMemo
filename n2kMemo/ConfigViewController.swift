@@ -10,6 +10,7 @@ import UIKit
 
 class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
+    @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
     @IBAction func return2Landing(_ sender: Any) {
         if lineLink != nil {
             cloudDB.share.updateStationsBelongingTo(line2Seek: lineLink, stations2D: station2D, stations2U: station2T)
@@ -130,7 +131,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         registerButton.isEnabled = true
         
         // do a newlinw based on a second search just for the name
-        
+        workingIndicator.isHidden = false
+        workingIndicator.startAnimating()
         cloudDB.share.getLine(lineName: newText, linePassword: newPass)
         return true
     }
@@ -292,6 +294,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         lineText.delegate = self
         passText.delegate = self
         changed = false
+        workingIndicator.isHidden = true
     }
     
     private var pinObserver: NSObjectProtocol!
@@ -330,6 +333,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let request2D = notification.userInfo![remoteAttributes.lineURL] as? String
             self.zeroURL.text = request2D
             self.registerButton.isEnabled = true
+            self.workingIndicator.stopAnimating()
+            self.workingIndicator.isHidden = true
         }
         let alert2Monitor7 = localObservers.noLineFound
         pinObserver7 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor7), object: nil, queue: queue) { (notification) in
@@ -340,6 +345,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.present(alert, animated: true, completion: nil)
                 self.passText.text = ""
                 self.lineText.text = ""
+                self.workingIndicator.stopAnimating()
+                self.workingIndicator.isHidden = true
             }
             
         }
@@ -377,7 +384,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         view.addGestureRecognizer(press)
         
         self.hideKeyboardWhenTappedAround()
-        self.confirmTableUpdated()
+//        self.confirmTableUpdated()
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -578,9 +585,9 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 extension UIViewController: UIGestureRecognizerDelegate {
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return true
+//    }
 
     
     func hideKeyboardWhenTappedAround() {
@@ -595,21 +602,21 @@ extension UIViewController: UIGestureRecognizerDelegate {
         view.endEditing(true)
     }
     
-    func confirmTableUpdated() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.confirmed))
-        tap.cancelsTouchesInView = false
-        tap.numberOfTapsRequired = 1
-        tap.delegate = self
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func confirmed() {
-        if changed!{
-            print("table updated")
-        } else {
-            print("rien happened")
-        }
-    }
+//    func confirmTableUpdated() {
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.confirmed))
+//        tap.cancelsTouchesInView = false
+//        tap.numberOfTapsRequired = 1
+//        tap.delegate = self
+//        view.addGestureRecognizer(tap)
+//    }
+//
+//    @objc func confirmed() {
+//        if changed!{
+////            print("table updated")
+//        } else {
+////            print("rien happened")
+//        }
+//    }
 }
 
 extension UIViewController {

@@ -308,6 +308,8 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
             self.postingButton.isEnabled = false
             self.configButton.isEnabled = false
+            self.postingButton.isHidden = true
+            self.configButton.isHidden = true
         }
         let alert2Monitor7 = "showWeb"
         pinObserver7 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor7), object: nil, queue: queue) { (notification) in

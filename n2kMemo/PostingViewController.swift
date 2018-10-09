@@ -259,7 +259,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         
         // NOT AN OBSERVER !!
         
-        if tokenCheque == nil {
+        if tokenCheque == nil, lineLink != nil {
 //            cloudDB.share.returnAllTokensWithOutOwners()
             cloudDB.share.returnTokensWithLinks(lineLink: lineLink, stationLink: stationLink)
             tokenCheque = tokensRead.count
@@ -344,7 +344,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         if photoAttached {
             apnsSub["category"] = "photo.category"
             apnsSub["mutable-content"] = 1
-            apnsPayload["image-url"] = media2Share!
+            if media2Share != nil {
+                apnsPayload["image-url"] = media2Share!
+            }
         }
         if webSite2Send != nil {
             apnsSub["category"] = "web.category"
