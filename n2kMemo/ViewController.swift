@@ -255,14 +255,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         //        jsonString(dictionary: dictionary)
         
         
-        lineName = defaults.string(forKey: remoteAttributes.lineName)
-        if lineName != nil {
-            stationName = defaults.string(forKey: remoteAttributes.stationName)
-            if stationName != nil {
-                stationsRead.append(stationName)
-            }
-            linesRead.append(lineName)
-        }
+//        lineName = defaults.string(forKey: remoteAttributes.lineName)
+//        if lineName != nil {
+//            stationName = defaults.string(forKey: remoteAttributes.stationName)
+//            if stationName != nil {
+//                stationsRead.append(stationName)
+//            }
+//            linesRead.append(lineName)
+//        }
         
         //        doAnimation()
         url2Share = nil
@@ -393,6 +393,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     @IBAction func unwindToLanding(_ sender: UIStoryboardSegue) {
         self.linesPicker.reloadAllComponents()
+        self.stationsPicker.reloadAllComponents()
     }
     
     //MARK: Delegates, note it overides the one you got in the app delegate!!

@@ -15,6 +15,9 @@ var photoAttached: Bool = false
 
 class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate,SFSafariViewControllerDelegate {
     
+    @IBAction func debug(_ sender: Any) {
+        print("tokensRead \(tokensRead)")
+    }
     //    var stationsRegistered:[String] = ["English","French","Italian","German"]
     
     @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
@@ -209,7 +212,6 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(PostingViewController.deleteAttachment))
         swipeLeft.direction = .left
         self.view.addGestureRecognizer(swipeLeft)
-        
     }
     
     
@@ -254,6 +256,9 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
 //            let request2D = notification.userInfo!["http-url"] as? String
             self.postImage.image = webSnap
         }
+        
+        // NOT AN OBSERVER !!
+        
         if tokenCheque == nil {
 //            cloudDB.share.returnAllTokensWithOutOwners()
             cloudDB.share.returnTokensWithLinks(lineLink: lineLink, stationLink: stationLink)

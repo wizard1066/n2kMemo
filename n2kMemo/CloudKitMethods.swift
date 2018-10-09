@@ -268,6 +268,7 @@ class cloudDB: NSObject {
                 print("modify error\(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 316)
             } else {
+//                self.saveZone(zone2U: lineName, notificationReference: lineReference, stationNames: stationNames, stationSelected: stationDict[stationSelected]!)
                 self.saveZone(zone2U: lineName, notificationReference: lineReference, stationNames: stationNames, stationSelected: stationDict[stationSelected]!)
 //                self.updateTokenWithID(record: self.tokenReference, link2Save: lineReference, lineOwner: lineName, stationSelected: stationDict[stationSelected]!)
             }
@@ -395,6 +396,8 @@ class cloudDB: NSObject {
                     let peru = Notification.Name(localObservers.newLine)
                     NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                 } else {
+                    let newReference = CKRecord.Reference(record: records!.first!, action: .none)
+                    lineLink = newReference
                     let passwordOnfile = records!.first?.object(forKey: remoteAttributes.linePassword) as! String
                     if passwordOnfile == linePassword {
                         linesRead = [records!.first?.object(forKey: remoteAttributes.lineName) as! String]
@@ -539,6 +542,10 @@ class cloudDB: NSObject {
                     for record in records! {
                         let stationName = record.object(forKey: remoteAttributes.stationName) as? String
                         stationsRead.append(stationName!)
+                        var rex = stationRecord()
+                        rex.name = stationName!
+                        rex.recordID = record.recordID
+                        station2T.append(rex)
                     }
                     let newReference = CKRecord.Reference(record: records!.first!, action: .none)
                     stationLink = newReference
@@ -600,10 +607,12 @@ class cloudDB: NSObject {
     }
     
     public func returnTokensWithLinks(lineLink: CKRecord.Reference, stationLink: CKRecord.Reference) {
+        print("returnTokensWithLinks \(lineLink.recordID) \(stationLink.recordID) ")
         let rightToken = NSPredicate(format: "lineReference = %@", lineLink)
         let rightLine = NSPredicate(format: "stationReference = %@", stationLink)
-        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [rightToken, rightLine])
-        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicate)
+//        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [rightToken,rightLine])
+        let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: [rightToken,rightLine])
+        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicateCompound)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
@@ -761,7 +770,7 @@ class cloudDB: NSObject {
                 self.parseCloudError(errorCode: error as! CKError, lineno: 624)
             } else {
                 for record in records! {
-                    tokensRead.append(record[remoteAttributes.deviceRegistered]!)
+//        fuck            tokensRead.append(record[remoteAttributes.deviceRegistered]!)
 //                    tokenOwner[record.recordID.recordName] = record[remoteAttributes.deviceRegistered]!
                     let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
                     let target = record[remoteAttributes.deviceRegistered]! as? String
@@ -785,7 +794,7 @@ class cloudDB: NSObject {
             } else {
 //                print("returnAllTokensWithOwners \(records!.count)")
                 for record in records! {
-                    tokensRead.append(record[remoteAttributes.deviceRegistered]!)
+//           fuck         tokensRead.append(record[remoteAttributes.deviceRegistered]!)
                     if record.object(forKey: remoteAttributes.lineOwner) != nil {
                         let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
                         let target = record[remoteAttributes.deviceRegistered]! as? String

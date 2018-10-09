@@ -113,6 +113,15 @@
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Aa-SM-ZrG">
+                                <rect key="frame" x="313" y="72" width="46" height="30"/>
+                                <state key="normal" title="Debug">
+                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="Debug:" destination="0Vh-s0-xvt" eventType="touchUpInside" id="dWQ-ZB-mmK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -131,11 +140,13 @@
                             <constraint firstItem="8oG-nk-uvb" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="TOc-Zc-TXB"/>
                             <constraint firstItem="3KI-La-fkq" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="cUN-O9-eaf"/>
                             <constraint firstItem="27p-4G-VBp" firstAttribute="top" secondItem="uFR-IM-pb6" secondAttribute="bottom" constant="20" id="fH9-2x-A0s"/>
+                            <constraint firstItem="7kq-dm-znA" firstAttribute="trailing" secondItem="9Aa-SM-ZrG" secondAttribute="trailing" constant="16" id="fxu-K2-cwI"/>
                             <constraint firstItem="s9g-Um-hbc" firstAttribute="top" secondItem="042-Py-Bao" secondAttribute="bottom" constant="8" id="hhc-rO-5g9"/>
                             <constraint firstItem="s9g-Um-hbc" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="k0e-dv-BeO"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="centerX" secondItem="aol-Xf-HN3" secondAttribute="centerX" id="nJu-no-QQj"/>
                             <constraint firstItem="vdI-VJ-p3q" firstAttribute="top" secondItem="3KI-La-fkq" secondAttribute="bottom" constant="-2" id="tR9-xQ-MOJ"/>
                             <constraint firstItem="7kq-dm-znA" firstAttribute="trailing" secondItem="avr-6n-BZ5" secondAttribute="trailing" constant="16" id="whc-HM-ZQU"/>
+                            <constraint firstItem="9Aa-SM-ZrG" firstAttribute="top" secondItem="5IL-V9-A5g" secondAttribute="bottom" constant="8" id="zXC-Z4-9oK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7kq-dm-znA"/>
                     </view>
@@ -414,6 +425,15 @@
                                     <constraint firstAttribute="width" constant="240" id="xfT-fM-Vh9"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N81-ya-4QE">
+                                <rect key="frame" x="313" y="80" width="46" height="30"/>
+                                <state key="normal" title="Debug">
+                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="debug:" destination="sTY-l2-MkH" eventType="touchUpInside" id="YXQ-G0-NfJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -421,9 +441,11 @@
                             <constraint firstItem="aFf-C0-Ouu" firstAttribute="bottom" secondItem="EKr-um-HLz" secondAttribute="bottom" id="51L-fd-40a"/>
                             <constraint firstItem="hFD-ja-oCC" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" constant="30.75" id="5fs-bp-TcY"/>
                             <constraint firstItem="EKr-um-HLz" firstAttribute="top" secondItem="ppB-nX-ojS" secondAttribute="top" id="E7W-ua-cTz"/>
+                            <constraint firstItem="aFf-C0-Ouu" firstAttribute="trailing" secondItem="N81-ya-4QE" secondAttribute="trailing" constant="16" id="F4Q-TY-hrB"/>
                             <constraint firstItem="LNp-1J-HSh" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="Fu6-CL-dC7"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="top" secondItem="kLI-f7-QE2" secondAttribute="bottom" constant="1" id="GWE-H7-Hdu"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="leading" secondItem="aFf-C0-Ouu" secondAttribute="leading" constant="16" id="HrB-qu-bFM"/>
+                            <constraint firstItem="N81-ya-4QE" firstAttribute="top" secondItem="LpY-av-2AR" secondAttribute="bottom" constant="16" id="IAc-2B-cSp"/>
                             <constraint firstItem="NAP-d2-xm1" firstAttribute="top" secondItem="OU8-zW-25Y" secondAttribute="bottom" constant="20" id="JyQ-KP-Ae2"/>
                             <constraint firstItem="AH3-xe-5vp" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="NuX-fv-T3d"/>
                             <constraint firstItem="R8x-74-ZYj" firstAttribute="centerY" secondItem="ppB-nX-ojS" secondAttribute="centerY" constant="148" id="Pfz-P3-LVb"/>

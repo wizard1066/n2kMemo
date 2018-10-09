@@ -10,7 +10,22 @@ import UIKit
 
 class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
-
+    @IBAction func Debug(_ sender: Any) {
+//        print("exit \(station2T)\n\n \(station2D)")
+        for station in stationsRead {
+            print("stationsRead \(station)")
+        }
+        for station in stationsRegistered {
+            print("stationsRegistered \(station)")
+        }
+        for station in station2T {
+            print("station2T \(station?.name) \(station?.recordID)")
+        }
+        for station in station2D {
+            print("station2D \(station?.name) \(station?.recordID)")
+        }
+    }
+    
     @IBOutlet weak var registerButton: UIButton!
     
     @IBOutlet weak var stationsTable: UITableView!
@@ -52,8 +67,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //        }
         cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, stationSelected: stationsRegistered[0], linePassword: newPass)
         
-        linesRead.append(selectedLine)
-        stationsRead.append(selectedStation)
+//        linesRead.append(selectedLine)
+//        stationsRead.append(selectedStation)
         
     }
     
@@ -67,8 +82,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
         registerButton.isEnabled = true
-        linesRead.append(selectedLine)
-        stationsRead.append(selectedStation)
+//        linesRead.append(selectedLine)
+//        stationsRead.append(selectedStation)
     }
     
     // MARK: textfield delegate
@@ -76,7 +91,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var newText: String!
     var newPass: String!
     var bon: Bool!
-    var changed: Bool?
+    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         _ = verifyFields(textField: textField)
@@ -118,6 +133,18 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return true
     }
     
+    
+    
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+//        print("exit \(station2T)\n\n \(station2D)")
+        print("update data")
+//        rowInAction = stationsRegistered[indexPath!.row]
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+//        print("update data")
+    }
+    
     // MARK: tableView methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -143,38 +170,49 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 textField.text = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
             })
             alert.addAction(UIAlertAction(title: "Insert", style: .default, handler: { (updateAction) in
-                self.changed = true
+
                 self.stationsRegistered.insert("", at: indexPath.row)
+                var nRex = stationRecord()
+                station2T.insert(nRex, at: indexPath.row)
                 self.stationsTable.insertRows(at: [indexPath], with: .fade)
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             self.present(alert, animated: false)
         })
-        
+    
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
-            self.changed = true
+            changed = true
+            if let foo = station2T.first(where: {$0!.name == self.stationsRegistered[indexPath.row]}) {
+                station2D.append(foo!)
+                station2T.remove(at: indexPath.row)
+            }
             self.stationsRegistered.remove(at: indexPath.row)
+            print("Do that iCloud update")
             tableView.reloadData()
         })
         
         return [deleteAction, editAction]
     }
     
+    var text2M: String!
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         let alert = UIAlertController(title: "", message: "Edit list item", preferredStyle: .alert)
         alert.addTextField(configurationHandler: { (textField) in
             textField.text = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
         })
         alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { (updateAction) in
-            self.changed = true
+            changed = true
             self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text = alert.textFields!.first!.text!
             self.stationsRegistered[indexPath.row] = alert.textFields!.first!.text!
+            station2T[indexPath.row]?.name = alert.textFields!.first!.text!
             self.stationsTable.reloadRows(at: [indexPath], with: .fade)
+            print("Do that iCloud update")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: false)
-        
+
     }
     
     @available(iOS 11.0, *)
@@ -182,8 +220,10 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
         let closeAction = UIContextualAction(style: .normal, title:  "Insert", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            self.changed = true
+            
             self.stationsRegistered.insert("", at: indexPath.row)
+            var nRex = stationRecord()
+            station2T.insert(nRex, at: indexPath.row)
             self.stationsTable.insertRows(at: [indexPath], with: .fade)
             success(true)
         })
@@ -199,8 +239,13 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
         let modifyAction = UIContextualAction(style: .normal, title:  "Delete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            self.changed = true
+            changed = true
+            if let foo = station2T.first(where: {$0!.name == self.stationsRegistered[indexPath.row]}) {
+                station2D.append(foo!)
+                station2T.remove(at: indexPath.row)
+            }
             self.stationsRegistered.remove(at: indexPath.row)
+            print("Do that iCloud update")
             tableView.reloadData()
             success(true)
         })
@@ -213,7 +258,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: View methods
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var stationsRegistered:[String] = ["default"]
+    var stationsRegistered:[String] = []
     
     private func deleteLine() {
         let alert = UIAlertController(title: "", message: "Delete Line Item", preferredStyle: .alert)
@@ -233,11 +278,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         lineText.delegate = self
         passText.delegate = self
         changed = false
-        // Do any additional setup after loading the view.
-        //        let swipeLeft = UISwipeGestureRecognizer(target: lineText, action: #selector(ConfigViewController.deleteLine))
-        //        swipeLeft.direction = .left
-        //
-        //        self.view.addGestureRecognizer(swipeLeft)
     }
     
     private var pinObserver: NSObjectProtocol!
@@ -323,6 +363,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         view.addGestureRecognizer(press)
         
         self.hideKeyboardWhenTappedAround()
+        self.confirmTableUpdated()
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -402,10 +443,18 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //        }
 //        if segue.identifier == segueNames.principle {
             let pVC = destination as? ViewController
-            pVC?.theLine.text = selectedLine
-            pVC?.theStation.text = selectedStation
-            linesRead.append(selectedLine)
-//            stationsRead.append(selectedStation)
+//            pVC?.theLine.text = selectedLine
+//            pVC?.theStation.text = selectedStation
+            if selectedLine != nil {
+                linesRead.append(selectedLine)
+                if selectedStation != nil {
+                    stationsRead.append(selectedStation)
+                } else {
+                    stationsRead.append(stationsRegistered[0])
+                }
+            }
+        
+
 //        }
     }
     
@@ -509,18 +558,48 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //        appDelegate.colorZet.insert("red")
     //    }
     
+    
+    
 }
 
-extension UIViewController {
+extension UIViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         tap.numberOfTapsRequired = 2
+        tap.delegate = self
         view.addGestureRecognizer(tap)
     }
-    
+
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    func confirmTableUpdated() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.confirmed))
+        tap.cancelsTouchesInView = false
+        tap.numberOfTapsRequired = 1
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func confirmed() {
+        if changed!{
+            print("table updated")
+        } else {
+            print("rien happened")
+        }
+    }
 }
+
+extension UIViewController {
+    
+}
+
 

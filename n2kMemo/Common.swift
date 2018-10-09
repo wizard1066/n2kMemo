@@ -86,3 +86,14 @@ var webSnap: UIImage!
 
 var lineLink: CKRecord.Reference!
 var stationLink: CKRecord.Reference!
+
+struct stationRecord {
+    var name: String!
+    var recordID: CKRecord.ID!
+}
+
+var station2T:[stationRecord?] = []
+var station2D:[stationRecord?] = []
+
+var changed: Bool?
+var rowInAction: String?
