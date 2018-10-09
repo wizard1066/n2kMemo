@@ -34,11 +34,12 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         activityIndicator.startAnimating()
 //        bodyLabel.text = content.body
         let userInfo = content.userInfo as! [String:Any]
-        print("access \(userInfo)")
+        print("access URL \(userInfo["image-url"])")
         if let urlString = userInfo["image-url"]{
 //            let url = URL(string: urlString as! String)
+            print("access URL\(urlString)")
             accessShare(URL2D: urlString as! String)
-            print("access \(urlString)")
+            
 //            let data = try? Data(contentsOf: url!)
 //            DispatchQueue.main.async {
 //                self.imageView.image = UIImage(data: data!)
@@ -85,22 +86,30 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
 //    }
     
     public func accessShare(URL2D: String) {
+        DispatchQueue.main.async {
         let URL2C = URL(string: URL2D)
         let metadataOperation = CKFetchShareMetadataOperation.init(shareURLs: [URL2C!])
         metadataOperation.perShareMetadataBlock = {url, metadata, error in
             if error != nil {
                 print("record completion \(url) \(metadata) \(error)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 93)
                 return
             }
             let acceptShareOperation = CKAcceptSharesOperation(shareMetadatas: [metadata!])
             acceptShareOperation.qualityOfService = .background
             acceptShareOperation.perShareCompletionBlock = {meta, share, error in
                 print("meta \(meta) share \(share) error \(error)")
+                if error != nil {
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 101)
+                }
                 self.getShare(meta)
             }
             acceptShareOperation.acceptSharesCompletionBlock = {error in
                 print("error in accept share completion \(error)")
                 /// Send your user to wear that need to go in your app
+                if error != nil {
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 109)
+                }
                 
                 
             }
@@ -111,23 +120,26 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         metadataOperation.fetchShareMetadataCompletionBlock = { error in
             if error != nil {
                 print("metadata error \(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 121)
             }
         }
         let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
         container.add(metadataOperation)
 //        CKContainer.default().add(metadataOperation)
-        
+        }
     }
     
     var imageRex: CKRecord!
     
     private func getShare(_ cloudKitShareMetadata: CKShare.Metadata) {
+        DispatchQueue.main.async {
         let op = CKFetchRecordsOperation(
             recordIDs: [cloudKitShareMetadata.rootRecordID])
         
         op.perRecordCompletionBlock = { record, _, error in
             if error != nil {
                 print("error \(error?.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 139)
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.isHidden = true
@@ -151,12 +163,14 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         op.fetchRecordsCompletionBlock = { records, error in
             if error != nil {
                 print("error \(error?.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 163)
                 return
             }
         }
         let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
         container.sharedCloudDatabase.add(op)
 //        CKContainer.default().sharedCloudDatabase.add(op)
+        }
     }
     
     func parseCloudError(errorCode: CKError, lineno: Int) {
@@ -254,6 +268,10 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
 //        let dict = [localdefault.alertMessage:message]
 //        NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
         DispatchQueue.main.async {
+            
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+            
             let alert = UIAlertController(title:"Attention", message:message, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
