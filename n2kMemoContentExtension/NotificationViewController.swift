@@ -44,6 +44,9 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
 //            DispatchQueue.main.async {
 //                self.imageView.image = UIImage(data: data!)
 //            }
+        } else {
+            activityIndicator.isHidden = true
+            activityIndicator.stopAnimating()
         }
         
     }
