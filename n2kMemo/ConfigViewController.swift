@@ -11,7 +11,9 @@ import UIKit
 class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     @IBAction func return2Landing(_ sender: Any) {
-        cloudDB.share.updateStationsBelongingTo(line2Seek: lineLink, stations2D: station2D, stations2U: station2T)
+        if lineLink != nil {
+            cloudDB.share.updateStationsBelongingTo(line2Seek: lineLink, stations2D: station2D, stations2U: station2T)
+        }
     }
     
     @IBAction func Debug(_ sender: Any) {

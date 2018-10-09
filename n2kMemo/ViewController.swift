@@ -383,7 +383,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if segue.identifier == segueNames.configuration {
 //            let pVC = destination as? ConfigViewController
 //            print("config")
-            stationDictionary = [:]
+            
         }
         
         func doAlert(title: String, message:String) {

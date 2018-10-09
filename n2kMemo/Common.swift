@@ -73,13 +73,13 @@ var media2Share: String?
 var image2D: UIImage!
 var lineZoneID: String!
 
-var stationDictionary:[String:[String]?] = [:]
+//var stationDictionary:[String:[String]?] = [:]
 var lineOwner:[String: String] = [:]
 var tokenOwner:[String: String?] = [:]
 
 var selectedLine: String!
 var selectedStation: String!
-var url2ShareDictionary:[String:String] = [:]
+//var url2ShareDictionary:[String:String] = [:]
 var webSite2Send: URL?
 var urlSeek: URL?
 var webSnap: UIImage!

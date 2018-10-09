@@ -475,7 +475,7 @@ class cloudDB: NSObject {
                     }
                     if records!.first?.object(forKey: remoteAttributes.lineURL) != nil {
                         let pass2U = records!.first?.object(forKey: remoteAttributes.lineURL) as! String
-                        url2ShareDictionary[lineName] = records!.first?.object(forKey: remoteAttributes.lineURL) as? String
+//                        url2ShareDictionary[lineName] = records!.first?.object(forKey: remoteAttributes.lineURL) as? String
                         let peru = Notification.Name("showURL")
                         let dict = [remoteAttributes.lineURL:pass2U]
                         NotificationCenter.default.post(name: peru, object: nil, userInfo: dict)
@@ -500,35 +500,35 @@ class cloudDB: NSObject {
         }
     }
     
-    public func returnAllLines() {
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
-        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
-            if error != nil {
-                print(error!.localizedDescription)
-                self.parseCloudError(errorCode: error as! CKError, lineno: 403)
-            } else {
-                for record in records! {
-                    linesRead.append(record[remoteAttributes.lineName]!)
-                    linesDictionary[record[remoteAttributes.lineName]! + record[remoteAttributes.linePassword]!] = record.recordID
-                    let point = record[remoteAttributes.lineOwner] as? CKRecord.Reference
-                    
-                    lineOwner[record[remoteAttributes.lineName]!] = point?.recordID.recordName
-                    if url2ShareDictionary[record[remoteAttributes.lineName]!] != nil {
-                        url2ShareDictionary[record[remoteAttributes.lineName]!] = record[remoteAttributes.lineURL]!
-                    }
-                }
-                let peru = Notification.Name("showPin")
-                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-                
-                if linesRead.count > 0 {
-//                    self.returnStationsOnLine(line2Seek: linesRead[0])
-                }
-                //                let peru2 = Notification.Name("refresh")
-                //                NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
-            }
-        }
-    }
+//    public func returnAllLines() {
+//        let predicate = NSPredicate(value: true)
+//        let query = CKQuery(recordType: remoteRecords.notificationLine, predicate: predicate)
+//        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+//            if error != nil {
+//                print(error!.localizedDescription)
+//                self.parseCloudError(errorCode: error as! CKError, lineno: 403)
+//            } else {
+//                for record in records! {
+//                    linesRead.append(record[remoteAttributes.lineName]!)
+//                    linesDictionary[record[remoteAttributes.lineName]! + record[remoteAttributes.linePassword]!] = record.recordID
+//                    let point = record[remoteAttributes.lineOwner] as? CKRecord.Reference
+//
+//                    lineOwner[record[remoteAttributes.lineName]!] = point?.recordID.recordName
+//                    if url2ShareDictionary[record[remoteAttributes.lineName]!] != nil {
+//                        url2ShareDictionary[record[remoteAttributes.lineName]!] = record[remoteAttributes.lineURL]!
+//                    }
+//                }
+//                let peru = Notification.Name("showPin")
+//                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+//
+//                if linesRead.count > 0 {
+////                    self.returnStationsOnLine(line2Seek: linesRead[0])
+//                }
+//                //                let peru2 = Notification.Name("refresh")
+//                //                NotificationCenter.default.post(name: peru2, object: nil, userInfo: nil)
+//            }
+//        }
+//    }
     
     public func returnStationsOnLine(line2Seek: CKRecord.Reference) {
         let predicate = NSPredicate(format:  "lineReference = %@", line2Seek)
