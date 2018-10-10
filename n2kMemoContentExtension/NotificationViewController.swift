@@ -37,7 +37,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         print("access URL \(userInfo["image-url"])")
         if let urlString = userInfo["image-url"]{
 //            let url = URL(string: urlString as! String)
-            print("access URL\(urlString)")
+            print("access URL \(urlString)")
             accessShare(URL2D: urlString as! String)
             
 //            let data = try? Data(contentsOf: url!)
@@ -90,45 +90,42 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
     
     public func accessShare(URL2D: String) {
         DispatchQueue.main.async {
-        let URL2C = URL(string: URL2D)
-        let metadataOperation = CKFetchShareMetadataOperation.init(shareURLs: [URL2C!])
-        metadataOperation.perShareMetadataBlock = {url, metadata, error in
-            if error != nil {
-                print("record completion \(url) \(metadata) \(error)")
-                self.parseCloudError(errorCode: error as! CKError, lineno: 93)
-                return
-            }
-            let acceptShareOperation = CKAcceptSharesOperation(shareMetadatas: [metadata!])
-            acceptShareOperation.qualityOfService = .background
-            acceptShareOperation.perShareCompletionBlock = {meta, share, error in
-                print("meta \(meta) share \(share) error \(error)")
+            let URL2C = URL(string: URL2D)
+            let metadataOperation = CKFetchShareMetadataOperation.init(shareURLs: [URL2C!])
+            metadataOperation.perShareMetadataBlock = {url, metadata, error in
                 if error != nil {
-                    self.parseCloudError(errorCode: error as! CKError, lineno: 101)
+                    print("record completion \(url) \(metadata) \(error)")
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 93)
+                    return
                 }
-                self.getShare(meta)
+                let acceptShareOperation = CKAcceptSharesOperation(shareMetadatas: [metadata!])
+                acceptShareOperation.qualityOfService = .background
+                acceptShareOperation.perShareCompletionBlock = {meta, share, error in
+                    print("meta \(meta) share \(share) error \(error)")
+                    if error != nil {
+                        self.parseCloudError(errorCode: error as! CKError, lineno: 101)
+                    }
+                    self.getShare(meta)
+                }
+                acceptShareOperation.acceptSharesCompletionBlock = {error in
+                    print("error in accept share completion \(error)")
+                    /// Send your user to wear that need to go in your app
+                    if error != nil {
+                        self.parseCloudError(errorCode: error as! CKError, lineno: 109)
+                    }
+                }
+                let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
+                container.add(acceptShareOperation)
             }
-            acceptShareOperation.acceptSharesCompletionBlock = {error in
-                print("error in accept share completion \(error)")
-                /// Send your user to wear that need to go in your app
+            metadataOperation.fetchShareMetadataCompletionBlock = { error in
                 if error != nil {
-                    self.parseCloudError(errorCode: error as! CKError, lineno: 109)
+                    print("metadata error \(error!.localizedDescription)")
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 121)
                 }
-                
-                
+                print("completed accept share completion \(error)")
             }
             let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
-            container.add(acceptShareOperation)
-//            CKContainer.default().add(acceptShareOperation)
-        }
-        metadataOperation.fetchShareMetadataCompletionBlock = { error in
-            if error != nil {
-                print("metadata error \(error!.localizedDescription)")
-                self.parseCloudError(errorCode: error as! CKError, lineno: 121)
-            }
-        }
-        let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
-        container.add(metadataOperation)
-//        CKContainer.default().add(metadataOperation)
+            container.add(metadataOperation)
         }
     }
     
@@ -136,43 +133,48 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
     
     private func getShare(_ cloudKitShareMetadata: CKShare.Metadata) {
         DispatchQueue.main.async {
-        let op = CKFetchRecordsOperation(
-            recordIDs: [cloudKitShareMetadata.rootRecordID])
-        
-        op.perRecordCompletionBlock = { record, _, error in
-            if error != nil {
-                print("error \(error?.localizedDescription)")
-                self.parseCloudError(errorCode: error as! CKError, lineno: 139)
-                DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
+            let op = CKFetchRecordsOperation(
+                recordIDs: [cloudKitShareMetadata.rootRecordID])
+            
+            op.perRecordCompletionBlock = { record, _, error in
+                if error != nil {
+                    print("error \(error?.localizedDescription)")
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 139)
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
+                    return
                 }
-                return
-            }
-            self.imageRex = record
-            if let asset = self.imageRex["mediaFile"] as? CKAsset {
-                let data = NSData(contentsOf: asset.fileURL)
-//                let data = try? Data(contentsOf: url!)
                 DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                    self.imageView.image = UIImage(data: data! as Data)
+//                    self.imageRex = record
+//                    print("image \(self.imageRex.debugDescription)")
+//                    if let asset = self.imageRex["mediaFile"] as? CKAsset {
+//                        let data = NSData(contentsOf: asset.fileURL)
+//                            self.activityIndicator.stopAnimating()
+//                            self.activityIndicator.isHidden = true
+//                            self.imageView.image = UIImage(data: data! as Data)
+//                    }
                 }
-//                image2D = UIImage(data: data! as Data)
-//                let peru = Notification.Name("doImage")
-//                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             }
-        }
-        op.fetchRecordsCompletionBlock = { records, error in
-            if error != nil {
-                print("error \(error?.localizedDescription)")
-                self.parseCloudError(errorCode: error as! CKError, lineno: 163)
-                return
+            op.fetchRecordsCompletionBlock = { records, error in
+                if error != nil {
+                    print("error \(error?.localizedDescription)")
+                    self.parseCloudError(errorCode: error as! CKError, lineno: 163)
+                    return
+                }
+                DispatchQueue.main.async {
+                    let record = records!.first
+                    self.imageRex = record?.value
+                    print("image \(self.imageRex.debugDescription)")
+                    if let asset = self.imageRex["mediaFile"] as? CKAsset {
+                        let data = NSData(contentsOf: asset.fileURL)
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
+                        self.imageView.image = UIImage(data: data! as Data)
+                    }
+                }
             }
-        }
-        let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
-        container.sharedCloudDatabase.add(op)
-//        CKContainer.default().sharedCloudDatabase.add(op)
+            let container = CKContainer(identifier: "iCloud.ch.cqd.n2kMemo")
+            container.sharedCloudDatabase.add(op)
         }
     }
     

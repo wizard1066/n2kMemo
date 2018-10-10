@@ -56,8 +56,14 @@ class cloudDB: NSObject {
         parentRecord[remoteAttributes.lineReference] = notificationLink
         parentRecord[remoteAttributes.stationReference] = stationSelected
         //        parentRecord[remoteAttributes.zoneID] = (parentZone.zoneID as! CKRecordValue)
+        // fuck
         let share = CKShare(rootRecord: parentRecord)
+//        let thumb = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("work_in_progress").dataRepresentation
+        
+        
         share[CKShare.SystemFieldKey.title] = "Shared Parent" as CKRecordValue
+//        share[CKShare.SystemFieldKey.thumbnailImageData] = thumb as CKRecordValue
+        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
         //        // PUBLIC permission
         share.publicPermission = .readOnly
         //        let saveOperation = CKModifyRecordsOperation(recordsToSave: [parentRecord, share], recordIDsToDelete: nil)
@@ -98,6 +104,11 @@ class cloudDB: NSObject {
         cloudDB.share.privateDB.add(modifyOperation)
     }
     
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
     
     func reduceImage(inImage:UIImage?) -> UIImage {
         var outImage: UIImage!
@@ -133,6 +144,23 @@ class cloudDB: NSObject {
         customRecord[remoteAttributes.mediaFile] = ckAsset
         let share = CKShare(rootRecord: customRecord)
         share[CKShare.SystemFieldKey.title] = "Marley" as CKRecordValue
+        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
+        
+        let imageData = image2Save.pngData()!
+        let options = [
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceThumbnailMaxPixelSize: 300] as CFDictionary
+        let source = CGImageSourceCreateWithData(imageData as CFData, nil)!
+        let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options)!
+        let thumbnail = UIImage(cgImage: imageReference).pngData()
+        
+        thumbImage = UIImage(cgImage: imageReference)
+        let peru = Notification.Name("thumb")
+        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+        
+        share[CKShare.SystemFieldKey.thumbnailImageData] = thumbnail! as CKRecordValue
+        
         share.publicPermission = .readOnly
         //        customRecord.setParent(parentRecord)
         let modifyOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [customRecord, share], recordIDsToDelete: nil)
@@ -145,10 +173,11 @@ class cloudDB: NSObject {
                 print("modifyOperation error \(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 151)
             }
-
-            media2Share = share.url?.absoluteString
-            let peru = Notification.Name("enablePost")
-            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                media2Share = share.url?.absoluteString
+            }
+//            let peru = Notification.Name("enablePost")
+//            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             
         }
         cloudDB.share.privateDB.add(modifyOperation)
@@ -815,7 +844,7 @@ class cloudDB: NSObject {
                 self.parseCloudError(errorCode: error as! CKError, lineno: 624)
             } else {
                 for record in records! {
-//        fuck            tokensRead.append(record[remoteAttributes.deviceRegistered]!)
+//                      tokensRead.append(record[remoteAttributes.deviceRegistered]!)
 //                    tokenOwner[record.recordID.recordName] = record[remoteAttributes.deviceRegistered]!
                     let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
                     let target = record[remoteAttributes.deviceRegistered]! as? String
@@ -839,7 +868,7 @@ class cloudDB: NSObject {
             } else {
 //                print("returnAllTokensWithOwners \(records!.count)")
                 for record in records! {
-//           fuck         tokensRead.append(record[remoteAttributes.deviceRegistered]!)
+//                   tokensRead.append(record[remoteAttributes.deviceRegistered]!)
                     if record.object(forKey: remoteAttributes.lineOwner) != nil {
                         let fix = record.object(forKey: remoteAttributes.lineOwner)! as? String
                         let target = record[remoteAttributes.deviceRegistered]! as? String

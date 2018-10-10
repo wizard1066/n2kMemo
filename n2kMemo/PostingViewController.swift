@@ -15,8 +15,9 @@ var photoAttached: Bool = false
 
 class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPickerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITextViewDelegate,SFSafariViewControllerDelegate {
     
+    @IBOutlet weak var debugThumb: UIImageView!
     @IBAction func debug(_ sender: Any) {
-        print("tokensRead \(tokensRead)")
+        print("media2Share \(media2Share)")
     }
     //    var stationsRegistered:[String] = ["English","French","Italian","German"]
     
@@ -192,6 +193,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     private var pinObserver3: NSObjectProtocol!
     private var pinObserver4: NSObjectProtocol!
     private var pinObserver5: NSObjectProtocol!
+    private var pinObserver6: NSObjectProtocol!
     
     @objc func deleteAttachment() {
         if postButton.isEnabled {
@@ -256,6 +258,11 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
 //            let request2D = notification.userInfo!["http-url"] as? String
             self.postImage.image = webSnap
         }
+        let alert2Monitor6 = "thumb"
+        pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
+            print("thumb posted")
+            self.debugThumb.image = thumbImage
+        }
         
         // NOT AN OBSERVER !!
         
@@ -305,6 +312,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     
     var timer = Timer()
     var devices2Post2:[String] = []
+    var doPost: Bool = false
     
     @IBAction func postAction(_ sender: UIButton) {
         workingIndicator.isHidden = false

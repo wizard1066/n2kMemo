@@ -255,8 +255,8 @@
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAe-Nr-mvX">
-                                <rect key="frame" x="172.5" y="249" width="30.5" height="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LINES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAe-Nr-mvX">
+                                <rect key="frame" x="171" y="249" width="33" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -447,7 +447,7 @@
                                     <constraint firstAttribute="width" constant="240" id="xfT-fM-Vh9"/>
                                 </constraints>
                             </imageView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N81-ya-4QE">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N81-ya-4QE">
                                 <rect key="frame" x="313" y="80" width="46" height="30"/>
                                 <state key="normal" title="Debug">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -456,6 +456,13 @@
                                     <action selector="debug:" destination="sTY-l2-MkH" eventType="touchUpInside" id="YXQ-G0-NfJ"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XLF-zp-7bJ">
+                                <rect key="frame" x="163.5" y="482" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="1ec-Z8-Ooh"/>
+                                    <constraint firstAttribute="height" constant="48" id="3Hw-r7-2im"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -479,6 +486,7 @@
                             <constraint firstItem="R8x-74-ZYj" firstAttribute="leading" secondItem="aFf-C0-Ouu" secondAttribute="leading" constant="20" id="Z2R-XJ-E21"/>
                             <constraint firstItem="aFf-C0-Ouu" firstAttribute="trailing" secondItem="quV-QY-a16" secondAttribute="trailing" constant="20" id="Zs2-ha-g9D"/>
                             <constraint firstItem="aFf-C0-Ouu" firstAttribute="trailing" secondItem="EKr-um-HLz" secondAttribute="trailing" id="Zsh-fL-yLh"/>
+                            <constraint firstItem="XLF-zp-7bJ" firstAttribute="top" secondItem="LNp-1J-HSh" secondAttribute="bottom" constant="31" id="bCp-9O-fSy"/>
                             <constraint firstItem="hFD-ja-oCC" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="8" id="bza-KQ-96e"/>
                             <constraint firstItem="I6m-pu-kP5" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="d7s-CP-n4x"/>
                             <constraint firstItem="AH3-xe-5vp" firstAttribute="top" secondItem="caW-mZ-IRW" secondAttribute="bottom" constant="-5" id="eIk-b6-IJ1"/>
@@ -486,6 +494,7 @@
                             <constraint firstItem="flN-Bg-NMU" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="izl-Yi-mOS"/>
                             <constraint firstItem="kLI-f7-QE2" firstAttribute="top" secondItem="LpY-av-2AR" secondAttribute="bottom" constant="16" id="mPg-xj-sxh"/>
                             <constraint firstItem="She-hv-ZWZ" firstAttribute="centerY" secondItem="ppB-nX-ojS" secondAttribute="centerY" id="nN3-Dg-dcN"/>
+                            <constraint firstItem="XLF-zp-7bJ" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="oqt-j7-WX4"/>
                             <constraint firstItem="3KJ-qa-u42" firstAttribute="centerX" secondItem="ppB-nX-ojS" secondAttribute="centerX" id="p26-lT-nZk"/>
                             <constraint firstItem="quV-QY-a16" firstAttribute="centerY" secondItem="ppB-nX-ojS" secondAttribute="centerY" constant="148" id="rFc-tX-TCT"/>
                             <constraint firstItem="caW-mZ-IRW" firstAttribute="top" secondItem="p6i-ld-Xzd" secondAttribute="bottom" constant="8" id="tDN-Yf-YRU"/>
@@ -500,6 +509,7 @@
                         <outlet property="bodyText" destination="flN-Bg-NMU" id="F9x-Gn-IL9"/>
                         <outlet property="clientLabel" destination="hFD-ja-oCC" id="Xih-I3-2y2"/>
                         <outlet property="clientsRegistered" destination="OU8-zW-25Y" id="n0w-dt-3Hw"/>
+                        <outlet property="debugThumb" destination="XLF-zp-7bJ" id="Zhf-Jq-56U"/>
                         <outlet property="dropNdragButton" destination="2D2-Tg-Lnc" id="jVw-yg-lid"/>
                         <outlet property="libraryButton" destination="U1P-ha-e5c" id="4bT-nv-6w1"/>
                         <outlet property="lineLabel" destination="caW-mZ-IRW" id="wjr-VG-saQ"/>

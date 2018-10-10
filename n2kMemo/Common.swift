@@ -69,7 +69,15 @@ var url2Share: String? {
         NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
     }
 }
-var media2Share: String?
+var media2Share: String? {
+    didSet {
+        print("media2Share \(media2Share)")
+        if media2Share != nil, media2Share != "" {
+            let peru = Notification.Name("enablePost")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+        }
+    }
+}
 var image2D: UIImage!
 var lineZoneID: String!
 
@@ -97,3 +105,4 @@ var station2D:[stationRecord?] = []
 
 var changed: Bool?
 var rowInAction: String?
+var thumbImage: UIImage!
