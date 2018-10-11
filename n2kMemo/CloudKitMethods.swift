@@ -36,7 +36,9 @@ class cloudDB: NSObject {
             } else {
 //                print("customZoneID \(customZone.zoneID)")
                 self.parentZone = customZone
-                self.saveShare(lineName: zone2U, zone2ID: customZone.zoneID, notificationLink: lineReference, station2Save: stationNames, stationSelected: stationSelected, stationName: stationName)
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+                    self.saveShare(lineName: zone2U, zone2ID: customZone.zoneID, notificationLink: lineReference, station2Save: stationNames, stationSelected: stationSelected, stationName: stationName)
+//                }
             }
         }
         CKContainer.default().privateCloudDatabase.add(operation)
@@ -49,10 +51,13 @@ class cloudDB: NSObject {
     
     
     public func saveShare(lineName: String, zone2ID: CKRecordZone.ID, notificationLink: CKRecord.Reference, station2Save:[String], stationSelected: CKRecord.Reference, stationName: String) {
-//        parentRecord = CKRecord(recordType: remoteRecords.notificationShare, zoneID: zoneID)
+//        parentRecord = CKRecord(recordType: remoteRecords.notificationShare, zoneID: zone2ID)
         let newUUID = UUID().uuidString
-        let customID = CKRecord.ID(recordName: newUUID, zoneID: zone2ID)
+//        print("newUUID \(newUUID)")
+        let customID = CKRecord.ID(recordName: newUUID, zoneID: self.parentZone.zoneID)
+        
         let parentRecord = CKRecord(recordType: remoteRecords.notificationShare, recordID: customID)
+//        let parentRecord = CKRecord(recordType: remoteRecords.notificationShare, zoneID: zone2ID)
         parentRecord[remoteAttributes.lineName] = lineName
         parentRecord[remoteAttributes.stationNames] = station2Save
         parentRecord[remoteAttributes.lineReference] = notificationLink
@@ -303,7 +308,7 @@ class cloudDB: NSObject {
             customRecord[remoteAttributes.stationName] = stationName
             customRecord[remoteAttributes.lineReference] = lineReference
             stationRex.append(customRecord)
-            let newReference = CKRecord.Reference(record: customRecord, action: .deleteSelf)
+            let newReference = CKRecord.Reference(record: customRecord, action: .none)
             stationDict[stationName] = newReference
         }
         let operation = CKModifyRecordsOperation(recordsToSave: stationRex, recordIDsToDelete: nil)
@@ -338,6 +343,8 @@ class cloudDB: NSObject {
                         }
 //                        print("Record \(recordID) was successfully deleted")
                     }
+                    let newReference = CKRecord.Reference(record: records!.first!, action: .none)
+                    let lineLink = newReference
                     let zone2Zap = CKRecordZone(zoneName: lineName)
                     CKContainer.default().privateCloudDatabase.delete(withRecordZoneID: zone2Zap.zoneID) { (zoneDeleted, error) in
                         if error != nil {
@@ -349,7 +356,33 @@ class cloudDB: NSObject {
                         defaults.set(nil, forKey: remoteAttributes.stationNames)
                         let peru = Notification.Name(localObservers.clearFields)
                         NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-//                      Finf all linked stations in public and delete
+//                      Find all linked stations in public and delete
+                        let predicate = NSPredicate(format:  "lineReference = %@", lineLink)
+                        let query = CKQuery(recordType: remoteRecords.notificationStation, predicate: predicate)
+                        cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
+                            if error != nil {
+                                print(error!.localizedDescription)
+                                self.parseCloudError(errorCode: error as! CKError, lineno: 443)
+                            } else {
+                                var rex2D:[CKRecord.ID] = []
+                                if records!.count > 0 {
+                                    for record in records! {
+                                        rex2D.append(record.recordID)
+                                    }
+                                }
+                                let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: rex2D)
+                                operation.savePolicy = .allKeys
+                                operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                                    if error != nil {
+                                        print("modify error\(error!.localizedDescription)")
+                                        self.parseCloudError(errorCode: error as! CKError, lineno: 316)
+                                    } else {
+                                       // say nothing
+                                    }
+                                }
+                                CKContainer.default().publicCloudDatabase.add(operation)
+                            }
+                        }
                     }
                 }
             }
