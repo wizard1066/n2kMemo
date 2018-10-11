@@ -318,6 +318,9 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         passText.delegate = self
         changed = false
         workingIndicator.isHidden = true
+        if stationsRegistered.count > 0 {
+            stationText.isHidden = true
+        }
     }
     
     private var pinObserver: NSObjectProtocol!

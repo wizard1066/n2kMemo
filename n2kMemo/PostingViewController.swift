@@ -17,12 +17,12 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     
     @IBOutlet weak var debugThumb: UIImageView!
     @IBAction func debug(_ sender: Any) {
-        print("media2Share \(media2Share)")
+        //rint("media2Share \(media2Share)")
     }
     //    var stationsRegistered:[String] = ["English","French","Italian","German"]
     
     @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
-        print("Unwind to Root View Controller")
+        //rint("Unwind to Root View Controller")
     }
     
     var bahninfo: String!
@@ -260,7 +260,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         }
         let alert2Monitor6 = "thumb"
         pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
-            print("thumb posted")
+            //rint("thumb posted")
             self.debugThumb.image = thumbImage
         }
         
@@ -341,7 +341,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             ),
             let theJSONText = String(data: theJSONData,
                                      encoding: String.Encoding.ascii) {
-//            print("JSON string = \n\(theJSONText)")
+//            //rint("JSON string = \n\(theJSONText)")
         }
     }
     
