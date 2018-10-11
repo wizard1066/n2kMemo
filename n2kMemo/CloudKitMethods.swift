@@ -63,7 +63,7 @@ class cloudDB: NSObject {
         
         share[CKShare.SystemFieldKey.title] = "Shared Parent" as CKRecordValue
 //        share[CKShare.SystemFieldKey.thumbnailImageData] = thumb as CKRecordValue
-        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
+//        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
         //        // PUBLIC permission
         share.publicPermission = .readOnly
         //        let saveOperation = CKModifyRecordsOperation(recordsToSave: [parentRecord, share], recordIDsToDelete: nil)
@@ -144,38 +144,41 @@ class cloudDB: NSObject {
         customRecord[remoteAttributes.mediaFile] = ckAsset
         let share = CKShare(rootRecord: customRecord)
         share[CKShare.SystemFieldKey.title] = "Marley" as CKRecordValue
-        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
+//        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
         
-        let imageData = image2Save.pngData()!
-        let options = [
-            kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceThumbnailMaxPixelSize: 300] as CFDictionary
-        let source = CGImageSourceCreateWithData(imageData as CFData, nil)!
-        let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options)!
-        let thumbnail = UIImage(cgImage: imageReference).pngData()
+//        let imageData = image2Save.pngData()!
+//        let options = [
+//            kCGImageSourceCreateThumbnailWithTransform: true,
+//            kCGImageSourceCreateThumbnailFromImageAlways: true,
+//            kCGImageSourceThumbnailMaxPixelSize: 300] as CFDictionary
+//        let source = CGImageSourceCreateWithData(imageData as CFData, nil)!
+//        let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options)!
+//        let thumbnail = UIImage(cgImage: imageReference).pngData()
+//
+//        thumbImage = UIImage(cgImage: imageReference)
+//        let peru = Notification.Name("thumb")
+//        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
         
-        thumbImage = UIImage(cgImage: imageReference)
-        let peru = Notification.Name("thumb")
-        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-        
-        share[CKShare.SystemFieldKey.thumbnailImageData] = thumbnail! as CKRecordValue
+//        share[CKShare.SystemFieldKey.thumbnailImageData] = thumbnail! as CKRecordValue
         
         share.publicPermission = .readOnly
         //        customRecord.setParent(parentRecord)
         let modifyOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [customRecord, share], recordIDsToDelete: nil)
-        modifyOperation.savePolicy = .ifServerRecordUnchanged
+        modifyOperation.savePolicy = .allKeys
         modifyOperation.perRecordCompletionBlock = {record, error in
-//            print("record completion \(record) and \(error)")
+            if error != nil {
+                print("record completion \(record) and \(error)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 151)
+            }
         }
         modifyOperation.modifyRecordsCompletionBlock = {records, recordIDs, error in
             if error != nil {
                 print("modifyOperation error \(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 151)
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
                 media2Share = share.url?.absoluteString
-            }
+//            }
 //            let peru = Notification.Name("enablePost")
 //            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             
@@ -605,6 +608,9 @@ class cloudDB: NSObject {
                             bar.setObject(line2Seek, forKey: remoteAttributes.lineReference)
                             bar.setObject(rex?.name as __CKRecordObjCValue?, forKey: remoteAttributes.stationName)
                             rex2A.append(bar)
+                            let s2A = stationRecord(name: rex?.name, recordRecord: bar)
+                            station2T.append(s2A)
+                            stationsRead.append((rex?.name)!)
                         } else {
                             if let foo = records!.first(where: {$0.recordID == rex?.recordRecord.recordID}) {
                                 foo.setObject(rex!.name as __CKRecordObjCValue?, forKey: remoteAttributes.stationName)
@@ -620,6 +626,7 @@ class cloudDB: NSObject {
                             self.parseCloudError(errorCode: error as! CKError, lineno: 476)
                         } else {
                             print("record Updated \(savedRecords)")
+                            
                         }
                     }
                     CKContainer.default().publicCloudDatabase.add(operation)

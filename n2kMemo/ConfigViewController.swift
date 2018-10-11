@@ -203,8 +203,10 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         print("didSelectRowAt")
         selectedStation = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
         if let foo = station2T.first(where: {$0!.name == selectedStation}) {
-            let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
-            stationLink = newReference
+            if foo?.recordRecord != nil {
+                let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
+                stationLink = newReference
+            }
         }
     }
     
@@ -456,108 +458,21 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let pVC = destination as? ViewController
 //            pVC?.theLine.text = selectedLine
 //            pVC?.theStation.text = selectedStation
-            if selectedLine != nil {
-                linesRead.append(selectedLine)
-                if selectedStation != nil {
-                    stationsRead.append(selectedStation)
-                } else {
-                    stationsRead.append(stationsRegistered[0])
-                }
-            }
+//            if selectedLine != nil {
+//                linesRead.append(selectedLine)
+//                if selectedStation != nil {
+//                    stationsRead.append(selectedStation)
+//                } else {
+//                    stationsRead.append(stationsRegistered[0])
+//                }
+//            }
     }
-    
- 
-    
-    
-    
-    //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
-    //tap.cancelsTouchesInView = false
-    
-    
-    
-    //    func dismissKeyboard() {
-    //        //Causes the view (or one of its embedded text fields) to resign the first responder status.
-    //        view.endEditing(true)
-    //    }
-    
-    
-    //    func doSafariVC(url2U: String) {
-    //        channel.text = ""
-    //        channelPass.text = ""
-    //        channelURL.text = ""
-    //        channelURL.isHidden = true
-    //        channelPass.isHidden = true
-    //        channel.becomeFirstResponder()
-    //        if let url = URL(string: url2U.trimmingCharacters(in: .whitespacesAndNewlines)) {
-    //            if UIApplication.shared.canOpenURL(url) {
-    //                let vc: SFSafariViewController
-    //                if #available(iOS 11.0, *) {
-    //                    let config = SFSafariViewController.Configuration()
-    //                    config.entersReaderIfAvailable = false
-    //                    vc = SFSafariViewController(url: url, configuration: config)
-    //                } else {
-    //                    vc = SFSafariViewController(url: url, entersReaderIfAvailable: false)
-    //                }
-    //
-    //                vc.delegate = self
-    //                present(vc, animated: true)
-    //            } else {
-    //
-    //            }
-    //        }
-    //    }
-    
-    //    func doAnimation() {
-    //        radioLabel.center.y -= view.bounds.height
-    //        channel.center.y += view.bounds.height
-    //        UIView.animate(withDuration: 1.0, delay: 0.25, options: [.curveEaseOut],
-    //                       animations: {
-    //                        self.radioLabel.center.y += self.view.bounds.height },
-    //                        completion: {(status) in
-    //                        // do nothing
-    //            }
-    //        )
-    //        UIView.animate(withDuration: 1.0, delay: 0.25, options: [.curveEaseOut], animations: {
-    //            self.channel.center.y -= self.view.bounds.height
-    //        }) { (status) in
-    //            // next
-    //        }
-    //
-    //    }
-    
-    //    func doURLnPassAnimation() {
-    //        channelURL.center.x -= view.bounds.width
-    //        channelPass.center.x += view.bounds.width
-    //        UIView.animate(withDuration: 0.5, delay: 0.25, options: [.curveEaseOut], animations: {
-    //            self.channelURL.center.x += self.view.bounds.width
-    //        }) { (status) in
-    //            // next
-    //        }
-    //        UIView.animate(withDuration: 0.5, delay: 0.25, options: [.curveEaseOut], animations: {
-    //            self.channelPass.center.x -= self.view.bounds.width
-    //        }) { (status) in
-    //            // next
-    //        }
-    //    }
-    //
-    //    func doUUIDAnimation() {
-    //        UIView.animate(withDuration: 0.5, delay: 0.25, options: [.curveEaseOut], animations: {
-    //            self.channelUUID.alpha = 1.0
-    //        }) { (status) in
-    //            // next
-    //        }
-    //    }
-    
-    
-    
     
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
     
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        return true
-//    }
+
 
     
     func hideKeyboardWhenTappedAround() {
@@ -572,21 +487,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
         view.endEditing(true)
     }
     
-//    func confirmTableUpdated() {
-//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.confirmed))
-//        tap.cancelsTouchesInView = false
-//        tap.numberOfTapsRequired = 1
-//        tap.delegate = self
-//        view.addGestureRecognizer(tap)
-//    }
-//
-//    @objc func confirmed() {
-//        if changed!{
-////            print("table updated")
-//        } else {
-////            print("rien happened")
-//        }
-//    }
+
 }
 
 extension UIViewController {

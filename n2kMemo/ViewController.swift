@@ -215,10 +215,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
             if stationsRead.count > 0 && row < stationsRead.count {
                 stationSelected = row
                 if let foo = station2T.first(where: {$0!.name == stationsRead[row]}) {
-                    let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
-                    stationLink = newReference
+                    if foo?.recordRecord != nil {
+                        let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
+                        stationLink = newReference
+                    }
                 }
-//                selectedStation = stationsRead[row]
+                selectedStation = stationsRead[row]
             }
         }
     }
