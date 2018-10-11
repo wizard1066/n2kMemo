@@ -99,10 +99,14 @@ class cloudDB: NSObject {
                 print("modifyOperation error \(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 99)
             }
-//            print("share url \(share.url) \(share.participants)")
-            url2Share = share.url?.absoluteString
-            station2Share = (stationSelected.recordID.recordName,share.url?.absoluteString) as? (String, String)
-            
+//
+            DispatchQueue.main.asyncAfter(deadline: .now() + 16) {
+                print("share url \(share.url) \(share.participants)")
+                url2Share = share.url?.absoluteString
+                if share.url?.absoluteString != nil {
+                    station2Share = (stationSelected.recordID.recordName,share.url?.absoluteString) as? (String, String)
+                }
+            }
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
 //                self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 15)
 //                self.updateLineURL(line2U: lineName, url2U: url2Share!)
@@ -299,7 +303,7 @@ class cloudDB: NSObject {
             customRecord[remoteAttributes.stationName] = stationName
             customRecord[remoteAttributes.lineReference] = lineReference
             stationRex.append(customRecord)
-            let newReference = CKRecord.Reference(record: customRecord, action: .none)
+            let newReference = CKRecord.Reference(record: customRecord, action: .deleteSelf)
             stationDict[stationName] = newReference
         }
         let operation = CKModifyRecordsOperation(recordsToSave: stationRex, recordIDsToDelete: nil)
@@ -343,7 +347,9 @@ class cloudDB: NSObject {
                         defaults.set(nil, forKey: remoteAttributes.lineName)
                         defaults.set(nil, forKey: remoteAttributes.linePassword)
                         defaults.set(nil, forKey: remoteAttributes.stationNames)
-//                        print("Zone \(lineName) was successfully deleted")
+                        let peru = Notification.Name(localObservers.clearFields)
+                        NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+//                      Finf all linked stations in public and delete
                     }
                 }
             }

@@ -53,6 +53,7 @@ enum localObservers {
     static let showAlert = "showAlert"
     static let noLineFound = "noLineFound"
     static let newLine = "newLine"
+    static let clearFields = "clearFields"
 }
 
 var ownerToken: String!

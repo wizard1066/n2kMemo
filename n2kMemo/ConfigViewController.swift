@@ -331,6 +331,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private var pinObserver6: NSObjectProtocol!
     private var pinObserver7: NSObjectProtocol!
     private var pinObserver8: NSObjectProtocol!
+    private var pinObserver9: NSObjectProtocol!
     
     override func viewDidAppear(_ animated: Bool) {
         let center = NotificationCenter.default
@@ -397,6 +398,20 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
             }
             
+        }
+        let alert2Monitor9 = localObservers.clearFields
+        pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor9), object: nil, queue: queue) { (notification) in
+            self.passText.text = ""
+            self.lineText.text = ""
+            self.stationText.text = ""
+            self.stationsRegistered.removeAll()
+            self.stationsTable.reloadData()
+            station2T.removeAll()
+            station2D.removeAll()
+            selectedLine = ""
+            selectedStation = ""
+            stationsRead.removeAll()
+            linesRead.removeAll()
         }
         NotificationCenter.default.addObserver(
             self,
