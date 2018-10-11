@@ -126,7 +126,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //        content.userInfo["stationName"] = stationName
 //        content.userInfo["lineName"] = lineName
 //
-//        print("fcuk08102018 \(lineName.debugDescription) \(stationName.debugDescription)")
+//        //rint("fcuk08102018 \(lineName.debugDescription) \(stationName.debugDescription)")
 //
 //        let inSeconds:TimeInterval = 4.0
 //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
@@ -134,7 +134,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //
 //        UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
 //            if error != nil {
-//                print("Welcome: \(error?.localizedDescription)")
+//                //rint("Welcome: \(error?.localizedDescription)")
 //            }
 //        })
     }
@@ -261,14 +261,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         //        jsonString(dictionary: dictionary)
         
         
-        lineName = defaults.string(forKey: remoteAttributes.lineName)
-        if lineName != nil {
-            stationName = defaults.string(forKey: remoteAttributes.stationName)
-            if stationName != nil {
-                stationsRead.append(stationName)
-            }
-            linesRead.append(lineName)
-        }
+//        lineName = defaults.string(forKey: remoteAttributes.lineName)
+//        if lineName != nil {
+//            stationName = defaults.string(forKey: remoteAttributes.stationName)
+//            if stationName != nil {
+//                stationsRead.append(stationName)
+//            }
+//            linesRead.append(lineName)
+//        }
         
         //        doAnimation()
         url2Share = nil
@@ -285,6 +285,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
                 let index2 = stationsRead.index(where:{ $0 == self.stationName })
                 if index2 != nil {
                     self.linesPicker.selectRow(index2!, inComponent: 0, animated: true)
+                    self.pickerView(self.stationsPicker, didSelectRow: index2!, inComponent: 0)
                 }
                 self.linesPicker.reloadAllComponents()
             }
@@ -394,11 +395,11 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
 //            let pVC = destination as? PostingViewController
 //            pVC?.bahninfo = selectedLine
 //            pVC?.hofinfo = selectedStation
-//            print("posting \(lineSelected) \(stationSelected)")
+//            //rint("posting \(lineSelected) \(stationSelected)")
         }
         if segue.identifier == segueNames.configuration {
 //            let pVC = destination as? ConfigViewController
-//            print("config")
+//            //rint("config")
             
         }
         
@@ -410,17 +411,13 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     @IBAction func unwindToLanding(_ sender: UIStoryboardSegue) {
         self.linesPicker.reloadAllComponents()
         self.stationsPicker.reloadAllComponents()
-        print("stationSelected \(stationSelected) \(selectedStation)")
-        print("lineSelected \(lineSelected) \(selectedLine)")
-//        let index2 = stationsRead.index(where:{ $0 == selectedStation })
-//        if index2 != nil {
-//            self.linesPicker.selectRow(index2!, inComponent: 0, animated: true)
-//        }
-//        self.linesPicker.reloadAllComponents()
+        //rint("stationSelected \(stationSelected) \(selectedStation)")
+        //rint("lineSelected \(lineSelected) \(selectedLine)")
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             let peru = Notification.Name("stationPin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            print("station Records \(station2T)")
+            //rint("station Records \(station2T)")
         }
     }
     

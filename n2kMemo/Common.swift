@@ -41,6 +41,7 @@ enum remoteAttributes {
     static let zoneID = "zoneID"
     static let lineURL = "lineURL"
     static let stationReference = "stationReference"
+    static let stationURL = "stationURL"
 }
 
 enum localdefault {
@@ -62,6 +63,12 @@ var linesGood2Go: Bool = false
 
 var linesDictionary:[String:CKRecord.ID] = [:]
 var controller:UICloudSharingController!
+var station2Share: (String,String)! {
+    didSet {
+        cloudDB.share.updateStationURL(stationID: station2Share!.0, url2D: station2Share!.1)
+    }
+}
+
 var url2Share: String? {
     didSet {
         cloudDB.share.updateLineURL(line2U: selectedLine, url2U: url2Share)
@@ -98,6 +105,7 @@ var stationLink: CKRecord.Reference!
 struct stationRecord {
     var name: String!
     var recordRecord: CKRecord!
+    var shareLink: String?
 }
 
 var station2T:[stationRecord?] = []

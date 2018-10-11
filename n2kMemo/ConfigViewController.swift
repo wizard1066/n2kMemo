@@ -14,33 +14,35 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
     @IBAction func return2Landing(_ sender: Any) {
         if lineLink != nil {
-            cloudDB.share.updateStationsBelongingTo(line2Seek: lineLink, stations2D: station2D, stations2U: station2T)
+            cloudDB.share.updateStationsBelongingTo(lineName: selectedLine, line2Seek: lineLink, stations2D: station2D, stations2U: station2T)
         }
     }
     
     @IBAction func Debug(_ sender: Any) {
-        print("exit \(station2T)\n\n \(station2D)")
+        //rint("exit \(station2T)\n\n \(station2D)")
         for station in stationsRead {
-            print("stationsRead \(station)")
+            //rint("stationsRead \(station)")
         }
         for station in stationsRegistered {
-            print("stationsRegistered \(station)")
+            //rint("stationsRegistered \(station)")
         }
         for station in station2T {
-            print("station2T \(station?.name) ")
+            //rint("station2T \(station?.name) ")
         }
         for station in station2D {
-            print("station2D \(station?.name) ")
+            //rint("station2D \(station?.name) ")
         }
     }
     
     @IBOutlet weak var registerButton: UIButton!
     
     @IBOutlet weak var stationsTable: UITableView!
+    @IBOutlet weak var stationName: UITextField!
     
     @IBOutlet weak var returnButton: UIButton!
     @IBOutlet weak var lineText: UITextField!
     @IBOutlet weak var passText: UITextField!
+    @IBOutlet weak var stationText: UITextField!
     
     
     @IBOutlet weak var zeroURL: UILabel!
@@ -98,6 +100,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var newText: String!
     var newPass: String!
+    var newStation: String!
     var bon: Bool!
     
     
@@ -121,13 +124,20 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             // do password do nothing
             return false
         }
+        if stationsRegistered.count == 0 {
+            if textField.placeholder == "Station", stationText.text == "" {
+                return false
+            }
+        }
         // no blanc spaces
         if textField.text == "" {
             return false
         }
         newText = String(lineText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         newPass = String(passText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
+        newStation = String(stationText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         
+        stationsRegistered.append(newStation)
         
         registerButton.isEnabled = true
         
@@ -186,7 +196,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     station2T.remove(at: indexPath.row)
                 }
                 self.stationsRegistered.remove(at: indexPath.row)
-                print("Do that iCloud update")
+                //rint("Do that iCloud update")
             }
             tableView.reloadData()
         })
@@ -195,17 +205,24 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
 //    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-//        print("didHighlightRowAt")
+//        //rint("didHighlightRowAt")
 //        selectedStation = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
 //    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didSelectRowAt")
+        //rint("didSelectRowAt")
         selectedStation = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
         if let foo = station2T.first(where: {$0!.name == selectedStation}) {
             if foo?.recordRecord != nil {
                 let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
                 stationLink = newReference
+                if foo?.shareLink != nil, foo?.shareLink != "" {
+                    zeroURL.text = foo?.shareLink
+                } else {
+                    zeroURL.text = "Refresh required, return to landing view and come back"
+                }
+            } else {
+                zeroURL.text = "Refresh required, return to landing view and come back"
             }
         }
     }
@@ -221,7 +238,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.stationsRegistered[indexPath.row] = alert.textFields!.first!.text!
             station2T[indexPath.row]?.name = alert.textFields!.first!.text!
             self.stationsTable.reloadRows(at: [indexPath], with: .fade)
-            print("Do that iCloud update")
+            //rint("Do that iCloud update")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: false)
@@ -258,7 +275,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     station2T.remove(at: indexPath.row)
                 }
                 self.stationsRegistered.remove(at: indexPath.row)
-                print("Do that iCloud update")
+                //rint("Do that iCloud update")
                 tableView.reloadData()
             }
             success(true)
@@ -270,7 +287,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-        print("selected \(indexPath)")
+        //rint("selected \(indexPath)")
     }
     
     // MARK: View methods
@@ -368,7 +385,9 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
 //                    registerButton.isEnabled = false
                     selectedLine = self.newText
-                    selectedStation = self.stationsRegistered[0]
+                    if self.stationsRegistered.count > 0 {
+                        selectedStation = self.stationsRegistered[0]
+                    }
                     cloudDB.share.updateLine(lineName: self.newText, stationNames: self.stationsRegistered, stationSelected: self.stationsRegistered[0], linePassword: self.newPass)
                 }))
                 self.present(alert, animated: true, completion: nil)

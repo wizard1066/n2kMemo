@@ -26,7 +26,7 @@ class cloudDB: NSObject {
         sharedDB = container.sharedCloudDatabase
     }
     
-    public func saveZone(zone2U: String, notificationReference: CKRecord.Reference, stationNames:[String], stationSelected:CKRecord.Reference) {
+    public func saveZone(zone2U: String, lineReference: CKRecord.Reference, stationNames:[String], stationSelected:CKRecord.Reference, stationName: String) {
         let customZone = CKRecordZone(zoneName: zone2U)
         let operation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: nil)
         operation.modifyRecordZonesCompletionBlock = { savedRecords, deletedRecordIDs, error in
@@ -36,27 +36,30 @@ class cloudDB: NSObject {
             } else {
 //                print("customZoneID \(customZone.zoneID)")
                 self.parentZone = customZone
-                self.saveShare(lineName: zone2U, zone2ID: customZone.zoneID, notificationLink: notificationReference, station2Save: stationNames, stationSelected: stationSelected)
+                self.saveShare(lineName: zone2U, zone2ID: customZone.zoneID, notificationLink: lineReference, station2Save: stationNames, stationSelected: stationSelected, stationName: stationName)
             }
         }
         CKContainer.default().privateCloudDatabase.add(operation)
         
     }
     
-    var parentRecord: CKRecord!
+//    var parentRecord: CKRecord!
     var parentZone: CKRecordZone!
     
-    public func saveShare(lineName: String, zone2ID: CKRecordZone.ID, notificationLink: CKRecord.Reference, station2Save:[String], stationSelected: CKRecord.Reference) {
+    
+    
+    public func saveShare(lineName: String, zone2ID: CKRecordZone.ID, notificationLink: CKRecord.Reference, station2Save:[String], stationSelected: CKRecord.Reference, stationName: String) {
 //        parentRecord = CKRecord(recordType: remoteRecords.notificationShare, zoneID: zoneID)
-
-        let customID = CKRecord.ID(recordName: remoteRecords.notificationShare, zoneID: zone2ID)
-        parentRecord = CKRecord(recordType: remoteRecords.notificationShare, recordID: customID)
+        let newUUID = UUID().uuidString
+        let customID = CKRecord.ID(recordName: newUUID, zoneID: zone2ID)
+        let parentRecord = CKRecord(recordType: remoteRecords.notificationShare, recordID: customID)
         parentRecord[remoteAttributes.lineName] = lineName
         parentRecord[remoteAttributes.stationNames] = station2Save
         parentRecord[remoteAttributes.lineReference] = notificationLink
         parentRecord[remoteAttributes.stationReference] = stationSelected
+        parentRecord[remoteAttributes.stationName] = stationName
         //        parentRecord[remoteAttributes.zoneID] = (parentZone.zoneID as! CKRecordValue)
-        // fuck
+  
         let share = CKShare(rootRecord: parentRecord)
 //        let thumb = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("work_in_progress").dataRepresentation
         
@@ -82,19 +85,23 @@ class cloudDB: NSObject {
         //
         //            share.addParticipant(participant)
         
-        let modifyOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [self.parentRecord, share], recordIDsToDelete: nil)
+        let modifyOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [parentRecord, share], recordIDsToDelete: nil)
         
-        modifyOperation.savePolicy = .ifServerRecordUnchanged
+        modifyOperation.savePolicy = .allKeys
         modifyOperation.perRecordCompletionBlock = {record, error in
-//            print("record completion \(record) and \(error)")
+            if error != nil {
+                print("record completion \(record) and \(error)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 93)
+            }
         }
         modifyOperation.modifyRecordsCompletionBlock = {records, recordIDs, error in
             if error != nil {
                 print("modifyOperation error \(error!.localizedDescription)")
-                self.parseCloudError(errorCode: error as! CKError, lineno: 86)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 99)
             }
 //            print("share url \(share.url) \(share.participants)")
             url2Share = share.url?.absoluteString
+            station2Share = (stationSelected.recordID.recordName,share.url?.absoluteString) as? (String, String)
             
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
 //                self.redo(lineName: lineName, shareName: (share.url?.absoluteString)!, gogo: .now() + 15)
@@ -185,6 +192,8 @@ class cloudDB: NSObject {
         }
         cloudDB.share.privateDB.add(modifyOperation)
     }
+    
+
     
     public func accessShare(URL2D: String) {
         let URL2C = URL(string: URL2D)
@@ -300,8 +309,7 @@ class cloudDB: NSObject {
                 print("modify error\(error!.localizedDescription)")
                 self.parseCloudError(errorCode: error as! CKError, lineno: 316)
             } else {
-//                self.saveZone(zone2U: lineName, notificationReference: lineReference, stationNames: stationNames, stationSelected: stationDict[stationSelected]!)
-                self.saveZone(zone2U: lineName, notificationReference: lineReference, stationNames: stationNames, stationSelected: stationDict[stationSelected]!)
+                self.saveZone(zone2U: lineName, lineReference: lineReference, stationNames: stationNames, stationSelected: stationDict[stationSelected]!, stationName: stationNames.first!)
 //                self.updateTokenWithID(record: self.tokenReference, link2Save: lineReference, lineOwner: lineName, stationSelected: stationDict[stationSelected]!)
             }
         }
@@ -577,6 +585,7 @@ class cloudDB: NSObject {
                         var rex = stationRecord()
                         rex.name = stationName!
                         rex.recordRecord = record
+                        rex.shareLink = record.object(forKey: remoteAttributes.stationURL) as? String
                         station2T.append(rex)
                     }
                     let newReference = CKRecord.Reference(record: records!.first!, action: .none)
@@ -588,7 +597,7 @@ class cloudDB: NSObject {
             }
     }
     
-    public func updateStationsBelongingTo(line2Seek: CKRecord.Reference, stations2D:[stationRecord?], stations2U:[stationRecord?]) {
+    public func updateStationsBelongingTo(lineName: String, line2Seek: CKRecord.Reference, stations2D:[stationRecord?], stations2U:[stationRecord?]) {
         let predicate = NSPredicate(format:  "lineReference = %@", line2Seek)
         let query = CKQuery(recordType: remoteRecords.notificationStation, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
@@ -608,9 +617,13 @@ class cloudDB: NSObject {
                             bar.setObject(line2Seek, forKey: remoteAttributes.lineReference)
                             bar.setObject(rex?.name as __CKRecordObjCValue?, forKey: remoteAttributes.stationName)
                             rex2A.append(bar)
-                            let s2A = stationRecord(name: rex?.name, recordRecord: bar)
+                            let s2A = stationRecord(name: rex?.name, recordRecord: bar, shareLink: nil)
                             station2T.append(s2A)
                             stationsRead.append((rex?.name)!)
+                            let customZone = CKRecordZone(zoneName: lineName)
+                            let newReference = CKRecord.Reference(record: bar, action: .none)
+                            let stationLink = newReference
+                            self.saveShare(lineName: lineName, zone2ID: customZone.zoneID, notificationLink: line2Seek, station2Save: stationsRead, stationSelected: stationLink, stationName: (rex?.name)!)
                         } else {
                             if let foo = records!.first(where: {$0.recordID == rex?.recordRecord.recordID}) {
                                 foo.setObject(rex!.name as __CKRecordObjCValue?, forKey: remoteAttributes.stationName)
@@ -659,6 +672,33 @@ class cloudDB: NSObject {
 //            }
 //        }
 //    }
+    
+    public func updateStationURL(stationID: String, url2D: String) {
+        let recordID = CKRecord.ID(recordName: stationID)
+        cloudDB.share.publicDB.fetch(withRecordID: recordID) { (returnedRecord, error) in
+            if error != nil {
+                print("error \(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 467)
+            } else {
+                returnedRecord![remoteAttributes.stationURL] = url2D
+                let operation = CKModifyRecordsOperation(recordsToSave: [returnedRecord!], recordIDsToDelete: nil)
+                operation.savePolicy = .changedKeys
+                operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                    if error != nil {
+                        print("modify error\(error!.localizedDescription)")
+                        self.parseCloudError(errorCode: error as! CKError, lineno: 476)
+                    } else {
+                        print("record Updated \(savedRecords)")
+                        let station2U = savedRecords!.first![remoteAttributes.stationName] as? String
+                        if let foo = station2T.index(where: {$0!.name == station2U}) {
+                            station2T[foo]!.shareLink = url2D
+                        }
+                    }
+                }
+                CKContainer.default().publicCloudDatabase.add(operation)
+            }
+        }
+    }
     
     public func updateTokenWithID(record: CKRecord.Reference?, link2Save: CKRecord.Reference, lineOwner:String, stationSelected: CKRecord.Reference) {
         if record == nil { return }

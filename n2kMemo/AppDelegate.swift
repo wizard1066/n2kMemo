@@ -124,11 +124,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 let station2S = self.item.object(forKey: remoteAttributes.stationNames) as! [String]
                 let line2Link = self.item.object(forKey: remoteAttributes.lineReference) as! CKRecord.Reference
                 let station2Link = self.item.object(forKey: remoteAttributes.stationReference) as! CKRecord.Reference
+                let stationName = self.item.object(forKey: remoteAttributes.stationName) as! String
                 lineZoneID = self.item.object(forKey: remoteAttributes.zoneID) as? String
                 linesRead = [line2S]
-                stationsRead = station2S
+//                stationsRead = station2S
+                stationsRead.append(stationName)
                 selectedLine = linesRead.first
-                selectedStation = stationsRead.first
+                selectedStation = stationName
                 let defaults = UserDefaults.standard
                 defaults.set(selectedStation, forKey: remoteAttributes.stationName)
                 defaults.set(selectedLine, forKey: remoteAttributes.lineName)
