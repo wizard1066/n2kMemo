@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -142,17 +143,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    
-    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-//        print("exit \(station2T)\n\n \(station2D)")
-        print("update data")
-//        rowInAction = stationsRegistered[indexPath!.row]
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        print("update data")
-    }
-    
     // MARK: tableView methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -178,11 +168,11 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 textField.text = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
             })
             alert.addAction(UIAlertAction(title: "Insert", style: .default, handler: { (updateAction) in
-
                 self.stationsRegistered.insert("", at: indexPath.row)
                 var nRex = stationRecord()
                 station2T.insert(nRex, at: indexPath.row)
                 self.stationsTable.insertRows(at: [indexPath], with: .fade)
+                self.addNewStation(indexPath: indexPath)
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             self.present(alert, animated: false)
@@ -204,10 +194,21 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return [deleteAction, editAction]
     }
     
-    var text2M: String!
+//    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+//        print("didHighlightRowAt")
+//        selectedStation = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        print("didSelectRowAt")
+        selectedStation = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
+        if let foo = station2T.first(where: {$0!.name == selectedStation}) {
+            let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
+            stationLink = newReference
+        }
+    }
+    
+    func addNewStation(indexPath: IndexPath) {
         let alert = UIAlertController(title: "", message: "Edit list item", preferredStyle: .alert)
         alert.addTextField(configurationHandler: { (textField) in
             textField.text = self.stationsTable.cellForRow(at: indexPath)?.textLabel?.text
@@ -222,7 +223,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: false)
-
     }
     
     @available(iOS 11.0, *)
@@ -230,18 +230,18 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
         let closeAction = UIContextualAction(style: .normal, title:  "Insert", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                self.stationsRegistered.insert("", at: indexPath.row)
+                var nRex = stationRecord()
+                station2T.insert(nRex, at: indexPath.row)
+                self.stationsTable.insertRows(at: [indexPath], with: .fade)
+                self.addNewStation(indexPath: indexPath)
             
-            self.stationsRegistered.insert("", at: indexPath.row)
-            var nRex = stationRecord()
-            station2T.insert(nRex, at: indexPath.row)
-            self.stationsTable.insertRows(at: [indexPath], with: .fade)
             success(true)
         })
         closeAction.image = UIImage(named: "tick")
         closeAction.backgroundColor = .purple
         
         return UISwipeActionsConfiguration(actions: [closeAction])
-        
     }
     
     @available(iOS 11.0, *)
@@ -265,6 +265,10 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         modifyAction.backgroundColor = .red
         
         return UISwipeActionsConfiguration(actions: [modifyAction])
+    }
+    
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        print("selected \(indexPath)")
     }
     
     // MARK: View methods
@@ -435,9 +439,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         NotificationCenter.default.removeObserver(self)
-        //        if pinObserver4 != nil {
-        //            center.removeObserver(pinObserver2)
-        //        }
     }
     
 //    override func dismiss(animated flag: Bool, completion: (() -> Void)?)
@@ -451,18 +452,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination.contents
-//        if segue.identifier == segueNames.posting {
-//            //            let pVC = destination as? PostingViewController
-//            //            pVC?.bahninfo = selectedLine
-//            //            pVC?.hofinfo = selectedStation
-//            //            print("posting \(lineSelected) \(stationSelected)")
-//        }
-//        if segue.identifier == segueNames.configuration {
-//            //            let pVC = destination as? ConfigViewController
-//            //            print("config")
-//            stationDictionary = [:]
-//        }
-//        if segue.identifier == segueNames.principle {
+
             let pVC = destination as? ViewController
 //            pVC?.theLine.text = selectedLine
 //            pVC?.theStation.text = selectedStation
@@ -474,9 +464,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     stationsRead.append(stationsRegistered[0])
                 }
             }
-        
-
-//        }
     }
     
  
@@ -561,23 +548,6 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //        }
     //    }
     
-    
-    
-    //    @IBAction func whiteAction(_ sender: Any) {
-    //        appDelegate.colorZet.insert("white")
-    //    }
-    //
-    //    @IBAction func greenAction(_ sender: Any) {
-    //        appDelegate.colorZet.insert("green")
-    //    }
-    //
-    //    @IBAction func blueAction(_ sender: Any) {
-    //        appDelegate.colorZet.insert("blue")
-    //    }
-    //
-    //    @IBAction func redAction(_ sender: Any) {
-    //        appDelegate.colorZet.insert("red")
-    //    }
     
     
     

@@ -177,13 +177,13 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         if pickerView.tag == 1 {
             if row < stationsRead.count {
                 pickerLabel?.text = stationsRead[row]
-                selectedStation = pickerLabel?.text
+//                selectedStation = pickerLabel?.text
                 
                 
             }
         } else {
             pickerLabel?.text = linesRead[row]
-            selectedLine = pickerLabel?.text
+//            selectedLine = pickerLabel?.text
             
             
         }
@@ -214,6 +214,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         } else {
             if stationsRead.count > 0 && row < stationsRead.count {
                 stationSelected = row
+                if let foo = station2T.first(where: {$0!.name == stationsRead[row]}) {
+                    let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
+                    stationLink = newReference
+                }
 //                selectedStation = stationsRead[row]
             }
         }
@@ -286,7 +290,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         let alert2Monitor2 = "stationPin"
         pinObserver2 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor2), object: nil, queue: queue) { (notification) in
             if self.stationsPicker != nil {
-                self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
+                let index2 = stationsRead.index(where:{ $0 == selectedStation })
+                    if index2 != nil {
+                        self.stationsPicker.selectRow(index2!, inComponent: 0, animated: true)
+                        self.pickerView(self.stationsPicker, didSelectRow: index2!, inComponent: 0)
+                    } else {
+                        self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
+                        
+                    }
                 self.stationsPicker.reloadAllComponents()
             }
         }
@@ -334,6 +345,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.pickerAuto {
+                
                 self.linesPicker.selectRow(0, inComponent: 0, animated: true)
                 self.pickerView(self.linesPicker, didSelectRow:0, inComponent: 0)
                 self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
@@ -396,6 +408,18 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     @IBAction func unwindToLanding(_ sender: UIStoryboardSegue) {
         self.linesPicker.reloadAllComponents()
         self.stationsPicker.reloadAllComponents()
+        print("stationSelected \(stationSelected) \(selectedStation)")
+        print("lineSelected \(lineSelected) \(selectedLine)")
+//        let index2 = stationsRead.index(where:{ $0 == selectedStation })
+//        if index2 != nil {
+//            self.linesPicker.selectRow(index2!, inComponent: 0, animated: true)
+//        }
+//        self.linesPicker.reloadAllComponents()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            let peru = Notification.Name("stationPin")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+            print("station Records \(station2T)")
+        }
     }
     
     //MARK: Delegates, note it overides the one you got in the app delegate!!

@@ -274,6 +274,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        tokenCheque = nil
+        tokensRead.removeAll()
         let center = NotificationCenter.default
         if pinObserver != nil {
             center.removeObserver(pinObserver)

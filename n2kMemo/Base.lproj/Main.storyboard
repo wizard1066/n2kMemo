@@ -202,8 +202,8 @@
                                 <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Memo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya4-9q-0CQ">
-                                <rect key="frame" x="126.5" y="310" width="122" height="66"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Bold" family="Avenir Next Condensed" pointSize="48"/>
+                                <rect key="frame" x="113" y="319" width="149.5" height="48"/>
+                                <fontDescription key="fontDescription" name="HoeflerText-Black" family="Hoefler Text" pointSize="48"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -218,9 +218,9 @@
                                 </connections>
                             </button>
                             <pickerView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9S0-7A-4eI">
-                                <rect key="frame" x="67.5" y="256" width="240" height="64"/>
+                                <rect key="frame" x="67.5" y="137" width="240" height="192"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="5XH-3S-pps"/>
+                                    <constraint firstAttribute="height" constant="192" id="5XH-3S-pps"/>
                                     <constraint firstAttribute="width" constant="240" id="pjO-WD-aZl"/>
                                 </constraints>
                                 <connections>
@@ -239,10 +239,10 @@
                                 </connections>
                             </button>
                             <pickerView multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8M-io-7Me">
-                                <rect key="frame" x="67.5" y="358" width="240" height="64"/>
+                                <rect key="frame" x="67.5" y="349" width="240" height="192"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="0Ys-PA-WTc"/>
-                                    <constraint firstAttribute="height" constant="64" id="dHA-lt-FW3"/>
+                                    <constraint firstAttribute="height" constant="192" id="dHA-lt-FW3"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="CdQ-GP-5qa" id="mTy-Dh-UYk"/>
@@ -250,13 +250,13 @@
                                 </connections>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STATIONS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1N-2F-iBn">
-                                <rect key="frame" x="160" y="408" width="55.5" height="22"/>
+                                <rect key="frame" x="160" y="527" width="55.5" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LINES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAe-Nr-mvX">
-                                <rect key="frame" x="171" y="249" width="33" height="22"/>
+                                <rect key="frame" x="171" y="130" width="33" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                 <color key="textColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
