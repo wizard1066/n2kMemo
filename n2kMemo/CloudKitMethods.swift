@@ -655,7 +655,9 @@ class cloudDB: NSObject {
                     var rex2D:[CKRecord.ID] = []
                     var rex2A:[CKRecord] = []
                     for rex in stations2D {
-                        rex2D.append((rex?.recordRecord.recordID)!)
+                        if rex?.recordRecord != nil {
+                            rex2D.append((rex?.recordRecord.recordID)!)
+                        }
                     }
                     for rex in stations2U {
                         if rex?.recordRecord == nil {
