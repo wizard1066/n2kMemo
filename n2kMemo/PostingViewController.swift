@@ -43,52 +43,6 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         bodyText.resignFirstResponder()
     }
     
-    
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 1
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        return stationsRead.count
-//    }
-//
-//    //    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//    //        return stationsRegistered[row]
-//    //    }
-//
-//    var rowSelected:Int?
-//
-//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-//
-//        var pickerLabel = view as? UILabel;
-//        if (pickerLabel == nil)
-//        {
-//            pickerLabel = UILabel()
-//
-//            pickerLabel?.font = UIFont(name: "AvenirNextCondensed-DemiBoldItalic", size: 20)
-//            pickerLabel?.textAlignment = NSTextAlignment.center
-//        }
-//
-//        pickerLabel?.text = stationsRead[row]
-//
-//        if row == rowSelected {
-//            pickerLabel?.textColor = UIColor.white
-//            pickerLabel?.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-//        } else {
-//            pickerLabel?.textColor = UIColor.black
-//            pickerLabel?.backgroundColor = UIColor.clear
-//        }
-//
-//        return pickerLabel!;
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        rowSelected = row
-//        selectedStation = stationsRead[row]
-//        pickerView.reloadAllComponents()
-//    }
-    
-    
     @IBOutlet weak var postButton: UIButton!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var bodyText: UITextView!
@@ -96,7 +50,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var lineLabel: UILabel!
     @IBOutlet weak var returnLabel: UIButton!
-//    @IBOutlet weak var pickerStations: UIPickerView!
+
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var postImage: UIImageView!
     @IBOutlet weak var webButton: UIButton!
@@ -268,7 +222,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         
         if tokenCheque == nil, lineLink != nil {
 //            cloudDB.share.returnAllTokensWithOutOwners()
-            cloudDB.share.returnTokensWithLinks(lineLink: lineLink, stationLink: stationLink)
+            cloudDB.share.returnAllTokensWithLinks(lineLink: lineLink, stationLink: stationLink, cursorOp: nil)
             tokenCheque = tokensRead.count
         }
     }
@@ -276,6 +230,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     override func viewDidDisappear(_ animated: Bool) {
         tokenCheque = nil
         tokensRead.removeAll()
+        webSite2Send = nil
+        photoAttached = false
         let center = NotificationCenter.default
         if pinObserver != nil {
             center.removeObserver(pinObserver)

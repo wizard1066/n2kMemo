@@ -42,6 +42,7 @@ enum remoteAttributes {
     static let lineURL = "lineURL"
     static let stationReference = "stationReference"
     static let stationURL = "stationURL"
+    static let disableConfigNPost = "disableConfigNPost"
 }
 
 enum localdefault {

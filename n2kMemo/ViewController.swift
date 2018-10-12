@@ -90,28 +90,38 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let defaults = UserDefaults.standard
-////        defaults.set(nil, forKey: remoteAttributes.lineName)
-////        defaults.set(nil, forKey: remoteAttributes.linePassword)
-////        defaults.set(nil, forKey: remoteAttributes.stationNames)
-////        let dictionary = ["aps":["alert":["title":"playground"]]] as [String:Any]
-////        jsonString(dictionary: dictionary)
-//
-//
-//        lineName = defaults.string(forKey: remoteAttributes.lineName)
-//        if lineName != nil {
-//            stationName = defaults.string(forKey: remoteAttributes.stationName)
-//            if stationName != nil {
-//                stationsRead.append(stationName)
-//            }
-//            linesRead.append(lineName)
-//        }
+        let defaults = UserDefaults.standard
+        let disableConfigNPost = defaults.bool(forKey: remoteAttributes.disableConfigNPost)
+        if disableConfigNPost {
+            self.postingButton.isEnabled = false
+            self.configButton.isEnabled = false
+            self.postingButton.isHidden = true
+            self.configButton.isHidden = true
+        }
+
+        lineName = defaults.string(forKey: remoteAttributes.lineName)
+        if lineName != nil {
+            if linesRead.contains(where: {$0 == lineName}) {
+                // it exists, do nothing
+            } else {
+                linesRead.append(lineName)
+//                defaults.set(lineName, forKey: remoteAttributes.lineName)
+                selectedLine = lineName
+            }
+            stationName = defaults.string(forKey: remoteAttributes.stationName)
+            if stationName != nil {
+                if stationsRead.contains(where: {$0 == stationName}) {
+                    // it exists, do nothing
+                } else {
+                    stationsRead.append(stationName)
+//                    defaults.set(stationName, forKey: remoteAttributes.stationName)
+                    selectedStation = stationName
+                }
+            }
+        }
         
         
-//        stationName = "alpha1"
-        //        stationsRegistered = (defaults.array(forKey: remoteRecords.stationNames) as? [String])!
-        
-//        cloudDB.share.returnAllLines()
+
         postingButton.isEnabled = true
         linesPicker.delegate = self
         linesPicker.dataSource = self
@@ -206,7 +216,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         pickerView.reloadAllComponents()
         if pickerView.tag == 0 {
             if linesRead.count > 0 && row < linesRead.count {
-                    postingOK(lineName: linesRead[row])
+//                    postingOK(lineName: linesRead[row])
 //                    cloudDB.share.returnStationsOnLine(line2Seek: linesRead[row])
                     cloudDB.share.returnLine(lineName: linesRead[row])
 //                    selectedLine = linesRead[row]
@@ -410,14 +420,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
     
     @IBAction func unwindToLanding(_ sender: UIStoryboardSegue) {
         self.linesPicker.reloadAllComponents()
-        self.stationsPicker.reloadAllComponents()
+//        self.stationsPicker.reloadAllComponents()
         //rint("stationSelected \(stationSelected) \(selectedStation)")
         //rint("lineSelected \(lineSelected) \(selectedLine)")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             let peru = Notification.Name("stationPin")
             NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
-            //rint("station Records \(station2T)")
+            print("station Records \(station2T)")
         }
     }
     

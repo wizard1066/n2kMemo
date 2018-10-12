@@ -120,20 +120,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             if (records?.count)! > 0 {
             print("record0810 \(self.item) \(records?.count)")
-                let line2S = self.item.object(forKey: remoteAttributes.lineName) as! String
-                let station2S = self.item.object(forKey: remoteAttributes.stationNames) as! [String]
+                let lineName = self.item.object(forKey: remoteAttributes.lineName) as! String
+                let stationNames = self.item.object(forKey: remoteAttributes.stationNames) as! [String]
                 let line2Link = self.item.object(forKey: remoteAttributes.lineReference) as! CKRecord.Reference
                 let station2Link = self.item.object(forKey: remoteAttributes.stationReference) as! CKRecord.Reference
                 let stationName = self.item.object(forKey: remoteAttributes.stationName) as! String
                 lineZoneID = self.item.object(forKey: remoteAttributes.zoneID) as? String
-                linesRead = [line2S]
-//                stationsRead = station2S
-                stationsRead.append(stationName)
-                selectedLine = linesRead.first
-                selectedStation = stationName
-                let defaults = UserDefaults.standard
-                defaults.set(selectedStation, forKey: remoteAttributes.stationName)
-                defaults.set(selectedLine, forKey: remoteAttributes.lineName)
+                DispatchQueue.main.async {
+                    let defaults = UserDefaults.standard
+                    if linesRead.contains(where: {$0 == lineName}) {
+                        // it exists, do nothing
+                    } else {
+                        linesRead.append(lineName)
+                        defaults.set(lineName, forKey: remoteAttributes.lineName)
+                        selectedLine = lineName
+                    }
+                    
+                    if stationsRead.contains(where: {$0 == stationName}) {
+                        // it exists, do nothing
+                    } else {
+                        stationsRead.append(stationName)
+                        defaults.set(stationName, forKey: remoteAttributes.stationName)
+                        selectedStation = stationName
+                    }
+                    defaults.set(true, forKey: remoteAttributes.disableConfigNPost)
+                    
+                }
                 let peru = Notification.Name("stationPin")
                 NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
                 let peru2 = Notification.Name("showPin")

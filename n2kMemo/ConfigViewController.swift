@@ -318,9 +318,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         passText.delegate = self
         changed = false
         workingIndicator.isHidden = true
-        if stationsRegistered.count > 0 {
-            stationText.isHidden = true
-        }
+        
     }
     
     private var pinObserver: NSObjectProtocol!
@@ -350,6 +348,8 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if url2Share != nil {
                 self.zeroURL.text = url2Share!
             }
+            self.workingIndicator.stopAnimating()
+            self.workingIndicator.isHidden = true
         }
         let alert2Monitor4 = "doImage"
         pinObserver4 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor4), object: nil, queue: queue) { (notification) in
@@ -412,6 +412,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
             selectedStation = ""
             stationsRead.removeAll()
             linesRead.removeAll()
+            self.zeroURL.text = ""
         }
         NotificationCenter.default.addObserver(
             self,

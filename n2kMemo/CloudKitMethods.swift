@@ -69,7 +69,7 @@ class cloudDB: NSObject {
 //        let thumb = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("work_in_progress").dataRepresentation
         
         
-        share[CKShare.SystemFieldKey.title] = "Shared Parent" as CKRecordValue
+        share[CKShare.SystemFieldKey.title] = "n2k Memo" as CKRecordValue
 //        share[CKShare.SystemFieldKey.thumbnailImageData] = thumb as CKRecordValue
 //        share[CKShare.SystemFieldKey.shareType] = "ch.cqd.m2kMemo" as CKRecordValue
         //        // PUBLIC permission
@@ -310,6 +310,7 @@ class cloudDB: NSObject {
             stationRex.append(customRecord)
             let newReference = CKRecord.Reference(record: customRecord, action: .none)
             stationDict[stationName] = newReference
+            stationsRead.append(stationName)
         }
         let operation = CKModifyRecordsOperation(recordsToSave: stationRex, recordIDsToDelete: nil)
         operation.savePolicy = .allKeys
@@ -610,6 +611,8 @@ class cloudDB: NSObject {
 //    }
     
     public func returnStationsOnLine(line2Seek: CKRecord.Reference) {
+        stationsRead.removeAll()
+        station2T.removeAll()
         let predicate = NSPredicate(format:  "lineReference = %@", line2Seek)
         let query = CKQuery(recordType: remoteRecords.notificationStation, predicate: predicate)
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
@@ -620,12 +623,16 @@ class cloudDB: NSObject {
                 if records!.count > 0 {
                     for record in records! {
                         let stationName = record.object(forKey: remoteAttributes.stationName) as? String
-                        stationsRead.append(stationName!)
-                        var rex = stationRecord()
-                        rex.name = stationName!
-                        rex.recordRecord = record
-                        rex.shareLink = record.object(forKey: remoteAttributes.stationURL) as? String
-                        station2T.append(rex)
+                        if stationsRead.contains(where: {$0 == stationName}) {
+                            // it exists, do nothing
+                        } else {
+                            stationsRead.append(stationName!)
+                            var rex = stationRecord()
+                            rex.name = stationName!
+                            rex.recordRecord = record
+                            rex.shareLink = record.object(forKey: remoteAttributes.stationURL) as? String
+                            station2T.append(rex)
+                        }
                     }
                     let newReference = CKRecord.Reference(record: records!.first!, action: .none)
                     stationLink = newReference
@@ -784,6 +791,39 @@ class cloudDB: NSObject {
                 }
             }
         }
+    }
+    
+    public func returnAllTokensWithLinks(lineLink: CKRecord.Reference, stationLink: CKRecord.Reference, cursorOp: CKQueryOperation.Cursor?) {
+        print("returnTokensWithLinks \(lineLink.recordID) \(stationLink.recordID) ")
+        let rightToken = NSPredicate(format: "lineReference = %@", lineLink)
+        let rightLine = NSPredicate(format: "stationReference = %@", stationLink)
+        //        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [rightToken,rightLine])
+        let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: [rightToken,rightLine])
+        let query = CKQuery(recordType: remoteRecords.devicesLogged, predicate: predicateCompound)
+        
+        var operation: CKQueryOperation!
+        if cursorOp == nil {
+            operation = CKQueryOperation(query: query)
+        } else {
+            operation = CKQueryOperation(cursor: cursorOp!)
+        }
+        
+        operation.recordFetchedBlock = { record in
+            let tokenValue = record.object(forKey: remoteAttributes.deviceRegistered) as? String
+            tokensRead.append(tokenValue!)
+        }
+        
+        operation.queryCompletionBlock = { [unowned self] (cursor, error) in
+            if error != nil {
+                print("modify error\(error!.localizedDescription)")
+                self.parseCloudError(errorCode: error as! CKError, lineno: 546)
+            } else {
+                if cursor != nil {
+                    self.returnAllTokensWithLinks(lineLink: lineLink, stationLink: stationLink, cursorOp: cursorOp)
+                }
+            }
+        }
+        CKContainer.default().publicCloudDatabase.add(operation)
     }
     
     private func returnTokensWithOwner(token2U: String, line2U: String) {
