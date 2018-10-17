@@ -180,7 +180,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
         {
             pickerLabel = UILabel()
             
-            pickerLabel?.font = UIFont(name: "BradleyHandITCTT-Bold", size: 20)
+            pickerLabel?.font = UIFont(name: "AvenirNextCondensed-Medium", size: 20)
             pickerLabel?.textAlignment = NSTextAlignment.center
         }
         

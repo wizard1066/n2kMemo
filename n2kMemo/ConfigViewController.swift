@@ -65,22 +65,21 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //    }
     @IBOutlet weak var imageFetched: UIImageView!
     
-    @IBAction func registerButton(_ sender: UIButton) {
-        registerButton.isEnabled = false
-        selectedLine = newText
-        
-        let defaults = UserDefaults.standard
-        defaults.set(selectedStation, forKey: remoteAttributes.stationName)
-        defaults.set(selectedLine, forKey: remoteAttributes.lineName)
-//        if stationsRegistered.count > 0 {
-//            selectedStation = stationsRegistered[0]
-//        }
-        cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, stationSelected: stationsRegistered[0], linePassword: newPass)
-        
-//        linesRead.append(selectedLine)
-//        stationsRead.append(selectedStation)
-        
-    }
+//    @IBAction func registerButton(_ sender: UIButton) {
+//        registerButton.isEnabled = false
+//        selectedLine = newText
+//
+//        let defaults = UserDefaults.standard
+
+////        if stationsRegistered.count > 0 {
+////            selectedStation = stationsRegistered[0]
+////        }
+//        cloudDB.share.updateLine(lineName: newText, stationNames: stationsRegistered, stationSelected: stationsRegistered[0], linePassword: newPass)
+//
+////        linesRead.append(selectedLine)
+////        stationsRead.append(selectedStation)
+//
+//    }
     
  
     
@@ -133,18 +132,23 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if textField.text == "" {
             return false
         }
+        if lineText.text!.count < 3 || passText.text!.count < 3 || stationText.text!.count < 3 {
+            let alert = UIAlertController(title: "Alert", message: "All fields MUST be completed", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+            return false
+        }
+        
         newText = String(lineText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         newPass = String(passText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         newStation = String(stationText.text!).trimmingCharacters(in: .whitespacesAndNewlines)
         
-        stationsRegistered.append(newStation)
-        
-        registerButton.isEnabled = true
+//        registerButton.isEnabled = true
         
         // do a newlinw based on a second search just for the name
         workingIndicator.isHidden = false
         workingIndicator.startAnimating()
-        cloudDB.share.getLine(lineName: newText, linePassword: newPass)
+        cloudDB.share.getLine(lineName: newText, linePassword: newPass, stationName: newStation)
         return true
     }
     
@@ -162,7 +166,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
         cell.textLabel?.text = stationsRegistered[indexPath.row]
-        cell.textLabel?.font = UIFont(name: "BradleyHandITCTT-Bold", size: 20)
+        cell.textLabel?.font = UIFont(name: "AvenirNextCondensed-Medium", size: 20)
         cell.textLabel?.textAlignment = NSTextAlignment.center
         return cell
     }
@@ -311,7 +315,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         station2D.removeAll()
         stationsRead.removeAll()
         linesRead.removeAll()
-        registerButton.isEnabled = false
+//        registerButton.isEnabled = false
         
         stationsTable.rowHeight = 32
         lineText.delegate = self
@@ -385,14 +389,27 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
                     self.passText.text = ""
                     self.lineText.text = ""
+                    self.stationText.text = ""
+                    self.workingIndicator.stopAnimating()
+                    self.workingIndicator.isHidden = true
                 }))
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
 //                    registerButton.isEnabled = false
                     selectedLine = self.newText
-                    if self.stationsRegistered.count > 0 {
-                        selectedStation = self.stationsRegistered[0]
+                    selectedStation = self.newStation
+                    
+                    if let _ = self.stationsRegistered.first(where: {$0 == selectedStation}) {
+                        // do nothing it is already in the array
+                    } else {
+                        self.stationsRegistered.append(selectedStation)
                     }
+                    
+//                    if self.stationsRegistered.count > 0 {
+//                        selectedStation = self.stationsRegistered[0]
+//                    }
+                    
                     cloudDB.share.updateLine(lineName: self.newText, stationNames: self.stationsRegistered, stationSelected: self.stationsRegistered[0], linePassword: self.newPass)
+                    
                 }))
                 self.present(alert, animated: true, completion: nil)
                 

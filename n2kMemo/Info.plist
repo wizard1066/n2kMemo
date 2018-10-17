@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CKSharingSupported</key>
@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera option needed to optionally send photoin notifications</string>
+	<string>Camera access needed if you want to send photos in your notifications</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

@@ -129,7 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 DispatchQueue.main.async {
                     let defaults = UserDefaults.standard
                     if linesRead.contains(where: {$0 == lineName}) {
-                        // it exists, do nothing
+                        // reset line if already set
+                        defaults.set(lineName, forKey: remoteAttributes.lineName)
                     } else {
                         linesRead.append(lineName)
                         defaults.set(lineName, forKey: remoteAttributes.lineName)
@@ -137,7 +138,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                     
                     if stationsRead.contains(where: {$0 == stationName}) {
-                        // it exists, do nothing
+                        // reset station if alraedy set
+                        defaults.set(stationName, forKey: remoteAttributes.stationName)
                     } else {
                         stationsRead.append(stationName)
                         defaults.set(stationName, forKey: remoteAttributes.stationName)

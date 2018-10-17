@@ -220,7 +220,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         
         // NOT AN OBSERVER !!
         
-        if tokenCheque == nil, lineLink != nil {
+        if tokenCheque == nil, lineLink != nil, stationLink != nil {
 //            cloudDB.share.returnAllTokensWithOutOwners()
             cloudDB.share.returnAllTokensWithLinks(lineLink: lineLink, stationLink: stationLink, cursorOp: nil)
             tokenCheque = tokensRead.count
@@ -336,8 +336,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     func buildPost(token2U: String, apns2S: Any) {
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue.main)
         
-//        var loginRequest = URLRequest(url: URL(string: "https://api.sandbox.push.apple.com/3/device/" + token2U)!)
-        var loginRequest = URLRequest(url: URL(string: "https://api.push.apple.com/3/device/" + token2U)!)
+        var loginRequest = URLRequest(url: URL(string: "https://api.sandbox.push.apple.com/3/device/" + token2U)!)
+//        var loginRequest = URLRequest(url: URL(string: "https://api.push.apple.com/3/device/" + token2U)!)
         loginRequest.allHTTPHeaderFields = ["apns-topic": "ch.cqd.n2kMemo",
                                             "content-type": "application/x-www-form-urlencoded"
         ]

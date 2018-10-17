@@ -148,13 +148,25 @@ class cloudDB: NSObject {
     
     public func saveImage2Share(image2Save: UIImage) {
         if selectedLine == nil { return }
+        let imageData = image2Save.pngData()!
+        let options = [
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceThumbnailMaxPixelSize: 1024] as CFDictionary
+        let source = CGImageSourceCreateWithData(imageData as CFData, nil)!
+        let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options)!
+//        let thumbnail = UIImage(cgImage: imageReference).pngData()
+
+        let smallerImage = UIImage(cgImage: imageReference)
+        
 //        let sizedImage = reduceImage(inImage: image2Save)
         let zone2D = CKRecordZone(zoneName: selectedLine)
 //        let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
         let customID = CKRecord.ID(recordName: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
         let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, recordID: customID)
 //        let fileURL = Bundle.main.bundleURL.appendingPathComponent("Marley.png")
-        let fileURL = saveImage2File(file2Save: image2Save)
+//        let fileURL = saveImage2File(file2Save: image2Save)
+        let fileURL = saveImage2File(file2Save: smallerImage)
         let ckAsset = CKAsset(fileURL: fileURL)
         
         customRecord[remoteAttributes.mediaFile] = ckAsset
@@ -462,7 +474,7 @@ class cloudDB: NSObject {
                 
     }
     
-    public func getLine(lineName: String, linePassword: String) {
+    public func getLine(lineName: String, linePassword: String, stationName: String) {
         let predicate = NSPredicate(format: "%K = %@",remoteAttributes.lineName,lineName)
 //        let predicate2 = NSPredicate(format: "%K = %@",remoteAttributes.linePassword,linePassword)
 //        let predicate3 = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicate2])
@@ -905,12 +917,18 @@ class cloudDB: NSObject {
         cloudDB.share.publicDB.perform(query, inZoneWith: nil) { (records, error) in
             if error != nil {
                 print(error!.localizedDescription)
-                self.parseCloudError(errorCode: error as! CKError, lineno: 563)
+                self.parseCloudError(errorCode: error as! CKError, lineno: 908)
             } else {
                 if records?.count == 0 {
                     self.saveToken(token2Save: token2Save, line2Save: lineLink, station2Save: stationLink, line2U: lineName)
                 } else {
                     self.tokenReference = CKRecord.Reference(record: (records?.first!)!, action: CKRecord_Reference_Action.none)
+                    let lineOnline = records!.first?.object(forKey: remoteAttributes.lineName) as? String
+                    let stationOnline = records!.first?.object(forKey: remoteAttributes.stationName) as? String
+                    if lineLink?.recordID.recordName != lineOnline || stationLink?.recordID.recordName != stationOnline {
+                        // Alert, subscribed to a different station do you want to update
+                        
+                    }
                 }
             }
         }
