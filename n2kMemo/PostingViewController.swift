@@ -224,6 +224,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
 //            cloudDB.share.returnAllTokensWithOutOwners()
             cloudDB.share.returnAllTokensWithLinks(lineLink: lineLink, stationLink: stationLink, cursorOp: nil)
             tokenCheque = tokensRead.count
+//            self.clientsRegistered.text = "\(tokensRead.count)"
         }
     }
     

@@ -126,17 +126,17 @@ class cloudDB: NSObject {
     }
     
     
-    func reduceImage(inImage:UIImage?) -> UIImage {
-        var outImage: UIImage!
-        if inImage != nil {
-            outImage = inImage?.resize(size: CGSize(width: 1080, height: 1920))
-//            image2D = UIImageJPEGRepresentation(newImage!, 1.0)
-        }
-//        else {
-//            image2D = UIImageJPEGRepresentation(UIImage(named: "noun_1348715_cc")!, 1.0)
+//    func reduceImage(inImage:UIImage?) -> UIImage {
+//        var outImage: UIImage!
+//        if inImage != nil {
+//            outImage = inImage?.resized(size: 512)
+////            image2D = UIImageJPEGRepresentation(newImage!, 1.0)
 //        }
-        return outImage
-    }
+////        else {
+////            image2D = UIImageJPEGRepresentation(UIImage(named: "noun_1348715_cc")!, 1.0)
+////        }
+//        return outImage
+//    }
     
     public func saveImage2File(file2Save: UIImage)-> URL {
         let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("image2Post")
@@ -148,17 +148,17 @@ class cloudDB: NSObject {
     
     public func saveImage2Share(image2Save: UIImage) {
         if selectedLine == nil { return }
-        let imageData = image2Save.pngData()!
-        let options = [
-            kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceThumbnailMaxPixelSize: 1024] as CFDictionary
-        let source = CGImageSourceCreateWithData(imageData as CFData, nil)!
-        let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options)!
-//        let thumbnail = UIImage(cgImage: imageReference).pngData()
-
-        let smallerImage = UIImage(cgImage: imageReference)
-        
+//        let imageData = image2Save.pngData()!
+//        let options = [
+//            kCGImageSourceCreateThumbnailWithTransform: false,
+//            kCGImageSourceCreateThumbnailFromImageAlways: true,
+//            kCGImageSourceThumbnailMaxPixelSize: 512] as CFDictionary
+//        let source = CGImageSourceCreateWithData(imageData as CFData, nil)!
+//        let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options)!
+//
+//
+//        let smallerImage = UIImage(cgImage: imageReference)
+        let smallerImage = image2Save.resized(toWidth: 512)
 //        let sizedImage = reduceImage(inImage: image2Save)
         let zone2D = CKRecordZone(zoneName: selectedLine)
 //        let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, zoneID: zone2D.zoneID)
@@ -166,7 +166,7 @@ class cloudDB: NSObject {
         let customRecord = CKRecord(recordType: remoteRecords.notificationMedia, recordID: customID)
 //        let fileURL = Bundle.main.bundleURL.appendingPathComponent("Marley.png")
 //        let fileURL = saveImage2File(file2Save: image2Save)
-        let fileURL = saveImage2File(file2Save: smallerImage)
+        let fileURL = saveImage2File(file2Save: smallerImage!)
         let ckAsset = CKAsset(fileURL: fileURL)
         
         customRecord[remoteAttributes.mediaFile] = ckAsset
@@ -803,7 +803,10 @@ class cloudDB: NSObject {
                 let tokenValue = record.object(forKey: remoteAttributes.deviceRegistered) as? String
                     tokensRead.append(tokenValue!)
                 }
+                let peru = Notification.Name("devices2Post")
+                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             }
+            
         }
     }
     
@@ -825,6 +828,7 @@ class cloudDB: NSObject {
         operation.recordFetchedBlock = { record in
             let tokenValue = record.object(forKey: remoteAttributes.deviceRegistered) as? String
             tokensRead.append(tokenValue!)
+            
         }
         
         operation.queryCompletionBlock = { [unowned self] (cursor, error) in
@@ -835,6 +839,8 @@ class cloudDB: NSObject {
                 if cursor != nil {
                     self.returnAllTokensWithLinks(lineLink: lineLink, stationLink: stationLink, cursorOp: cursorOp)
                 }
+                let peru = Notification.Name("devices2Post")
+                NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
             }
         }
         CKContainer.default().publicCloudDatabase.add(operation)
@@ -1169,33 +1175,20 @@ extension Date {
 }
 
 extension UIImage {
-    func resize(width: CGFloat) -> UIImage {
-        let height = (width/self.size.width)*self.size.height
-        return self.resize(size: CGSize(width: width, height: height))
+    func resized(withPercentage percentage: CGFloat) -> UIImage? {
+        let canvasSize = CGSize(width: size.width * percentage, height: size.height * percentage)
+        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: canvasSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
-    
-    func resize(height: CGFloat) -> UIImage {
-        let width = (height/self.size.height)*self.size.width
-        return self.resize(size: CGSize(width: width, height: height))
+    func resized(toWidth width: CGFloat) -> UIImage? {
+        let canvasSize = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: canvasSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
-    
-    func resize(size: CGSize) -> UIImage {
-        let widthRatio  = size.width/self.size.width
-        let heightRatio = size.height/self.size.height
-        var updateSize = size
-        if(widthRatio > heightRatio) {
-            updateSize = CGSize(width:self.size.width*heightRatio, height:self.size.height*heightRatio)
-        } else if heightRatio > widthRatio {
-            updateSize = CGSize(width:self.size.width*widthRatio,  height:self.size.height*widthRatio)
-        }
-        UIGraphicsBeginImageContextWithOptions(updateSize, false, UIScreen.main.scale)
-        self.draw(in: CGRect(origin: .zero, size: updateSize))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage!
-    }
-    
-    
 }
 
 

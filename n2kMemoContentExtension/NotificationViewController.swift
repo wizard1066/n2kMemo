@@ -170,6 +170,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
                         self.activityIndicator.stopAnimating()
                         self.activityIndicator.isHidden = true
                         self.imageView.image = UIImage(data: data! as Data)
+                        print("debug \(self.imageView.image.debugDescription)")
                     }
                 }
             }

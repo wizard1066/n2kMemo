@@ -13,53 +13,49 @@
         <!--Notification View Controller-->
         <scene sceneID="cwh-vc-ff4">
             <objects>
-                <viewController id="M4Y-Lb-cyx" userLabel="Notification View Controller" customClass="NotificationViewController" customModule="n2k_MemoContentExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="currentContext" id="M4Y-Lb-cyx" userLabel="Notification View Controller" customClass="NotificationViewController" customModule="n2k_MemoContentExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="340" height="340"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myo-Rh-5JI">
-                                <rect key="frame" x="40" y="20" width="240" height="22"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitle" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bn-u1-mF3">
-                                <rect key="frame" x="40" y="56" width="240" height="22"/>
+                                <rect key="frame" x="40" y="20" width="260" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ikB-Rd-TKf">
-                                <rect key="frame" x="150" y="150" width="20" height="20"/>
+                                <rect key="frame" x="160" y="160" width="20" height="20"/>
                             </activityIndicatorView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="apD-bO-HU4">
-                                <rect key="frame" x="40" y="100" width="240" height="200"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="apD-bO-HU4">
+                                <rect key="frame" x="0.0" y="0.0" width="340" height="340"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="subtitle" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bn-u1-mF3">
+                                <rect key="frame" x="40" y="50" width="260" height="22"/>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
                             <constraint firstItem="myo-Rh-5JI" firstAttribute="top" secondItem="2BE-c3-nQJ" secondAttribute="top" constant="20" id="3h0-kK-8yq"/>
-                            <constraint firstItem="apD-bO-HU4" firstAttribute="leading" secondItem="2BE-c3-nQJ" secondAttribute="leading" constant="40" id="74O-Uu-3PM"/>
-                            <constraint firstItem="2BE-c3-nQJ" firstAttribute="trailing" secondItem="apD-bO-HU4" secondAttribute="trailing" constant="40" id="ERY-OH-fXZ"/>
-                            <constraint firstItem="apD-bO-HU4" firstAttribute="top" secondItem="1bn-u1-mF3" secondAttribute="bottom" constant="22" id="EZo-cs-Cod"/>
+                            <constraint firstItem="2BE-c3-nQJ" firstAttribute="bottom" secondItem="apD-bO-HU4" secondAttribute="bottom" id="5Yg-e5-Scu"/>
+                            <constraint firstItem="apD-bO-HU4" firstAttribute="top" secondItem="2BE-c3-nQJ" secondAttribute="top" id="BHP-FU-HZg"/>
                             <constraint firstItem="ikB-Rd-TKf" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="GQj-to-duU"/>
                             <constraint firstItem="ikB-Rd-TKf" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="QJ5-Vd-TG4"/>
-                            <constraint firstItem="apD-bO-HU4" firstAttribute="top" secondItem="1bn-u1-mF3" secondAttribute="bottom" constant="22" id="X4F-B7-g47"/>
+                            <constraint firstItem="apD-bO-HU4" firstAttribute="leading" secondItem="2BE-c3-nQJ" secondAttribute="leading" id="Qlj-dB-3hR"/>
                             <constraint firstItem="1bn-u1-mF3" firstAttribute="leading" secondItem="2BE-c3-nQJ" secondAttribute="leading" constant="40" id="Yaf-Ba-Etc"/>
                             <constraint firstItem="2BE-c3-nQJ" firstAttribute="trailing" secondItem="1bn-u1-mF3" secondAttribute="trailing" constant="40" id="c0t-LO-QLa"/>
-                            <constraint firstItem="apD-bO-HU4" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="dwz-Eg-8Z2"/>
-                            <constraint firstItem="myo-Rh-5JI" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="nAJ-mW-eKF"/>
+                            <constraint firstItem="2BE-c3-nQJ" firstAttribute="trailing" secondItem="apD-bO-HU4" secondAttribute="trailing" id="nHw-JJ-KUr"/>
                             <constraint firstItem="myo-Rh-5JI" firstAttribute="leading" secondItem="2BE-c3-nQJ" secondAttribute="leading" constant="40" id="qDp-bu-fkd"/>
-                            <constraint firstItem="1bn-u1-mF3" firstAttribute="top" secondItem="myo-Rh-5JI" secondAttribute="bottom" constant="14" id="rCc-1v-3Kx"/>
-                            <constraint firstItem="2BE-c3-nQJ" firstAttribute="bottom" secondItem="apD-bO-HU4" secondAttribute="bottom" constant="20" id="w5J-hv-5ac"/>
-                            <constraint firstItem="1bn-u1-mF3" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="xAs-R7-YWq"/>
+                            <constraint firstItem="2BE-c3-nQJ" firstAttribute="bottom" secondItem="apD-bO-HU4" secondAttribute="bottom" id="qyw-WS-kcI"/>
                             <constraint firstItem="2BE-c3-nQJ" firstAttribute="trailing" secondItem="myo-Rh-5JI" secondAttribute="trailing" constant="40" id="yhw-Vc-Obk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2BE-c3-nQJ"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="320"/>
+                    <size key="freeformSize" width="340" height="340"/>
                     <connections>
                         <outlet property="activityIndicator" destination="ikB-Rd-TKf" id="v7s-jH-x9M"/>
                         <outlet property="imageView" destination="apD-bO-HU4" id="c2A-xM-Xbn"/>
