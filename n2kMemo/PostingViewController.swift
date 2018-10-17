@@ -25,6 +25,10 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         //rint("Unwind to Root View Controller")
     }
     
+    @IBAction func debugger(_ sender: Any) {
+        print("\(stationLabel.text) \(selectedStation)")
+    }
+    
     var bahninfo: String!
     var hofString: String!
     var hofinfo: Int!
@@ -221,7 +225,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         // NOT AN OBSERVER !!
         
         if tokenCheque == nil, lineLink != nil, stationLink != nil {
-//            cloudDB.share.returnAllTokensWithOutOwners()
+
             cloudDB.share.returnAllTokensWithLinks(lineLink: lineLink, stationLink: stationLink, cursorOp: nil)
             tokenCheque = tokensRead.count
 //            self.clientsRegistered.text = "\(tokensRead.count)"
@@ -274,8 +278,12 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     var doPost: Bool = false
     
     @IBAction func postAction(_ sender: UIButton) {
-        workingIndicator.isHidden = false
-        workingIndicator.startAnimating()
+        DispatchQueue.main.async {
+            self.postButton.titleLabel!.text = "Posting"
+            self.postButton.isEnabled = false
+            self.workingIndicator.isHidden = false
+            self.workingIndicator.startAnimating()
+        }
         if !timer.isValid {
             devices2Post2 = tokensRead
             scheduledTimerWithTimeInterval()
@@ -331,6 +339,10 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
             timer.invalidate()
             workingIndicator.stopAnimating()
             workingIndicator.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                self.postButton.titleLabel!.text = "Post"
+                self.postButton.isEnabled = true
+            }
         }
     }
     

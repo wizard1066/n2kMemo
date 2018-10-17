@@ -94,8 +94,13 @@ var lineZoneID: String!
 var lineOwner:[String: String] = [:]
 var tokenOwner:[String: String?] = [:]
 
+
+var selectedStation: String! {
+    didSet {
+        print("didSet selectedStation")
+    }
+}
 var selectedLine: String!
-var selectedStation: String!
 //var url2ShareDictionary:[String:String] = [:]
 var webSite2Send: URL?
 var urlSeek: URL?

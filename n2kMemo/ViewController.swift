@@ -228,9 +228,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
                     if foo?.recordRecord != nil {
                         let newReference = CKRecord.Reference(record: (foo?.recordRecord)!, action: .none)
                         stationLink = newReference
+                        selectedStation = foo?.name
                     }
                 }
-                selectedStation = stationsRead[row]
+                
             }
         }
     }
@@ -307,9 +308,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITextFi
                     if index2 != nil {
                         self.stationsPicker.selectRow(index2!, inComponent: 0, animated: true)
                         self.pickerView(self.stationsPicker, didSelectRow: index2!, inComponent: 0)
+                        selectedStation = stationsRead[index2!]
                     } else {
                         self.stationsPicker.selectRow(0, inComponent: 0, animated: true)
-                        
+                        if stationsRead.count > 0 {
+                            selectedStation = stationsRead[0]
+                        }
                     }
                 self.stationsPicker.reloadAllComponents()
             }
