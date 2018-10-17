@@ -18,6 +18,15 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, U
 //    var challenge2A: String?
 //    var index2U: Int?
     
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            print("Why are you shaking me?")
+            webSnap = self.view.toImage()
+            let peru = Notification.Name("webSnap")
+            NotificationCenter.default.post(name: peru, object: nil, userInfo: nil)
+        }
+    }
+    
  
 
     @IBOutlet weak var progressBar: UIProgressView!
