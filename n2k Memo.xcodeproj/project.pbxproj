@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B024229216DEF9500591CFE /* work_in_progress.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B024228216DEF9500591CFE /* work_in_progress.png */; };
 		7BBD400121634DF3006AB145 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD400021634DF3006AB145 /* WebViewController.swift */; };
 		7BBD6387215CC043000924F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD6386215CC043000924F0 /* AppDelegate.swift */; };
 		7BBD6389215CC043000924F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD6388215CC043000924F0 /* ViewController.swift */; };
@@ -80,7 +79,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7B024228216DEF9500591CFE /* work_in_progress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = work_in_progress.png; path = Assets.xcassets/work_in_progress.imageset/work_in_progress.png; sourceTree = "<group>"; };
 		7BBD400021634DF3006AB145 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		7BBD6383215CC043000924F0 /* n2k Memo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "n2k Memo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BBD6386215CC043000924F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -187,7 +185,6 @@
 		7BBD6385215CC043000924F0 /* n2kMemo */ = {
 			isa = PBXGroup;
 			children = (
-				7B024228216DEF9500591CFE /* work_in_progress.png */,
 				7BBD63B6215CFEE9000924F0 /* n2kMemo.entitlements */,
 				7BBD400021634DF3006AB145 /* WebViewController.swift */,
 				7BBD63EC215D27D6000924F0 /* Certificates.pem */,
@@ -435,7 +432,6 @@
 				7BBD63EF215D4530000924F0 /* Certificates.p12 in Resources */,
 				7BBD638E215CC046000924F0 /* Assets.xcassets in Resources */,
 				7BBD63ED215D27D6000924F0 /* Certificates.pem in Resources */,
-				7B024229216DEF9500591CFE /* work_in_progress.png in Resources */,
 				7BBD638C215CC043000924F0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

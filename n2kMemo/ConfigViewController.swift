@@ -34,7 +34,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    @IBOutlet weak var registerButton: UIButton!
+//    @IBOutlet weak var registerButton: UIButton!
     
     @IBOutlet weak var stationsTable: UITableView!
     @IBOutlet weak var stationName: UITextField!
@@ -90,7 +90,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let alert = UIAlertController(title: "Line registered", message: "Your new line is registered", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
-        registerButton.isEnabled = true
+//        registerButton.isEnabled = true
 //        linesRead.append(selectedLine)
 //        stationsRead.append(selectedStation)
     }
@@ -166,7 +166,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
         cell.textLabel?.text = stationsRegistered[indexPath.row]
-        cell.textLabel?.font = UIFont(name: "AvenirNextCondensed-Medium", size: 20)
+        cell.textLabel?.font = UIFont(name: fontToUse, size: 20)
         cell.textLabel?.textAlignment = NSTextAlignment.center
         return cell
     }
@@ -363,7 +363,7 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         pinObserver6 = center.addObserver(forName: NSNotification.Name(rawValue: alert2Monitor6), object: nil, queue: queue) { (notification) in
             let request2D = notification.userInfo![remoteAttributes.lineURL] as? String
             self.zeroURL.text = request2D
-            self.registerButton.isEnabled = true
+//            self.registerButton.isEnabled = true
             self.workingIndicator.stopAnimating()
             self.workingIndicator.isHidden = true
         }

@@ -9,6 +9,7 @@
 import UIKit
 import MobileCoreServices
 import SafariServices
+import AVFoundation
 
 var testURL = "https://www.dropbox.com/s/ztnaguussrcraxf/Marley.PNG?dl=1"
 var photoAttached: Bool = false
@@ -23,6 +24,55 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     
     @IBAction func unwindToRootViewController(segue: UIStoryboardSegue) {
         //rint("Unwind to Root View Controller")
+    }
+    
+    @IBAction func camNav(_ sender: Any) {
+        if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
+            postButton.isEnabled = false
+            let picker = UIImagePickerController()
+            picker.sourceType = .camera
+            picker.mediaTypes = [kUTTypeImage as String]
+            picker.allowsEditing = true
+            picker.delegate = self
+            present(picker, animated: true)
+        } else {
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                if granted {
+                    self.postButton.isEnabled = false
+                    let picker = UIImagePickerController()
+                    picker.sourceType = .camera
+                    picker.mediaTypes = [kUTTypeImage as String]
+                    picker.allowsEditing = true
+                    picker.delegate = self
+                    self.present(picker, animated: true)
+                } else {
+                    //access denied
+                }
+            })
+        }
+        
+    }
+    
+    @IBAction func libNav(_ sender: Any) {
+        postButton.isEnabled = false
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = [kUTTypeImage as String]
+        picker.allowsEditing = true
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+    
+    @IBAction func webNav(_ sender: Any) {
+        // web action
+    }
+    
+    @IBAction func cloudNav(_ sender: Any) {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [(kUTTypeImage as NSString) as String], in: .import)
+        documentPicker.delegate = self
+        present(documentPicker, animated: false, completion: {
+            //done
+        })
     }
     
     @IBAction func debugger(_ sender: Any) {
@@ -73,13 +123,7 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     @IBAction func liveButton(_ sender: UIButton) {
-        postButton.isEnabled = false
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.mediaTypes = [kUTTypeImage as String]
-        picker.allowsEditing = true
-        picker.delegate = self
-        present(picker, animated: true)
+        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -107,21 +151,11 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
     }
     
     @IBAction func libraryButton(_ sender: Any) {
-        postButton.isEnabled = false
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.mediaTypes = [kUTTypeImage as String]
-        picker.allowsEditing = true
-        picker.delegate = self
-        present(picker, animated: true)
+        
     }
     
     @IBAction func dropNdragButton(_ sender: Any) {
-        let documentPicker = UIDocumentPickerViewController(documentTypes: [(kUTTypeImage as NSString) as String], in: .import)
-        documentPicker.delegate = self
-        present(documentPicker, animated: false, completion: {
-            //done
-        })
+        
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {

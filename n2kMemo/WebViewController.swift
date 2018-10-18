@@ -125,7 +125,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, U
         }
         
         let searchTextAppearance = UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-        searchTextAppearance.font = UIFont(name: "AvenirNextCondensed-Medium", size: 18)
+        searchTextAppearance.font = UIFont(name: fontToUse, size: 18)
 //        searchTextAppearance.textColor = .green
         // Do any additional setup after loading the view.
     }

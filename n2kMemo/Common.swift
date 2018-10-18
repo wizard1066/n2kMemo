@@ -12,6 +12,8 @@ import UIKit
 
 var permission2SendNotifications: Bool = false
 
+let fontToUse = "HelveticaNeue-Medium"
+
 enum segueNames {
     static let posting = "posting"
     static let principle = "principle"
