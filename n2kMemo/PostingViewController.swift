@@ -320,6 +320,8 @@ class PostingViewController: UIViewController, URLSessionDelegate, UIDocumentPic
         }
         if !timer.isValid {
             devices2Post2 = tokensRead
+            devices2Post2.append(ownerToken)
+            print("devices2Post \(devices2Post2)")
             scheduledTimerWithTimeInterval()
         }
 //        cloudDB.share.cleanUpImages(zone2U: selectedLine)

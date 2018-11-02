@@ -62,7 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(tokenString(deviceToken))
         ownerToken = tokenString(deviceToken)
         let defaults = UserDefaults.standard
-        let line2U = defaults.string(forKey: remoteAttributes.lineName)
+        line2P = defaults.string(forKey: remoteAttributes.lineName)
+        station2P = defaults.string(forKey: remoteAttributes.stationName)
 //        cloudDB.share.logToken(token2Save: ownerToken, lineLink: nil, stationLink: nil, lineName: line2U)
     }
     

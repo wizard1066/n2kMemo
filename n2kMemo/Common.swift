@@ -59,6 +59,9 @@ enum localObservers {
     static let clearFields = "clearFields"
 }
 
+var line2P: String?
+var station2P: String?
+
 var ownerToken: String!
 var tokensRead:[String] = []
 var linesRead:[String] = []

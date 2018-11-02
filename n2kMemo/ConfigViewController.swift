@@ -322,7 +322,13 @@ class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDa
         passText.delegate = self
         changed = false
         workingIndicator.isHidden = true
-        
+        let defaults = UserDefaults.standard
+        if line2P != nil {
+            lineText.placeholder = line2P
+        }
+        if station2P != nil {
+            stationText.placeholder = station2P
+        }
     }
     
     private var pinObserver: NSObjectProtocol!
